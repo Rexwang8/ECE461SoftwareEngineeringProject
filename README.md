@@ -8,7 +8,6 @@ Names: Rex Wang, Joseph Ma, Alan Zhang
 Names: Rex Wang, Joseph Ma, Alan Zhang, Kevin Lin
 >>>>>>> caf605b655eea088fc320ed09fe2e254b9ca5a24
 
-
 ---
 dummy commits:
 Commit by Rex Wang
