@@ -13,9 +13,9 @@ def main():
     log("--------------------")
     return 0
 
-def log(msg):
+def log(msg, priority=0):
     with open("log.txt", "a") as f:
-        f.write(f"Logging at t={time.time()}: {msg}\n")
+        f.write(f"[Python Main Script] Priority: {priority} | Logging at t={time.time()}: {msg}\n")
         f.close()
         
 main()
