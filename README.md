@@ -3,8 +3,39 @@
 
 Names: Rex Wang, Joseph Ma, Alan Zhang, Kevin Lin
 
-dummy commits:
-Commit by Rex Wang
-Commit by Alan Zhang
-Commit by Joseph Ma
-Commit by Kevin Lin
+A local CLI package manager project for ECE 461 - Software engineering (At purdue). 
+
+
+---
+
+## General execution pattern
+
+(C#) CLI command parser is run first. We do this because c# is compiled and we can compile an executable with it to be run indepdantly. It will be able to verify python and other dependancies is installed and run the python main script.
+
+The main script will call all the api calls and other data parsing in order for the program to function. Execution log is saved to /log.txt
+
+## File structure
+
+readme
+gitignore
+.git
+>Command line Parser
+>Command line Parser/Command line parser SLN and other files
+>Build
+>Build/test.py
+>Build/run.exe
+
+---
+
+## How to build CLI Parser (C#)
+
+1. Open .sln in visual studio
+2. go to the top bar, build > build
+3. go to the folder /bin/debug/<file>.exe and copy it out to wherever you want to run it. Make sure it's in the same folder as the python files it's trying to run.
+
+---
+
+
+
+
+
