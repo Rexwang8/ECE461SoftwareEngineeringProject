@@ -16,9 +16,11 @@ The main script will call all the api calls and other data parsing in order for 
 
 ## File structure
 
-readme
-gitignore
+README.md
+.gitignore
 .git
+.gitattributes
+.vs
 >Command line Parser
 >Command line Parser/Command line parser SLN and other files
 >Build
@@ -30,8 +32,8 @@ gitignore
 ## How to build CLI Parser (C#)
 
 1. Open .sln in visual studio
-2. go to the top bar, build > build
-3. go to the folder /bin/debug/<file>.exe and copy it out to wherever you want to run it. Make sure it's in the same folder as the python files it's trying to run.
+2. go to the top bar, Build > Build Solution
+3. go to the folder /bin/debug/run.exe and copy it out to wherever you want to run it. Make sure it's in the same folder as the python files it's trying to run.
 
 ---
 
