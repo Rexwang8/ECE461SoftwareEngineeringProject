@@ -1,0 +1,6 @@
+C:\Users\Rex Wang\source\repos\ECE461PackageManager\obj\x86\Debug\PackageManager461.csproj.AssemblyReference.cache
+C:\Users\Rex Wang\source\repos\ECE461PackageManager\obj\x86\Debug\PackageManager461.csproj.CoreCompileInputs.cache
+C:\Users\Rex Wang\source\repos\ECE461PackageManager\bin\Debug\run.exe
+C:\Users\Rex Wang\source\repos\ECE461PackageManager\bin\Debug\run.pdb
+C:\Users\Rex Wang\source\repos\ECE461PackageManager\obj\x86\Debug\run.exe
+C:\Users\Rex Wang\source\repos\ECE461PackageManager\obj\x86\Debug\run.pdb
