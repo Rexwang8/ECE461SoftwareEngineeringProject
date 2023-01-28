@@ -1,17 +1,17 @@
 import sys
 import time
 import pathlib
-import logger #logger.py
 
+import logger #logger.py
 
 #get args
 def main():
     #current working dir
     dir = pathlib.Path().absolute()
-    
-    
+
    
     #log("Starting main script...", 1, "log.txt")
+   
     #get first arg as command
     command = sys.argv[1]
     #get second arg LOG LEVEL
@@ -22,6 +22,7 @@ def main():
     #append "log.txt" to current working dir variable
     logpath = str(dir) + "\\" + logfile
     
+
     Debug = logger.Logger(logpath, 2)
     
     Debug.log("Starting main script...")
@@ -49,5 +50,7 @@ def log(msg, priority=0, path="log.txt"):
     with open(path, "a") as f:
         f.write(f"[Python Main Script] Priority: {priority} | Logging at t={time.time()}: {msg}\n")
         f.close()
+
         '''
+
 main()
