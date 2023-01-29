@@ -1,34 +1,65 @@
 using System;
-using System.IO;
 using System.Net.Http;
 using Newtonsoft.Json;
 
 class Program
 {
-	static void Main(string[] args)
-	{
-		var url = args[0] //url of repository passed as command line argument
-		
-		//Define the GraphQL query
-		var query = "{ repository(url: \"" + url + "\") { name description createdAt stargazers { totalCount } issues { totalCount } pullRequests { totalCount } } }";
-		
-		// Create a new instance of HttpClient
-		using (var client = new HttpClient())
-		{
-			//authorization header
-			client.DefaultRequestHeaders.Add("Authorization", "Bearer YOUR_TOKEN_HERE");
+    static async Task Main(string[] args)
+    {
+        // Parse the URL from the command-line argument
+        var url = args[0];
 
-			//Create a new instance of StringContent
-			var content = new StringContent(JsonConvert.SerializeObject(new { query }), System.Text.Encoding.UTF8, "application/json");
+        // Create an HttpClient
+        var httpClient = new HttpClient();
 
-			//Make API call
-			var response = client.PostAsync("https://api.github.com/graphql", content).Result;
+        // Set the headers for the request
+        httpClient.DefaultRequestHeaders.Accept.Add(
+            new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        httpClient.DefaultRequestHeaders.Add("User-Agent", "C# App");
 
-			//Read the JSON output
-			var json = response.Content.ReadAsStringAsync().Result();
+        // Create the GraphQL query
+        var query = @"
+        {
+            repository(owner: ""OWNER"", name: ""REPO"") {
+                name
+                description
+                createdAt
+                pushedAt
+                stargazers {
+                    totalCount
+                }
+                issues {
+                    totalCount
+                }
+            }
+        }
+        ";
 
-			//write JSON output to a file
-			File.WriteAllText("output.json", json);
-		}
-	}
+        // Replace the placeholders in the query with the values from the URL
+        query = query.Replace("OWNER", "OWNER").Replace("REPO", "REPO");
+
+        // Create a request object
+        var request = new
+        {
+            query = query
+        };
+
+        // Serialize the request object to a JSON string
+        var json = JsonConvert.SerializeObject(request);
+
+        // Create a StringContent object with the JSON string and the appropriate content type
+        var stringContent = new StringContent(json, Encoding.UTF8, "application/json");
+
+        // Make the GraphQL API call and get the response
+        var response = await httpClient.PostAsync(url, stringContent);
+
+        // Read the response as a string
+        var responseString = await response.Content.ReadAsStringAsync();
+
+        // Deserialize the response string to a JSON object
+        var jsonResponse = JsonConvert.DeserializeObject(responseString);
+
+        // Write the JSON object to the console
+        Console.WriteLine(jsonResponse);
+    }
 }
