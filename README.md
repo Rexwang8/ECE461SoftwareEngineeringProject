@@ -1,9 +1,9 @@
 # ECE461SoftwareEngineeringProject
- ECE 461 - Purdue Package manager for Software Engineering class.
+ECE 461 - Purdue Package manager for Software Engineering class.
 
 Names: Rex Wang, Joseph Ma, Alan Zhang, Kevin Lin
 
-A local CLI package manager project for ECE 461 - Software engineering (At purdue). 
+A local CLI package manager project for ECE 461 - Software engineering (At purdue). Built mainly using C# and Python.
 
 
 ---
@@ -21,11 +21,12 @@ README.md
 .git
 .gitattributes
 .vs
->Command line Parser
->Command line Parser/Command line parser SLN and other files
->Build
->Build/test.py
->Build/run.exe
+-Command line Parser
+-Command line Parser/Command line parser C# Visual Studio SLN and other files
+-Build
+-Build/startup.py
+-Build/logger.py
+-Build/run.exe
 
 ---
 
@@ -37,4 +38,23 @@ README.md
 
 ---
 
+## How to run program
+
+Go to /Build and execute one of the following commands
+
+run install - installs all dependencies including pip dependencies
+
+run build - compiles anything that needs to be compiled
+
+run <URL> - downloads the following URL from either npm or github and produces a NDJSON file for grades for the package.
+
+run test - runs the static analysis test suite and exits 0 if successful
+
+---
+
+## Environment Variables
+
+$LOG_FILE - Path to where the log file will be saved
+
+$LOG_LEVEL - Level of logging, 0 is silent, 1 is info only, 2 is debug (everything).
 
