@@ -3,14 +3,13 @@ import time
 import pathlib
 
 import logger #logger.py
+import grader #grader.py
 
 #get args
 def main():
     #current working dir
     dir = pathlib.Path().absolute()
 
-   
-    #log("Starting main script...", 1, "log.txt")
    
     #get first arg as command
     command = sys.argv[1]
@@ -27,7 +26,7 @@ def main():
     logpath = str(dir) + "\\" + logfile
     
 
-    Debug = logger.Logger(logpath, 2)
+    Debug = logger.Logger(logpath, 2, "Main")
     
     logstr = f"ARGS: {sys.argv}, logpath: {logpath}, cmd: {command}, loglevel: {loglevel} url: {url}"
     Debug.log(logstr, 2)
@@ -53,6 +52,11 @@ def main():
 
     return 0
 
+
+def SendToGrader(config, npmjsonpath, gitjsonpath, staticjsonpath, logpath, loglevel):
+    
+    #this is where we send the json files to the grader
+    success = grader.GradeJSON(config, npmjsonpath, gitjsonpath, staticjsonpath, logpath, loglevel)
 
 '''
 def log(msg, priority=0, path="log.txt"):

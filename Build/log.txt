@@ -47,3 +47,5 @@ Logging at t=1674509772.2924342: --------------------
 [Python Main Script] Priority: 0 | Logging at t=1674509924.5927837: Argument List: ['c:\\Users\\Rex Wang\\Documents\\Purdue\\Spring 2023\\ECE 46100\\Assignments\\461PackageManager\\Build\\test.py']
 [Python Main Script] Priority: 0 | Logging at t=1674509924.5937915: Exiting main
 [Python Main Script] Priority: 0 | Logging at t=1674509924.5947857: --------------------
+[Python Main Script] Priority: 1(info) | Logging at t=1675030037.8081548: Logger initialized
+[Python Main Script] Priority: 2(debug) | Logging at t=1675030037.809155: Testing json import
