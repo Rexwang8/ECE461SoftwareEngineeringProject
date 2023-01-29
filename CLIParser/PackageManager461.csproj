@@ -45,7 +45,7 @@
     <Folder Include=".vs\PackageManager461\v17\" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="test.py" />

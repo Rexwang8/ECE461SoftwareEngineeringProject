@@ -1,0 +1,15 @@
+[C# Command Parser] 2023-01-29 16:17:09 Priority 1 | Installing...
+[C# Command Parser] 2023-01-29 16:17:09 Priority 1 | Python 3.10.6
+
+[C# Command Parser] 2023-01-29 16:17:09 Priority 1 | pip 22.3.1 from C:\Users\Rex Wang\AppData\Local\Programs\Python\Python310\lib\site-packages\pip (python 3.10)
+
+[C# Command Parser] 2023-01-29 16:19:45 Priority 1 | Installing...
+[C# Command Parser] 2023-01-29 16:19:45 Priority 1 | Python 3.10.6
+
+[C# Command Parser] 2023-01-29 16:19:46 Priority 2 | pip 22.3.1 from C:\Users\Rex Wang\AppData\Local\Programs\Python\Python310\lib\site-packages\pip (python 3.10)
+
+[C# Command Parser] 2023-01-29 16:19:49 Priority 2 | Collecting pathlib
+  Downloading pathlib-1.0.1-py3-none-any.whl (14 kB)
+Installing collected packages: pathlib
+Successfully installed pathlib-1.0.1
+
