@@ -58,6 +58,8 @@ namespace PackageManager
                 Console.WriteLine("Installing...");
                 logger.LogToFile("Installing...", 1);
                 startup.Install(startup, logger);
+                logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
+                startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
                 //Installs any dependencies we need, including python packages
             }
             else if (args[0] == "build")
@@ -65,6 +67,8 @@ namespace PackageManager
                 Console.WriteLine("Building...");
                 logger.LogToFile("Building...", 1);
                 startup.Build(startup, logger);
+                logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
+                startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
                 //builds anything we need, I'm not sure we need anything here...
             }
 
@@ -72,6 +76,8 @@ namespace PackageManager
             {
                 Console.WriteLine("Testing...");
                 logger.LogToFile("Testing...", 1);
+                logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
+                startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
                 //This should launch a static analysis script
             }
             else
@@ -81,18 +87,22 @@ namespace PackageManager
                 {
                     Console.WriteLine($"Downloading from URL {args[0]}");
                     logger.LogToFile($"Downloading from URL {args[0]}", 1);
+                    logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
+                    startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
                 }
                 else
                 {
                     Console.WriteLine("Invalid command, exiting...");
                     logger.LogToFile("Invalid command, exiting...", 1);
+                    logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
+                    //startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
                     Environment.Exit(1);
                 }
             
             }
 
-            logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
-            startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION} {args[1]}");
+
+            
             logger.LogToFile("Finished Executing C# starter script!", ENVLOGLEVEL);
             //instantiate class Startup
 
@@ -136,6 +146,12 @@ namespace PackageManager
             //install requirements
             string pipinstall = startup.RunCommand("/C pip install -r requirements.txt");
             logger.LogToFile(pipinstall, 2);
+
+
+            //WE DO NOT NEED TO INSTALL DOTNET PACKAGES BECAUSE THEY ARE COMPILED
+            //install dotnet package newtonsoft.json
+            //string dotnetinstall = startup.RunCommand("/C dotnet add package Newtonsoft.Json");
+            //logger.LogToFile(dotnetinstall, 2);
         }
 
         void Build(Startup startup, CSharpLogger logger)
@@ -177,6 +193,7 @@ namespace PackageManager
             {
                 return false;
             }
+
         }
 
         //defines a function that is able to log out to log file

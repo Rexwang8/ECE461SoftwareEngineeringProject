@@ -40,13 +40,13 @@ def main():
     elif(command == "build"):
         #command is build
         Debug.log("Recieved command: build, already run by C# parser, exiting python script.", 1)
-    elif(command == "run"):
-        #this is where we call our api analysis script with the URLS
-        Debug.log(f"Recieved command: run, URL recieved is {url}", 1)
-        pass
     elif(command == "test"):
         #this is where we test the loaded packages
         Debug.log("Recieved command: test, Testing loaded packages...", 1)
+        pass
+    else:
+        #this is where we call our api analysis script with the URLS
+        Debug.log(f"Recieved command: run, URL recieved is {url}", 1)
         pass
         
 
