@@ -18,6 +18,10 @@ def main():
     loglevel = sys.argv[2]
     #get third arg as log file
     logfile = sys.argv[3]
+    #get fourth arg as the URL if it exists
+    url = "_"
+    if(len(sys.argv) > 4):
+        url = sys.argv[4]
     
     #append "log.txt" to current working dir variable
     logpath = str(dir) + "\\" + logfile
@@ -25,14 +29,28 @@ def main():
 
     Debug = logger.Logger(logpath, 2)
     
-    Debug.log("Starting main script...")
-    
-    logstr = f"ARgS: {sys.argv}, logpath: {logpath}, cmd: {command}, loglevel: {loglevel}"
+    logstr = f"ARGS: {sys.argv}, logpath: {logpath}, cmd: {command}, loglevel: {loglevel} url: {url}"
     Debug.log(logstr, 2)
     
     Debug.log("Starting main script...", 1)
+    
+    #we check if command is install
+    if(command == "install"):
+        #command is install
+        Debug.log("Recieved command: install, already run by C# parser, exiting python script.", 1)
+    elif(command == "build"):
+        #command is build
+        Debug.log("Recieved command: build, already run by C# parser, exiting python script.", 1)
+    elif(command == "run"):
+        #this is where we call our api analysis script with the URLS
+        Debug.log(f"Recieved command: run, URL recieved is {url}", 1)
+        pass
+    elif(command == "test"):
+        #this is where we test the loaded packages
+        Debug.log("Recieved command: test, Testing loaded packages...", 1)
+        pass
+        
 
-    Debug.log("Testing logging...", 1)
     return 0
 
 
