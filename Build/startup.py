@@ -3,6 +3,7 @@ import time
 import pathlib
 
 import logger #logger.py
+import grader #grader.py
 
 #get args
 def main():
@@ -10,31 +11,52 @@ def main():
     dir = pathlib.Path().absolute()
 
    
-    #log("Starting main script...", 1, "log.txt")
-   
     #get first arg as command
     command = sys.argv[1]
     #get second arg LOG LEVEL
     loglevel = sys.argv[2]
     #get third arg as log file
     logfile = sys.argv[3]
+    #get fourth arg as the URL if it exists
+    url = "_"
+    if(len(sys.argv) > 4):
+        url = sys.argv[4]
     
     #append "log.txt" to current working dir variable
     logpath = str(dir) + "\\" + logfile
     
 
-    Debug = logger.Logger(logpath, 2)
+    Debug = logger.Logger(logpath, 2, "Main")
     
-    Debug.log("Starting main script...")
-    
-    logstr = f"ARgS: {sys.argv}, logpath: {logpath}, cmd: {command}, loglevel: {loglevel}"
+    logstr = f"ARGS: {sys.argv}, logpath: {logpath}, cmd: {command}, loglevel: {loglevel} url: {url}"
     Debug.log(logstr, 2)
     
     Debug.log("Starting main script...", 1)
+    
+    #we check if command is install
+    if(command == "install"):
+        #command is install
+        Debug.log("Recieved command: install, already run by C# parser, exiting python script.", 1)
+    elif(command == "build"):
+        #command is build
+        Debug.log("Recieved command: build, already run by C# parser, exiting python script.", 1)
+    elif(command == "test"):
+        #this is where we test the loaded packages
+        Debug.log("Recieved command: test, Testing loaded packages...", 1)
+        pass
+    else:
+        #this is where we call our api analysis script with the URLS
+        Debug.log(f"Recieved command: run, URL recieved is {url}", 1)
+        pass
+        
 
-    Debug.log("Testing logging...", 1)
     return 0
 
+
+def SendToGrader(config, npmjsonpath, gitjsonpath, staticjsonpath, logpath, loglevel):
+    
+    #this is where we send the json files to the grader
+    success = grader.GradeJSON(config, npmjsonpath, gitjsonpath, staticjsonpath, logpath, loglevel)
 
 '''
 def log(msg, priority=0, path="log.txt"):
