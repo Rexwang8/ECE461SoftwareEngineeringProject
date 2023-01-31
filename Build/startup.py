@@ -1,6 +1,7 @@
 import sys
 import time
 import pathlib
+import os
 
 import logger #logger.py
 import grader #grader.py
@@ -33,6 +34,11 @@ def main():
     
     Debug.log("Starting main script...", 1)
     
+    MakeFolderCache(Debug)
+    MakeFolderRepo(Debug)
+    MakeFolderResults(Debug)
+    
+    
     #we check if command is install
     if(command == "install"):
         #command is install
@@ -53,26 +59,43 @@ def main():
     return 0
 
 
+def MakeFolderCache(Logger):
+    #We make a folder called cache in the current working directory to store data
+    
+    #check if folder exists
+    if(os.path.exists("cache")):
+        Logger.log(f"Cache folder already exists at {pathlib.Path().absolute()}", 2)
+        return
+    os.mkdir("cache")
+    Logger.log(f"Cache folder created at {pathlib.Path().absolute()}", 2)
+    return
+    
+def MakeFolderRepo(Logger):
+    #We make a folder called repo in the current working directory to store the downloaded repo
+    
+    #check if folder exists
+    if(os.path.exists("repo")):
+        Logger.log(f"Repo folder already exists at {pathlib.Path().absolute()}", 2)
+        return
+    os.mkdir("repo")
+    Logger.log(f"Repo folder created at {pathlib.Path().absolute()}", 2)
+    return
+    
+def MakeFolderResults(Logger):
+    #We make a folder called results in the current working directory to store the results
+    
+    #check if folder exists
+    if(os.path.exists("results")):
+        Logger.log(f"Results folder already exists at {pathlib.Path().absolute()}", 2)
+        return
+    os.mkdir("results")
+    Logger.log(f"Results folder created at {pathlib.Path().absolute()}", 2)
+    return
+
 def SendToGrader(config, npmjsonpath, gitjsonpath, staticjsonpath, logpath, loglevel):
     
     #this is where we send the json files to the grader
     success = grader.GradeJSON(config, npmjsonpath, gitjsonpath, staticjsonpath, logpath, loglevel)
 
-'''
-def log(msg, priority=0, path="log.txt"):
-    if(priority == 0):
-        return
-    
-    #check if log file exists
-    if(not pathlib.Path(path).exists()):
-        with open(path, "w") as f:
-            f.write("[Python Main Script] Log file created\n")
-            f.close()
-    
-    with open(path, "a") as f:
-        f.write(f"[Python Main Script] Priority: {priority} | Logging at t={time.time()}: {msg}\n")
-        f.close()
-
-        '''
 
 main()
