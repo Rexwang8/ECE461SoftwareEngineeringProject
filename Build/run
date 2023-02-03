@@ -1,10 +1,14 @@
 #!/bin/bash
 
+echo "v1.0.0"
+
+
 case "$1" in
     "build")
         # build function code here
-        echo "Building parse.exe"
-        dotnet build "./CLIparser"
+        echo "dotnet publish CLIParse -r linux-x64 -p:PublishSingleFile=true --self-contained true"
+        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true
+        cp CLIParseProj/bin/Debug/net6.0/linux-x64/publish/CLIParse .
         #mv "./CLIparser/bin/Debug/netcoreapp3.1/CLIparser.dll" "./parse.exe"
         ;;
     "test")
