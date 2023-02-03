@@ -31,6 +31,7 @@ namespace PackageManager
 
 
             //get command line arguments
+            /*
             if (args.Length > 0)
             {
                 if (ENVLOGLEVEL > 1)
@@ -41,7 +42,7 @@ namespace PackageManager
                         Console.WriteLine(arg);
                     }
                 }
-            }
+            }*/
 
             //get current directory
             string currentDirectory = Directory.GetCurrentDirectory();
@@ -55,20 +56,26 @@ namespace PackageManager
             //check if arg 0 is "install", "build", "test"
             if (args[0] == "install")
             {
-                Console.WriteLine("Installing...");
-                logger.LogToFile("Installing...", 1);
-                startup.Install(startup, logger);
-                logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
-                startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
-                //Installs any dependencies we need, including python packages
+                //We have already run the installation script, but we need to logg it out
+                Console.WriteLine("Logging Installation to file...");
+                logger.LogToFile("Logging Installation to file...", 1);
+
+                //We take the results from the /cache/pip.txt file and log it to the log file
+                string pipinstall = File.ReadAllText("cache/pip.txt");
+                logger.LogToFile(pipinstall, 2);
+
             }
             else if (args[0] == "build")
             {
                 Console.WriteLine("Building...");
                 logger.LogToFile("Building...", 1);
-                startup.Build(startup, logger);
-                logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
-                startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
+
+                //We take the results from the /cache/build.txt file and log it to the log file
+                string build = File.ReadAllText("cache/build.txt");
+                logger.LogToFile(build, 2);
+                //startup.Build(startup, logger);
+                //logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
+                //startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
                 //builds anything we need, I'm not sure we need anything here...
             }
 
@@ -103,14 +110,7 @@ namespace PackageManager
 
 
             
-            logger.LogToFile("Finished Executing C# starter script!", ENVLOGLEVEL);
-            //instantiate class Startup
-
-            //startup.RunCommand("/C mkdir testdir");
-            //startup.
-            //startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
-            //startup.LogToFile("Hello World!", ENVLOGLEVEL);
-
+            logger.LogToFile("Finished Executing C# starter script!", 1);
 
         }
 
