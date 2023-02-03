@@ -1,0 +1,22 @@
+#!/bin/bash
+
+case "$1" in
+    "build")
+        # build function code here
+        echo "Building parse.exe"
+        dotnet build "./CLIparser"
+        #mv "./CLIparser/bin/Debug/netcoreapp3.1/CLIparser.dll" "./parse.exe"
+        ;;
+    "test")
+        # test function code here
+        echo "Testing parse.exe"
+        ;;
+    "install")
+        # install function code here
+        echo "Installing parse.exe"
+        ;;
+    *)
+        # code for running parse.exe with URL argument
+        echo "Running parse.exe with URL: $1"
+        ;;
+esac
