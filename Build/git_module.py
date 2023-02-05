@@ -9,15 +9,44 @@ if len(sys.argv) != 2:
 
 url = sys.argv[1]
 
+OWNER = "Rexwang8"
+REPO = "ECE461SoftwareEngineeringProject"
+
+headers = {
+    "Authorization": "Bearer " + os.environ.get("GITHUB_API_TOKEN"),
+    "Content-Type": "application/json"
+}
+
+HEADERS = {
+    "Authorization": f"Token {os.environ.get('GITHUB_API_TOKEN')},
+    "Accept": "application/vnd.github.vUL-preview+json",
+}
+
+def get_security_vulnerabilities(owner, repo):
+    url = f"https://api.github.com/repos/{owner}/{repo}/vulnerabilities"
+    response = requests.get(url, headers=HEADERS)
+    if response.status_code == 200:
+        vulnerabilities = response.json()
+        for vulnerability in vulnerabilities:
+            print(vulnerability["id"], vulnerability["package_name"], vulnerability["severity"])
+    else:
+        print(f"Error retrieving security vulnerabilities: {response.text}")
+
+get_security_vulnerabilities(OWNER, REPO)
+
 # Example GraphQL query to retrieve repository information
 query = """
 query {
-  repository(owner:"Rexwang8", name:"ECE461SoftwareEngineeringProject") {
+  repository(owner:OWNER, name:REPO) {
     name
     description
     createdAt
     updatedAt
     diskUsage
+    licenseInfo {
+      name
+      spdxId
+    }
     homepageUrl
     pushedAt
     forkCount
@@ -27,11 +56,6 @@ query {
     }
 }
 """
-
-headers = {
-    "Authorization": "Bearer " + os.environ.get("GITHUB_API_TOKEN"),
-    "Content-Type": "application/json"
-}
 
 response = requests.post(url, json={'query': query}, headers=headers)
 
