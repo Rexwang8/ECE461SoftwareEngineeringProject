@@ -34,7 +34,7 @@ class Logger:
         #check if log file exists
         if(not pathlib.Path(self.path).exists()):
             with open(self.path, "w") as f:
-                f.write("[Python {self.scriptname} Script] Log file created\n")
+                f.write(f"[Python {self.scriptname} Script] Log file created\n")
                 f.close()
         
         with open(self.path, "a") as f:
