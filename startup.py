@@ -48,13 +48,18 @@ def main():
         Debug.log("Recieved command: build, already run by C# parser, exiting python script.", 1)
     elif(command == "test"):
         #this is where we test the loaded packages
-        Debug.log("Recieved command: test, Testing loaded packages...", 1)
+        Debug.log("Recieved command: test, Testing code with test cases...", 1)
         pass
     else:
         #this is where we call our api analysis script with the URLS
         Debug.log(f"Recieved command: run, URL recieved is {url}", 1)
+        config = []
+        invokeGIT(config, logpath, loglevel)
+        invokeNPM(config, logpath, loglevel)
+        invokeStatic(config, logpath, loglevel)
         pass
         
+    Debug.log("Exiting main script...", 1)
 
     return 0
 
@@ -91,6 +96,20 @@ def MakeFolderResults(Logger):
     os.mkdir("results")
     Logger.log(f"Results folder created at {pathlib.Path().absolute()}", 2)
     return
+
+
+def invokeNPM(config, logpath, loglevel):
+    #this is where we call the npm script
+    pass
+
+def invokeGIT(config, logpath, loglevel):
+    #this is where we call the git script
+    pass
+
+def invokeStatic(config, logpath, loglevel):
+    #this is where we call the static analysis script
+    pass
+
 
 def SendToGrader(config, npmjsonpath, gitjsonpath, staticjsonpath, logpath, loglevel):
     

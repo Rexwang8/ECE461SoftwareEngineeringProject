@@ -2,6 +2,17 @@
 import json
 import logger #logger.py
 
+
+class Score:
+    def __init__(self, busFactor, netScore, rampUp, responsiveMaintainer, denominator, license):
+        self.busFactor = busFactor
+        self.netScore = netScore
+        self.rampUp = rampUp
+        self.responsiveMaintainer = responsiveMaintainer
+        self.license = license
+        self.denominator = denominator
+        
+
 def ImportJSON(path):
     with open(path, "r") as f:
         data = json.load(f)
@@ -22,35 +33,41 @@ def GradeJSON(config, npmjsonpath, gitjsonpath, staticjsonpath, logpath, logleve
     Debug = logger.Logger("Build\log.txt", 2, "Grader")
     Debug.log("Testing json import", 2)
     
+    
+    #import the json files
     if(config["npm"] == "ignore"):
         npmjsonpath = None
     else:
         npmjson = ImportJSON(npmjsonpath)
+        
     if(config["github"] == "ignore"):
         gitjsonpath = None
     else:
         gitjson = ImportJSON(gitjsonpath)
+        
     if(config["static"] == "ignore"):
         staticjsonpath = None
     else:
         staticjson = ImportJSON(staticjsonpath)
         
     #we now have the json files loaded, we can now grade them
-    #we can have three configs, (npm, static), (github, static), (npm, github, static)
+    #we will figure out which json files we have
     
-    if(config["npm"] == "ready" and config["github"] == "ready"):
-        #we have all three json files
-        pass
-    elif(config["npm"] == "ready" and config["static"] == "ready"):
-        #we have all the json files for npm and static
-        pass
-    elif(config["github"] == "ready" and config["static"] == "ready"):
-        #we have all json files for github and static
-        pass
-    else:
-        #we have an unknown config, log out and exit
-        Debug.log("Unknown config, exiting from Grader script", 1)
-        pass
+    #we declare the score object
+    score = Score(0, 0, 0, 0, 0, '', 100)
+    
+    
+    layout = ''
+    if(config['npm'] == 'ready'):
+        layout += 'npm'
+        
+    if(config['github'] == 'ready'):
+        layout += 'git'
+    if(config['static'] == 'ready'):
+        layout += 'static'
+        
+    
+        
     
     return 0
 
