@@ -12,7 +12,7 @@ url = sys.argv[1]
 # Example GraphQL query to retrieve repository information
 query = """
 query {
-  repository(owner:"octocat", name:"Hello-World") {
+  repository(owner:"Rexwang8", name:"ECE461SoftwareEngineeringProject") {
     name
     description
     createdAt
