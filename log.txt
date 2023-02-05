@@ -1,0 +1,640 @@
+[Python {self.scriptname} Script] Log file created
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675630718.9304693: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675630718.9304693: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675630731.0158126: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675630731.0158126: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675630779.5247867: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675630779.5257835: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675630793.9533918: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675630793.9543893: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675630817.512445: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675630817.5134535: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675630882.9626715: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675630882.9626715: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675630990.3218188: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675630990.3228104: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675631016.6484337: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675631016.6484337: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675631034.469524: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675631034.469524: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675631606.2343895: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675631606.2353282: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675631685.9366772: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675631685.9376733: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675631987.249471: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675631987.2504675: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675632205.3033497: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675632205.3033497: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675632218.1434774: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675632218.1434774: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675632244.535339: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675632244.5363355: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675632272.859511: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675632272.8605092: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675632307.539919: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675632307.539919: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675632322.4673245: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675632322.4673245: Testing json import
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675632858.1458027: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675632858.1468108: Testing json import
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675632858.1478133: {
+    "objects": [
+        {
+            "flags": {
+                "unstable": true
+            },
+            "package": {
+                "author": {
+                    "name": "landra-sistemas",
+                    "url": "https://github.com/landra-sistemas"
+                },
+                "date": "2022-12-29T16:06:42.226Z",
+                "description": "Tool to convert searchstring (key:value ...) to SQL WHERE set of conditions",
+                "links": {
+                    "bugs": "https://github.com/landra-sistemas/fql_parser/issues",
+                    "homepage": "https://github.com/landra-sistemas/fql_parser#readme",
+                    "npm": "https://www.npmjs.com/package/%40landra_sistemas%2Ffql-parser",
+                    "repository": "https://github.com/landra-sistemas/fql_parser"
+                },
+                "maintainers": [
+                    {
+                        "email": "info@landra.dev",
+                        "username": "landra_sistemas"
+                    }
+                ],
+                "name": "@landra_sistemas/fql-parser",
+                "publisher": {
+                    "email": "info@landra.dev",
+                    "username": "landra_sistemas"
+                },
+                "scope": "landra_sistemas",
+                "version": "0.1.3"
+            },
+            "score": {
+                "detail": {
+                    "maintenance": 0.3333333333333333,
+                    "popularity": 0.028158349740491424,
+                    "quality": 0.7557497791555428
+                },
+                "final": 0.3532470228225015
+            },
+            "searchScore": 1.4107483e-05
+        },
+        {
+            "flags": {
+                "unstable": true
+            },
+            "package": {
+                "author": {
+                    "email": "emanuelrabina@gmail.com",
+                    "name": "Emanuel Rabina",
+                    "url": "http://www.ultraq.net.nz/",
+                    "username": "ultraq"
+                },
+                "date": "2020-08-09T05:02:53.846Z",
+                "description": "A collection of utilities for working with URLs",
+                "keywords": [
+                    "url",
+                    "utilities",
+                    "join",
+                    "object",
+                    "searchString"
+                ],
+                "links": {
+                    "bugs": "https://github.com/ultraq/url-utils/issues",
+                    "homepage": "https://github.com/ultraq/url-utils#readme",
+                    "npm": "https://www.npmjs.com/package/%40ultraq%2Furl-utils",
+                    "repository": "https://github.com/ultraq/url-utils"
+                },
+                "maintainers": [
+                    {
+                        "email": "emanuelrabina@gmail.com",
+                        "username": "ultraq"
+                    }
+                ],
+                "name": "@ultraq/url-utils",
+                "publisher": {
+                    "email": "emanuelrabina@gmail.com",
+                    "username": "ultraq"
+                },
+                "scope": "ultraq",
+                "version": "0.4.0"
+            },
+            "score": {
+                "detail": {
+                    "maintenance": 0.08961209097246835,
+                    "popularity": 0.023133246179064267,
+                    "quality": 0.8805855580887225
+                },
+                "final": 0.30363653542965313
+            },
+            "searchScore": 4.6509954e-06
+        },
+        {
+            "package": {
+                "author": {
+                    "email": "ashutosh.sce@hotmail.com",
+                    "name": "Ashutosh Kumar Jha",
+                    "username": "ashutoshjha"
+                },
+                "date": "2022-07-19T21:23:51.599Z",
+                "description": "A webpack plugin to minify html file(s) after building",
+                "keywords": [
+                    "minify",
+                    "html",
+                    "webpack",
+                    "plugin",
+                    "file",
+                    "mix",
+                    "php",
+                    "laravel",
+                    "htmlmin",
+                    "minification",
+                    "minifier",
+                    "minify",
+                    "search",
+                    "searchstring",
+                    "replace",
+                    "replacestring",
+                    "replacer",
+                    "build",
+                    "after",
+                    "afterbuild"
+                ],
+                "links": {
+                    "bugs": "https://github.com/ashutoshSce/minify-html-webpack-plugin/issues",
+                    "homepage": "https://github.com/ashutoshSce/minify-html-webpack-plugin#readme",
+                    "npm": "https://www.npmjs.com/package/minify-html-webpack-plugin",
+                    "repository": "https://github.com/ashutoshSce/minify-html-webpack-plugin"
+                },
+                "maintainers": [
+                    {
+                        "email": "ashutosh.sce@hotmail.com",
+                        "username": "ashutoshjha"
+                    }
+                ],
+                "name": "minify-html-webpack-plugin",
+                "publisher": {
+                    "email": "ashutosh.sce@hotmail.com",
+                    "username": "ashutoshjha"
+                },
+                "scope": "unscoped",
+                "version": "1.1.7"
+            },
+            "score": {
+                "detail": {
+                    "maintenance": 0.18463753890179188,
+                    "popularity": 0.03876048108857476,
+                    "quality": 0.5221200121443599
+                },
+                "final": 0.23482531063993628
+            },
+            "searchScore": 9.0037084e-08
+        },
+        {
+            "package": {
+                "author": {
+                    "name": "Ruquay K Calloway"
+                },
+                "date": "2018-01-08T12:03:50.862Z",
+                "description": "parse a string into JSON-based search query",
+                "keywords": [
+                    "search",
+                    "query"
+                ],
+                "links": {
+                    "bugs": "https://github.com/typeduck/searchstring/issues",
+                    "homepage": "https://github.com/typeduck/searchstring#readme",
+                    "npm": "https://www.npmjs.com/package/searchstring",
+                    "repository": "https://github.com/typeduck/searchstring"
+                },
+                "maintainers": [
+                    {
+                        "email": "typeduck@typeduck.net",
+                        "username": "typeduck"
+                    }
+                ],
+                "name": "searchstring",
+                "publisher": {
+                    "email": "typeduck@typeduck.net",
+                    "username": "typeduck"
+                },
+                "scope": "unscoped",
+                "version": "2.0.1"
+            },
+            "score": {
+                "detail": {
+                    "maintenance": 0.08961209097246835,
+                    "popularity": 0.0036981127921865012,
+                    "quality": 0.5330516668110556
+                },
+                "final": 0.1925740713609459
+            },
+            "searchScore": 2.1059323e-08
+        }
+    ],
+    "time": "Sun Feb 05 2023 20:08:01 GMT+0000 (Coordinated Universal Time)",
+    "total": 4
+}
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675634712.6978245: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675634712.6988251: Testing json import
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675634712.6998243: {
+    "objects": [
+        {
+            "flags": {
+                "unstable": true
+            },
+            "package": {
+                "author": {
+                    "name": "landra-sistemas",
+                    "url": "https://github.com/landra-sistemas"
+                },
+                "date": "2022-12-29T16:06:42.226Z",
+                "description": "Tool to convert searchstring (key:value ...) to SQL WHERE set of conditions",
+                "links": {
+                    "bugs": "https://github.com/landra-sistemas/fql_parser/issues",
+                    "homepage": "https://github.com/landra-sistemas/fql_parser#readme",
+                    "npm": "https://www.npmjs.com/package/%40landra_sistemas%2Ffql-parser",
+                    "repository": "https://github.com/landra-sistemas/fql_parser"
+                },
+                "maintainers": [
+                    {
+                        "email": "info@landra.dev",
+                        "username": "landra_sistemas"
+                    }
+                ],
+                "name": "@landra_sistemas/fql-parser",
+                "publisher": {
+                    "email": "info@landra.dev",
+                    "username": "landra_sistemas"
+                },
+                "scope": "landra_sistemas",
+                "version": "0.1.3"
+            },
+            "score": {
+                "detail": {
+                    "maintenance": 0.3333333333333333,
+                    "popularity": 0.028158349740491424,
+                    "quality": 0.7557497791555428
+                },
+                "final": 0.3532470228225015
+            },
+            "searchScore": 1.4107483e-05
+        },
+        {
+            "flags": {
+                "unstable": true
+            },
+            "package": {
+                "author": {
+                    "email": "emanuelrabina@gmail.com",
+                    "name": "Emanuel Rabina",
+                    "url": "http://www.ultraq.net.nz/",
+                    "username": "ultraq"
+                },
+                "date": "2020-08-09T05:02:53.846Z",
+                "description": "A collection of utilities for working with URLs",
+                "keywords": [
+                    "url",
+                    "utilities",
+                    "join",
+                    "object",
+                    "searchString"
+                ],
+                "links": {
+                    "bugs": "https://github.com/ultraq/url-utils/issues",
+                    "homepage": "https://github.com/ultraq/url-utils#readme",
+                    "npm": "https://www.npmjs.com/package/%40ultraq%2Furl-utils",
+                    "repository": "https://github.com/ultraq/url-utils"
+                },
+                "maintainers": [
+                    {
+                        "email": "emanuelrabina@gmail.com",
+                        "username": "ultraq"
+                    }
+                ],
+                "name": "@ultraq/url-utils",
+                "publisher": {
+                    "email": "emanuelrabina@gmail.com",
+                    "username": "ultraq"
+                },
+                "scope": "ultraq",
+                "version": "0.4.0"
+            },
+            "score": {
+                "detail": {
+                    "maintenance": 0.08961209097246835,
+                    "popularity": 0.023133246179064267,
+                    "quality": 0.8805855580887225
+                },
+                "final": 0.30363653542965313
+            },
+            "searchScore": 4.6509954e-06
+        },
+        {
+            "package": {
+                "author": {
+                    "email": "ashutosh.sce@hotmail.com",
+                    "name": "Ashutosh Kumar Jha",
+                    "username": "ashutoshjha"
+                },
+                "date": "2022-07-19T21:23:51.599Z",
+                "description": "A webpack plugin to minify html file(s) after building",
+                "keywords": [
+                    "minify",
+                    "html",
+                    "webpack",
+                    "plugin",
+                    "file",
+                    "mix",
+                    "php",
+                    "laravel",
+                    "htmlmin",
+                    "minification",
+                    "minifier",
+                    "minify",
+                    "search",
+                    "searchstring",
+                    "replace",
+                    "replacestring",
+                    "replacer",
+                    "build",
+                    "after",
+                    "afterbuild"
+                ],
+                "links": {
+                    "bugs": "https://github.com/ashutoshSce/minify-html-webpack-plugin/issues",
+                    "homepage": "https://github.com/ashutoshSce/minify-html-webpack-plugin#readme",
+                    "npm": "https://www.npmjs.com/package/minify-html-webpack-plugin",
+                    "repository": "https://github.com/ashutoshSce/minify-html-webpack-plugin"
+                },
+                "maintainers": [
+                    {
+                        "email": "ashutosh.sce@hotmail.com",
+                        "username": "ashutoshjha"
+                    }
+                ],
+                "name": "minify-html-webpack-plugin",
+                "publisher": {
+                    "email": "ashutosh.sce@hotmail.com",
+                    "username": "ashutoshjha"
+                },
+                "scope": "unscoped",
+                "version": "1.1.7"
+            },
+            "score": {
+                "detail": {
+                    "maintenance": 0.18463753890179188,
+                    "popularity": 0.03876048108857476,
+                    "quality": 0.5221200121443599
+                },
+                "final": 0.23482531063993628
+            },
+            "searchScore": 9.0037084e-08
+        },
+        {
+            "package": {
+                "author": {
+                    "name": "Ruquay K Calloway"
+                },
+                "date": "2018-01-08T12:03:50.862Z",
+                "description": "parse a string into JSON-based search query",
+                "keywords": [
+                    "search",
+                    "query"
+                ],
+                "links": {
+                    "bugs": "https://github.com/typeduck/searchstring/issues",
+                    "homepage": "https://github.com/typeduck/searchstring#readme",
+                    "npm": "https://www.npmjs.com/package/searchstring",
+                    "repository": "https://github.com/typeduck/searchstring"
+                },
+                "maintainers": [
+                    {
+                        "email": "typeduck@typeduck.net",
+                        "username": "typeduck"
+                    }
+                ],
+                "name": "searchstring",
+                "publisher": {
+                    "email": "typeduck@typeduck.net",
+                    "username": "typeduck"
+                },
+                "scope": "unscoped",
+                "version": "2.0.1"
+            },
+            "score": {
+                "detail": {
+                    "maintenance": 0.08961209097246835,
+                    "popularity": 0.0036981127921865012,
+                    "quality": 0.5330516668110556
+                },
+                "final": 0.1925740713609459
+            },
+            "searchScore": 2.1059323e-08
+        }
+    ],
+    "time": "Sun Feb 05 2023 20:08:01 GMT+0000 (Coordinated Universal Time)",
+    "total": 4
+}
+[Python Logger Default Name Script] Priority: 1(info) | Logging at t=1675635367.4618258: Logger initialized
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675635367.4628298: Testing json import
+[Python Logger Default Name Script] Priority: 2(debug) | Logging at t=1675635367.4628298: {
+    "objects": [
+        {
+            "flags": {
+                "unstable": true
+            },
+            "package": {
+                "author": {
+                    "name": "landra-sistemas",
+                    "url": "https://github.com/landra-sistemas"
+                },
+                "date": "2022-12-29T16:06:42.226Z",
+                "description": "Tool to convert searchstring (key:value ...) to SQL WHERE set of conditions",
+                "links": {
+                    "bugs": "https://github.com/landra-sistemas/fql_parser/issues",
+                    "homepage": "https://github.com/landra-sistemas/fql_parser#readme",
+                    "npm": "https://www.npmjs.com/package/%40landra_sistemas%2Ffql-parser",
+                    "repository": "https://github.com/landra-sistemas/fql_parser"
+                },
+                "maintainers": [
+                    {
+                        "email": "info@landra.dev",
+                        "username": "landra_sistemas"
+                    }
+                ],
+                "name": "@landra_sistemas/fql-parser",
+                "publisher": {
+                    "email": "info@landra.dev",
+                    "username": "landra_sistemas"
+                },
+                "scope": "landra_sistemas",
+                "version": "0.1.3"
+            },
+            "score": {
+                "detail": {
+                    "maintenance": 0.3333333333333333,
+                    "popularity": 0.028158349740491424,
+                    "quality": 0.7557497791555428
+                },
+                "final": 0.3532470228225015
+            },
+            "searchScore": 1.4107483e-05
+        },
+        {
+            "flags": {
+                "unstable": true
+            },
+            "package": {
+                "author": {
+                    "email": "emanuelrabina@gmail.com",
+                    "name": "Emanuel Rabina",
+                    "url": "http://www.ultraq.net.nz/",
+                    "username": "ultraq"
+                },
+                "date": "2020-08-09T05:02:53.846Z",
+                "description": "A collection of utilities for working with URLs",
+                "keywords": [
+                    "url",
+                    "utilities",
+                    "join",
+                    "object",
+                    "searchString"
+                ],
+                "links": {
+                    "bugs": "https://github.com/ultraq/url-utils/issues",
+                    "homepage": "https://github.com/ultraq/url-utils#readme",
+                    "npm": "https://www.npmjs.com/package/%40ultraq%2Furl-utils",
+                    "repository": "https://github.com/ultraq/url-utils"
+                },
+                "maintainers": [
+                    {
+                        "email": "emanuelrabina@gmail.com",
+                        "username": "ultraq"
+                    }
+                ],
+                "name": "@ultraq/url-utils",
+                "publisher": {
+                    "email": "emanuelrabina@gmail.com",
+                    "username": "ultraq"
+                },
+                "scope": "ultraq",
+                "version": "0.4.0"
+            },
+            "score": {
+                "detail": {
+                    "maintenance": 0.08961209097246835,
+                    "popularity": 0.023133246179064267,
+                    "quality": 0.8805855580887225
+                },
+                "final": 0.30363653542965313
+            },
+            "searchScore": 4.6509954e-06
+        },
+        {
+            "package": {
+                "author": {
+                    "email": "ashutosh.sce@hotmail.com",
+                    "name": "Ashutosh Kumar Jha",
+                    "username": "ashutoshjha"
+                },
+                "date": "2022-07-19T21:23:51.599Z",
+                "description": "A webpack plugin to minify html file(s) after building",
+                "keywords": [
+                    "minify",
+                    "html",
+                    "webpack",
+                    "plugin",
+                    "file",
+                    "mix",
+                    "php",
+                    "laravel",
+                    "htmlmin",
+                    "minification",
+                    "minifier",
+                    "minify",
+                    "search",
+                    "searchstring",
+                    "replace",
+                    "replacestring",
+                    "replacer",
+                    "build",
+                    "after",
+                    "afterbuild"
+                ],
+                "links": {
+                    "bugs": "https://github.com/ashutoshSce/minify-html-webpack-plugin/issues",
+                    "homepage": "https://github.com/ashutoshSce/minify-html-webpack-plugin#readme",
+                    "npm": "https://www.npmjs.com/package/minify-html-webpack-plugin",
+                    "repository": "https://github.com/ashutoshSce/minify-html-webpack-plugin"
+                },
+                "maintainers": [
+                    {
+                        "email": "ashutosh.sce@hotmail.com",
+                        "username": "ashutoshjha"
+                    }
+                ],
+                "name": "minify-html-webpack-plugin",
+                "publisher": {
+                    "email": "ashutosh.sce@hotmail.com",
+                    "username": "ashutoshjha"
+                },
+                "scope": "unscoped",
+                "version": "1.1.7"
+            },
+            "score": {
+                "detail": {
+                    "maintenance": 0.18463753890179188,
+                    "popularity": 0.03876048108857476,
+                    "quality": 0.5221200121443599
+                },
+                "final": 0.23482531063993628
+            },
+            "searchScore": 9.0037084e-08
+        },
+        {
+            "package": {
+                "author": {
+                    "name": "Ruquay K Calloway"
+                },
+                "date": "2018-01-08T12:03:50.862Z",
+                "description": "parse a string into JSON-based search query",
+                "keywords": [
+                    "search",
+                    "query"
+                ],
+                "links": {
+                    "bugs": "https://github.com/typeduck/searchstring/issues",
+                    "homepage": "https://github.com/typeduck/searchstring#readme",
+                    "npm": "https://www.npmjs.com/package/searchstring",
+                    "repository": "https://github.com/typeduck/searchstring"
+                },
+                "maintainers": [
+                    {
+                        "email": "typeduck@typeduck.net",
+                        "username": "typeduck"
+                    }
+                ],
+                "name": "searchstring",
+                "publisher": {
+                    "email": "typeduck@typeduck.net",
+                    "username": "typeduck"
+                },
+                "scope": "unscoped",
+                "version": "2.0.1"
+            },
+            "score": {
+                "detail": {
+                    "maintenance": 0.08961209097246835,
+                    "popularity": 0.0036981127921865012,
+                    "quality": 0.5330516668110556
+                },
+                "final": 0.1925740713609459
+            },
+            "searchScore": 2.1059323e-08
+        }
+    ],
+    "time": "Sun Feb 05 2023 20:08:01 GMT+0000 (Coordinated Universal Time)",
+    "total": 4
+}
