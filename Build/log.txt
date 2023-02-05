@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 [C# Command Parser] 2023-01-23 16:32:18 Priority 0 | Hello World!
 [C# Command Parser] 2023-01-23 16:33:20 Priority 0 | Hello World!
 Logging at t=1674509601.1119895: Starting main
@@ -47,3 +48,114 @@ Logging at t=1674509772.2924342: --------------------
 [Python Main Script] Priority: 0 | Logging at t=1674509924.5927837: Argument List: ['c:\\Users\\Rex Wang\\Documents\\Purdue\\Spring 2023\\ECE 46100\\Assignments\\461PackageManager\\Build\\test.py']
 [Python Main Script] Priority: 0 | Logging at t=1674509924.5937915: Exiting main
 [Python Main Script] Priority: 0 | Logging at t=1674509924.5947857: --------------------
+=======
+[C# Command Parser] 2023-01-23 16:32:18 Priority 0 | Hello World!
+[C# Command Parser] 2023-01-23 16:33:20 Priority 0 | Hello World!
+Logging at t=1674509601.1119895: Starting main
+Logging at t=1674509601.1129901: Test log
+Logging at t=1674509601.1129901: Number of arguments: 7 arguments.
+Logging at t=1674509601.1129901: Argument List: ['test.py', 'arg1', 'arg2', 'arg3', 'blah', 'blah', 'blah']
+Logging at t=1674509601.1139822: Exiting main
+Logging at t=1674509601.1139822: --------------------
+[C# Command Parser] 2023-01-23 16:33:36 Priority 0 | Hello World!
+Logging at t=1674509616.1683905: Starting main
+Logging at t=1674509616.169386: Test log
+Logging at t=1674509616.169386: Number of arguments: 7 arguments.
+Logging at t=1674509616.169386: Argument List: ['test.py', 'arg1', 'arg2', 'arg3', 'blah', 'blah', 'blah']
+Logging at t=1674509616.1703877: Exiting main
+Logging at t=1674509616.1703877: --------------------
+[C# Command Parser] 2023-01-23 16:33:41 Priority 0 | Hello World!
+[C# Command Parser] 2023-01-23 16:34:40 Priority 0 | Hello World!
+Logging at t=1674509680.1897533: Starting main
+Logging at t=1674509680.1907465: Test log
+Logging at t=1674509680.1907465: Number of arguments: 7 arguments.
+Logging at t=1674509680.191749: Argument List: ['test.py', 'arg1', 'arg2', 'arg3', 'blah', 'blah', 'blah']
+Logging at t=1674509680.191749: Exiting main
+Logging at t=1674509680.192745: --------------------
+[C# Command Parser] 2023-01-23 16:34:46 Priority 0 | Hello World!
+Logging at t=1674509686.6981559: Starting main
+Logging at t=1674509686.6981559: Test log
+Logging at t=1674509686.6991599: Number of arguments: 7 arguments.
+Logging at t=1674509686.7001653: Argument List: ['test.py', 'arg1', 'arg2', 'arg3', 'blah', 'blah', 'blah']
+Logging at t=1674509686.7001653: Exiting main
+Logging at t=1674509686.7011633: --------------------
+Logging at t=1674509760.5760467: Starting main
+Logging at t=1674509760.5770473: Test log
+Logging at t=1674509760.5770473: Number of arguments: 1 arguments.
+Logging at t=1674509760.5770473: Argument List: ['test.py']
+Logging at t=1674509760.5780523: Exiting main
+Logging at t=1674509760.5780523: --------------------
+Logging at t=1674509772.290424: Starting main
+Logging at t=1674509772.2914243: Test log
+Logging at t=1674509772.2914243: Number of arguments: 4 arguments.
+Logging at t=1674509772.2924342: Argument List: ['test.py', 'a1', 'a2', 'a3']
+Logging at t=1674509772.2924342: Exiting main
+Logging at t=1674509772.2924342: --------------------
+[C# Command Parser] 2023-01-23 16:36:27 Priority 0 | Hello World!
+[Python Main Script] Priority: 0 | Logging at t=1674509924.5918045: Starting main
+[Python Main Script] Priority: 0 | Logging at t=1674509924.5918045: Test log
+[Python Main Script] Priority: 0 | Logging at t=1674509924.5927837: Number of arguments: 1 arguments.
+[Python Main Script] Priority: 0 | Logging at t=1674509924.5927837: Argument List: ['c:\\Users\\Rex Wang\\Documents\\Purdue\\Spring 2023\\ECE 46100\\Assignments\\461PackageManager\\Build\\test.py']
+[Python Main Script] Priority: 0 | Logging at t=1674509924.5937915: Exiting main
+[Python Main Script] Priority: 0 | Logging at t=1674509924.5947857: --------------------
+[Python Main Script] Priority: 1(info) | Logging at t=1675030037.8081548: Logger initialized
+[Python Main Script] Priority: 2(debug) | Logging at t=1675030037.809155: Testing json import
+[C# Command Parser] 2023-02-05 14:50:10 Priority 1 | Building...
+[C# Command Parser] 2023-02-05 14:50:10 Priority 1 | Python 3.11.1
+
+[C# Command Parser] 2023-02-05 14:50:12 Priority 2 | pip 22.3.1 from C:\Users\aizha\AppData\Local\Programs\Python\Python311\Lib\site-packages\pip (python 3.11)
+
+[C# Command Parser] 2023-02-05 14:50:15 Priority 2 | Collecting pathlib
+  Downloading pathlib-1.0.1-py3-none-any.whl (14 kB)
+
+[C# Command Parser] 2023-02-05 14:50:15 Priority 2 | /C python startup.py build 2 log.txt
+[Python Main Script] Priority: 1(info) | Logging at t=1675626615.6532445: Logger initialized
+[Python Main Script] Priority: 2(debug) | Logging at t=1675626615.6532445: ARGS: ['startup.py', 'build', '2', 'log.txt'], logpath: C:\Users\aizha\Documents\GitHub\ECE461SoftwareEngineeringProject\Build\log.txt, cmd: build, loglevel: 2 url: _
+[Python Main Script] Priority: 1(info) | Logging at t=1675626615.6688752: Starting main script...
+[Python Main Script] Priority: 1(info) | Logging at t=1675626615.670769: Recieved command: build, already run by C# parser, exiting python script.
+[C# Command Parser] 2023-02-05 14:50:15 Priority 2 | Finished Executing C# starter script!
+[C# Command Parser] 2023-02-05 14:50:29 Priority 1 | Installing...
+[C# Command Parser] 2023-02-05 14:50:29 Priority 1 | Python 3.11.1
+
+[C# Command Parser] 2023-02-05 14:50:31 Priority 2 | pip 22.3.1 from C:\Users\aizha\AppData\Local\Programs\Python\Python311\Lib\site-packages\pip (python 3.11)
+
+[C# Command Parser] 2023-02-05 14:50:33 Priority 2 | Collecting pathlib
+  Using cached pathlib-1.0.1-py3-none-any.whl (14 kB)
+
+[C# Command Parser] 2023-02-05 14:50:33 Priority 2 | /C python startup.py install 2 log.txt
+[Python Main Script] Priority: 1(info) | Logging at t=1675626633.969533: Logger initialized
+[Python Main Script] Priority: 2(debug) | Logging at t=1675626633.969533: ARGS: ['startup.py', 'install', '2', 'log.txt'], logpath: C:\Users\aizha\Documents\GitHub\ECE461SoftwareEngineeringProject\Build\log.txt, cmd: install, loglevel: 2 url: _
+[Python Main Script] Priority: 1(info) | Logging at t=1675626633.969533: Starting main script...
+[Python Main Script] Priority: 1(info) | Logging at t=1675626633.9840114: Recieved command: install, already run by C# parser, exiting python script.
+[C# Command Parser] 2023-02-05 14:50:34 Priority 2 | Finished Executing C# starter script!
+[C# Command Parser] 2023-02-05 14:53:23 Priority 1 | Invalid command, exiting...
+[C# Command Parser] 2023-02-05 14:53:23 Priority 2 | /C python startup.py buid 2 log.txt
+[C# Command Parser] 2023-02-05 14:53:25 Priority 1 | Building...
+[C# Command Parser] 2023-02-05 14:53:25 Priority 1 | Python 3.11.1
+
+[C# Command Parser] 2023-02-05 14:53:27 Priority 2 | pip 22.3.1 from C:\Users\aizha\AppData\Local\Programs\Python\Python311\Lib\site-packages\pip (python 3.11)
+
+[C# Command Parser] 2023-02-05 14:53:29 Priority 2 | Collecting pathlib
+  Using cached pathlib-1.0.1-py3-none-any.whl (14 kB)
+
+[C# Command Parser] 2023-02-05 14:53:29 Priority 2 | /C python startup.py build 2 log.txt
+[Python Main Script] Priority: 1(info) | Logging at t=1675626809.48731: Logger initialized
+[Python Main Script] Priority: 2(debug) | Logging at t=1675626809.48731: ARGS: ['startup.py', 'build', '2', 'log.txt'], logpath: C:\Users\aizha\Documents\GitHub\ECE461SoftwareEngineeringProject\Build\log.txt, cmd: build, loglevel: 2 url: _
+[Python Main Script] Priority: 1(info) | Logging at t=1675626809.48731: Starting main script...
+[Python Main Script] Priority: 1(info) | Logging at t=1675626809.48731: Recieved command: build, already run by C# parser, exiting python script.
+[C# Command Parser] 2023-02-05 14:53:29 Priority 2 | Finished Executing C# starter script!
+[C# Command Parser] 2023-02-05 14:54:04 Priority 1 | Building...
+[C# Command Parser] 2023-02-05 14:54:04 Priority 1 | Python 3.11.1
+
+[C# Command Parser] 2023-02-05 14:54:05 Priority 2 | pip 23.0 from C:\Users\aizha\AppData\Local\Programs\Python\Python311\Lib\site-packages\pip (python 3.11)
+
+[C# Command Parser] 2023-02-05 14:54:07 Priority 2 | Collecting pathlib
+  Using cached pathlib-1.0.1-py3-none-any.whl (14 kB)
+
+[C# Command Parser] 2023-02-05 14:54:07 Priority 2 | /C python startup.py build 2 log.txt
+[Python Main Script] Priority: 1(info) | Logging at t=1675626847.8180335: Logger initialized
+[Python Main Script] Priority: 2(debug) | Logging at t=1675626847.8180335: ARGS: ['startup.py', 'build', '2', 'log.txt'], logpath: C:\Users\aizha\Documents\GitHub\ECE461SoftwareEngineeringProject\Build\log.txt, cmd: build, loglevel: 2 url: _
+[Python Main Script] Priority: 1(info) | Logging at t=1675626847.8180335: Starting main script...
+[Python Main Script] Priority: 1(info) | Logging at t=1675626847.8180335: Recieved command: build, already run by C# parser, exiting python script.
+[C# Command Parser] 2023-02-05 14:54:07 Priority 2 | Finished Executing C# starter script!
+>>>>>>> Stashed changes
