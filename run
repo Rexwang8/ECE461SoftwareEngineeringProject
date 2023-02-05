@@ -1,0 +1,67 @@
+#!/bin/bash
+
+# This script is used to build, test, and install the project
+#echo "v1.0.0"
+
+#log environment variables $LOG_PATH and $LOG_LEVEL
+echo "LOG_PATH: $LOG_PATH"
+echo "LOG_LEVEL: $LOG_LEVEL"
+
+case "$1" in
+    "build")
+        #getting rid of old build
+        echo "[BUILD] - Removing old build"
+        rm -rf CLIParse
+        rm -rf cache
+        rm -rf log.txt
+        echo "[BUILD] - Old build removed"
+
+        echo "[BUILD] - Creating cache folder"
+        mkdir -p cache
+        touch cache/pip.txt
+        touch cache/build.txt
+        touch log.txt
+
+        # build function code here
+        echo "[BUILD] - Building C# CLI Parser"
+        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true >cache/build.txt
+        cp CLIParseProj/bin/Debug/net6.0/linux-x64/publish/CLIParse .
+        echo "[BUILD] - C# CLI Parser built"
+
+        
+
+        echo "[BUILD] - Build complete"
+        ;;
+    "test")
+        # test function code here
+        echo "Testing (stuff here)"
+        ;;
+    "clean")
+        #getting rid of old build
+        echo "[BUILD] - Removing old build"
+        rm -rf CLIParse
+        rm -rf cache
+        rm -rf log.txt
+        echo "[BUILD] - Old build removed"
+        ;;
+    "install")
+        # install function code here
+        echo "Installing Dependencies"
+
+        echo "Installing Python Dependencies with pip"
+        
+        pip install -r requirements.txt > cache/pip.txt
+        echo "Python Dependencies installed"
+
+        #call logger
+        ./CLIParse install 
+
+        echo "Dependencies installed"
+        ;;
+    *)
+        # code for running parse.exe with URL argument
+        echo "Running parse.exe with URL: $1"
+        ;;
+
+
+esac
