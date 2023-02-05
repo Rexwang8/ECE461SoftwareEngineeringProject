@@ -36,6 +36,14 @@ case "$1" in
         # test function code here
         echo "Testing (stuff here)"
         ;;
+    "clean")
+        #getting rid of old build
+        echo "[BUILD] - Removing old build"
+        rm -rf CLIParse
+        rm -rf cache
+        rm -rf log.txt
+        echo "[BUILD] - Old build removed"
+        ;;
     "install")
         # install function code here
         echo "Installing Dependencies"

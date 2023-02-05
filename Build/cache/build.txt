@@ -1,7 +1,0 @@
-Microsoft (R) Build Engine version 17.0.1+b177f8fa7 for .NET
-Copyright (C) Microsoft Corporation. All rights reserved.
-
-  Determining projects to restore...
-  All projects are up-to-date for restore.
-  CLIParse -> /home/shay/a/wang5009/461/ECE461SoftwareEngineeringProject/Build/CLIParseProj/bin/Debug/net6.0/linux-x64/CLIParse.dll
-  CLIParse -> /home/shay/a/wang5009/461/ECE461SoftwareEngineeringProject/Build/CLIParseProj/bin/Debug/net6.0/linux-x64/publish/
