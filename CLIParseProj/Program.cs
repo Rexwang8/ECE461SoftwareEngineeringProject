@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using StaticAnalysisLibrary;
 
 // Hello World! program
 namespace PackageManager
@@ -10,7 +11,8 @@ namespace PackageManager
         static void Main(string[] args)
         {
             
-
+            StaticAnalysis.Test();
+            
             //get environment variables
             int ENVLOGLEVEL = 2;
             string ENVLOGLOCATION = "log.txt";
