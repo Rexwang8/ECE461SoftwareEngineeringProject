@@ -9,16 +9,16 @@ if len(sys.argv) != 2:
 
 url = sys.argv[1]
 
-OWNER = "Rexwang8"
-REPO = "ECE461SoftwareEngineeringProject"
+the_owner = "Rexwang8"
+the_repo = "ECE461SoftwareEngineeringProject"
 
 headers = {
     "Authorization": "Bearer " + os.environ.get("GITHUB_API_TOKEN"),
     "Content-Type": "application/json"
 }
-
+'''
 HEADERS = {
-    "Authorization": f"Token {os.environ.get('GITHUB_API_TOKEN')},
+    "Authorization": f"Token {os.environ.get('GITHUB_API_TOKEN')}",
     "Accept": "application/vnd.github.vUL-preview+json",
 }
 
@@ -33,11 +33,11 @@ def get_security_vulnerabilities(owner, repo):
         print(f"Error retrieving security vulnerabilities: {response.text}")
 
 get_security_vulnerabilities(OWNER, REPO)
-
+'''
 # Example GraphQL query to retrieve repository information
 query = """
 query {
-  repository(owner:OWNER, name:REPO) {
+  repository(owner:"Rexwang8", name:"ECE461SoftwareEngineeringProject") {
     name
     description
     createdAt
@@ -46,6 +46,33 @@ query {
     licenseInfo {
       name
       spdxId
+    } 
+    isEmpty
+    isDisabled
+    isFork
+    isPrivate
+    watchers(first:100) {
+      nodes {
+        login
+      }
+    }
+    collaborators(first: 100) {
+      nodes {
+        login
+        name
+        email
+        avatarUrl
+      }
+    }
+    discussions(first: 100) {
+      edges {
+        node {
+          id
+          body
+          createdAt
+          updatedAt
+        }
+      }
     }
     homepageUrl
     pushedAt
