@@ -9,11 +9,15 @@ echo "Running ./run"
 
 
 #log environment variables $LOG_PATH and $LOG_LEVEL
-loglevel=${LOG_LEVEL:-2}
-logabspath="${LOG_PATH:-log.txt}"
+loglevel="${LOG_LEVEL:-2}"
+logdirectorypath="${LOG_FILE:-log.txt}"
+ghtoken="${GITHUB_TOKEN:-faketokengithub}"
+logfullpath= "$(logdirectorypath)/log.txt"
 
-echo "LOG_PATH: $logabspath"
+echo "LOG_FILE: $logdirectorypath"
+echo "LOG FULL PATH: $logfullpath"
 echo "LOG_LEVEL: $loglevel"
+echo "Github Token: $ghtoken"
 
 
 
@@ -24,6 +28,7 @@ case "$1" in
         rm -rf CLIParse
         rm -rf cache
         rm -rf log.txt
+        rm -rf $logfullpath
         echo "[BUILD] - Old build removed"
 
         #make cache folders
@@ -31,7 +36,9 @@ case "$1" in
         mkdir -p cache
         touch cache/pip.txt
         touch cache/build.txt
-        touch log.txt
+        touch cache/log.txt
+        touch $logdirectorypath
+        touch $logfullpath
         
 
         # build function code here
@@ -39,10 +46,10 @@ case "$1" in
         #check if loglevel is greater than 0
         if [ $loglevel -gt 0 ] 
         then
-        echo "[BUILD|Priority: 1 (info)] - Building C# CLI Parser" >> cache/build.txt
+        echo "[BUILD|Priority: 1 (info)] - Building C# CLI Parser" | tee -a $logfullpath cache/build.txt
         fi
 
-        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true >> cache/build.txt
+        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt
         cp CLIParseProj/bin/Debug/net6.0/linux-x64/publish/CLIParse .
         echo "[BUILD] - C# CLI Parser built"
 
@@ -51,7 +58,7 @@ case "$1" in
         echo "[BUILD] - Build complete"
         if [ $loglevel -gt 0 ] 
         then
-        echo "[BUILD|Priority: 1 (info)] - Build complete" >> cache/build.txt
+        echo "[BUILD|Priority: 1 (info)] - Build complete" | tee -a $logfullpath cache/build.txt
         fi
         ;;
     "test")
@@ -59,7 +66,7 @@ case "$1" in
         echo "Running tests"
         if [ $loglevel -gt 1 ] 
         then
-        echo "BUILD|Priority: 2 (debug) - Running tests" >> cache/build.txt
+        echo "BUILD|Priority: 2 (debug) - Running tests" | tee -a $logfullpath cache/build.txt
         fi
         ;;
     "clean")
@@ -70,38 +77,46 @@ case "$1" in
         rm -rf log.txt
         rm -rf npm.json
         rm -rf git.json
+        rm -rf $logfullpath
 
         echo "[BUILD] - Old build removed"
 
         ;;
     "install")
+        #make cache folders
+        echo "Making cache folders"
+        mkdir -p cache
+        touch cache/pip.txt
+        touch cache/build.txt
+        touch cache/log.txt
+
         # install function code here
         echo "Installing Dependencies"
         if [ $loglevel -gt 0 ] 
         then
-        echo "[BUILD|Priority: 1 (info)] - Installing Dependencies" >> cache/build.txt
+        echo "[BUILD|Priority: 1 (info)] - Installing Dependencies" | tee -a $logfullpath cache/build.txt
         fi
 
         echo "Installing Python Dependencies with pip"
         if [ $loglevel -gt 1 ] 
         then
-        echo "[BUILD|Priority: 2 (debug)] - Installing Python Dependencies with pip" >> cache/build.txt
+        echo "[BUILD|Priority: 2 (debug)] - Installing Python Dependencies with pip" | tee -a $logfullpath cache/build.txt
         fi
         
         pip install -r requirements.txt > cache/pip.txt
         echo "Python Dependencies installed"
         if [ $loglevel -gt 1 ] 
         then
-        echo "[BUILD|Priority: 2 (debug)] - Python Dependencies installed" >> cache/build.txt
+        echo "[BUILD|Priority: 2 (debug)] - Python Dependencies installed" | tee -a $logfullpath cache/build.txt
         fi
 
         #call logger
-        ./CLIParse install $logabspath $loglevel 
+        ./CLIParse install $logdirectorypath $loglevel 
 
         echo "Dependencies installed"
         if [ $loglevel -gt 0 ] 
         then
-        echo "[BUILD|Priority: 1 (info)] - Dependencies installed" >> cache/build.txt
+        echo "[BUILD|Priority: 1 (info)] - Dependencies installed" | tee -a $logfullpath cache/build.txt
         fi
         ;;
     *)
@@ -109,7 +124,7 @@ case "$1" in
         echo "Running parse.exe with FILE URI: $1"
         if [ $loglevel -gt 0 ] 
         then
-        ./CLIParse $1 $logabspath $loglevell
+        ./CLIParse $1 $logdirectorypath $loglevel
         fi
         ;;
 
