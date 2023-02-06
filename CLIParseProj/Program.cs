@@ -46,9 +46,23 @@ namespace PackageManager
                 }
             }*/
 
+            ENVLOGLEVEL = int.Parse(args[1]);
+            ENVLOGLOCATION = args[2];
+
             //get current directory
             string currentDirectory = Directory.GetCurrentDirectory();
-            string fullPathLogger = currentDirectory + "\\" + ENVLOGLOCATION;
+
+            //check if log file is absolute or relative path
+            string fullPathLogger = "";
+            if (System.IO.Path.IsPathRooted(ENVLOGLOCATION))
+            {
+                fullPathLogger = ENVLOGLOCATION;
+            }
+            else
+            {
+                fullPathLogger = currentDirectory + "\\" + ENVLOGLOCATION;
+            }
+
             //instantiate logger
             CSharpLogger logger = new CSharpLogger(fullPathLogger, ENVLOGLEVEL);
 
@@ -75,18 +89,14 @@ namespace PackageManager
                 //We take the results from the /cache/build.txt file and log it to the log file
                 string build = File.ReadAllText("cache/build.txt");
                 logger.LogToFile(build, 2);
-                //startup.Build(startup, logger);
-                //logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
-                //startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
-                //builds anything we need, I'm not sure we need anything here...
             }
 
             else if (args[0] == "test")
             {
                 Console.WriteLine("Testing...");
                 logger.LogToFile("Testing...", 1);
-                logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
-                startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
+                //logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
+                //startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
                 //This should launch a static analysis script
             }
             else
@@ -103,20 +113,22 @@ namespace PackageManager
                 {
                     Console.WriteLine("Invalid command, exiting...");
                     logger.LogToFile("Invalid command, exiting...", 1);
-                    logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
+                    //logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
                     //startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
                     Environment.Exit(1);
                 }
             
             }
 
-
             
             logger.LogToFile("Finished Executing C# starter script!", 1);
 
         }
 
-        //define function for running a command
+
+
+
+        //define function for running a command #DEPRECATED, ONLY FOR TESTING
         string RunCommand(string command)
         {
             Process process = new Process();
@@ -134,8 +146,7 @@ namespace PackageManager
         }
 
 
-        //Runs pip install requirements if neede
-
+        //Runs pip install requirements if needed, HANDLED BY SHELL SCRIPT NOW
         void Install(Startup startup, CSharpLogger logger)
         {
             //check if python is installed
@@ -156,7 +167,7 @@ namespace PackageManager
             //logger.LogToFile(dotnetinstall, 2);
         }
 
-        void Build(Startup startup, CSharpLogger logger)
+        void Build(Startup startup, CSharpLogger logger) //HANDLED BY SHELL SCRIPT NOW
         {
             //builds anything we need, I'm not sure we need anything here...
             startup.Install(startup, logger);
@@ -210,7 +221,7 @@ namespace PackageManager
                 return;
             }
 
-            string logFile = "log.txt";
+            //string logFile = "log.txt";
             string logLine = "[C# Command Parser] " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " Priority " + priority.ToString() + " | " + text;
             File.AppendAllText(logFile, logLine + Environment.NewLine);
         }

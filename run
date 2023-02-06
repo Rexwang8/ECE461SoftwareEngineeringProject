@@ -1,11 +1,21 @@
 #!/bin/bash
 
 # This script is used to build, test, and install the project
-#echo "v1.0.0"
+echo "Running ./run"
+
+
+
+
+
 
 #log environment variables $LOG_PATH and $LOG_LEVEL
-echo "LOG_PATH: $LOG_PATH"
-echo "LOG_LEVEL: $LOG_LEVEL"
+loglevel=${LOG_LEVEL:-2}
+logabspath="${LOG_PATH:-log.txt}"
+
+echo "LOG_PATH: $logabspath"
+echo "LOG_LEVEL: $loglevel"
+
+
 
 case "$1" in
     "build")
@@ -16,25 +26,41 @@ case "$1" in
         rm -rf log.txt
         echo "[BUILD] - Old build removed"
 
-        echo "[BUILD] - Creating cache folder"
+        #make cache folders
+        echo "Making cache folders"
         mkdir -p cache
         touch cache/pip.txt
         touch cache/build.txt
         touch log.txt
+        
 
         # build function code here
         echo "[BUILD] - Building C# CLI Parser"
-        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true >cache/build.txt
+        #check if loglevel is greater than 0
+        if [ $loglevel -gt 0 ] 
+        then
+        echo "[BUILD|Priority: 1 (info)] - Building C# CLI Parser" >> cache/build.txt
+        fi
+
+        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true >> cache/build.txt
         cp CLIParseProj/bin/Debug/net6.0/linux-x64/publish/CLIParse .
         echo "[BUILD] - C# CLI Parser built"
 
         
 
         echo "[BUILD] - Build complete"
+        if [ $loglevel -gt 0 ] 
+        then
+        echo "[BUILD|Priority: 1 (info)] - Build complete" >> cache/build.txt
+        fi
         ;;
     "test")
         # test function code here
-        echo "Testing (stuff here)"
+        echo "Running tests"
+        if [ $loglevel -gt 1 ] 
+        then
+        echo "BUILD|Priority: 2 (debug) - Running tests" >> cache/build.txt
+        fi
         ;;
     "clean")
         #getting rid of old build
@@ -43,24 +69,45 @@ case "$1" in
         rm -rf cache
         rm -rf log.txt
         echo "[BUILD] - Old build removed"
+
         ;;
     "install")
         # install function code here
         echo "Installing Dependencies"
+        if [ $loglevel -gt 0 ] 
+        then
+        echo "[BUILD|Priority: 1 (info)] - Installing Dependencies" >> cache/build.txt
+        fi
 
         echo "Installing Python Dependencies with pip"
+        if [ $loglevel -gt 1 ] 
+        then
+        echo "[BUILD|Priority: 2 (debug)] - Installing Python Dependencies with pip" >> cache/build.txt
+        fi
         
         pip install -r requirements.txt > cache/pip.txt
         echo "Python Dependencies installed"
+        if [ $loglevel -gt 1 ] 
+        then
+        echo "[BUILD|Priority: 2 (debug)] - Python Dependencies installed" >> cache/build.txt
+        fi
 
         #call logger
-        ./CLIParse install 
+        ./CLIParse install $logabspath $loglevel 
 
         echo "Dependencies installed"
+        if [ $loglevel -gt 0 ] 
+        then
+        echo "[BUILD|Priority: 1 (info)] - Dependencies installed" >> cache/build.txt
+        fi
         ;;
     *)
         # code for running parse.exe with URL argument
         echo "Running parse.exe with URL: $1"
+        if [ $loglevel -gt 0 ] 
+        then
+        echo "[BUILD|Priority: 1 (info)] - Running parse.exe with URL: $1" >> cache/build.txt
+        fi
         ;;
 
 
