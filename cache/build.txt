@@ -1,8 +1,0 @@
-[BUILD|Priority: 1 (info)] - Building C# CLI Parser
-MSBuild version 17.4.1+9a89d02ff for .NET
-  Determining projects to restore...
-  All projects are up-to-date for restore.
-  StaticAnalysisLibrary -> C:\Users\Rex Wang\Documents\Purdue\Spring 2023\ECE 46100\Assignments\461PackageManager\StaticAnalysisLibrary\bin\Debug\net6.0\StaticAnalysisLibrary.dll
-  CLIParse -> C:\Users\Rex Wang\Documents\Purdue\Spring 2023\ECE 46100\Assignments\461PackageManager\CLIParseProj\bin\Debug\net6.0\linux-x64\CLIParse.dll
-  CLIParse -> C:\Users\Rex Wang\Documents\Purdue\Spring 2023\ECE 46100\Assignments\461PackageManager\CLIParseProj\bin\Debug\net6.0\linux-x64\publish\
-[BUILD|Priority: 1 (info)] - Build complete
