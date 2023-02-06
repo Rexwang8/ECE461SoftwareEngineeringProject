@@ -16,25 +16,11 @@ The main script will call all the api calls and other data parsing in order for 
 
 ## File structure
 
-README.md
-.gitignore
-.git
-.gitattributes
-.vs
--Command line Parser
--Command line Parser/Command line parser C# Visual Studio SLN and other files
--Build
--Build/startup.py
--Build/logger.py
--Build/run.exe
-
----
-
-## How to build CLI Parser (C#)
-
-1. Open .sln in visual studio
-2. go to the top bar, Build > Build Solution
-3. go to the folder /bin/debug/run.exe and copy it out to wherever you want to run it. Make sure it's in the same folder as the python files it's trying to run.
+run - shell script
+Readme.md
+CLIParserProj - CLI interface for shell script (C#)
+startup.py - called by c# proj, calls all other scripts
+...
 
 ---
 
@@ -50,6 +36,8 @@ run <URL> - downloads the following URL from either npm or github and produces a
 
 run test - runs the static analysis test suite and exits 0 if successful
 
+run clean - cleans all cache and log files
+
 ---
 
 ## Environment Variables
@@ -58,3 +46,4 @@ $LOG_FILE - Path to where the log file will be saved
 
 $LOG_LEVEL - Level of logging, 0 is silent, 1 is info only, 2 is debug (everything).
 
+$GITHUB_TOKEN - Used to access Github's graphql API
