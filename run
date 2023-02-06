@@ -68,6 +68,9 @@ case "$1" in
         rm -rf CLIParse
         rm -rf cache
         rm -rf log.txt
+        rm -rf npm.json
+        rm -rf git.json
+
         echo "[BUILD] - Old build removed"
 
         ;;
@@ -103,10 +106,10 @@ case "$1" in
         ;;
     *)
         # code for running parse.exe with URL argument
-        echo "Running parse.exe with URL: $1"
+        echo "Running parse.exe with FILE URI: $1"
         if [ $loglevel -gt 0 ] 
         then
-        echo "[BUILD|Priority: 1 (info)] - Running parse.exe with URL: $1" >> cache/build.txt
+        ./CLIParse $1 $logabspath $loglevell
         fi
         ;;
 

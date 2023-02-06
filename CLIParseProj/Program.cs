@@ -17,37 +17,13 @@ namespace PackageManager
             int ENVLOGLEVEL = 2;
             string ENVLOGLOCATION = "log.txt";
 
-            //KEEP THIS COMMENTED -------------- FOR DEBUGGING
-            /*
-            bool result = Int32.TryParse(Environment.GetEnvironmentVariable("$LOG_LEVEL"), out ENVLOGLEVEL);
-
-            if (!result)
-            {
-                Console.WriteLine("Error: Environment variable $LOG_LEVEL is not set or set properly");
-                Environment.Exit(1);
-            }
-
-            
-            //ENVLOGLOCATION = Environment.GetEnvironmentVariable("$LOG_FILE");
-            */
-
 
             //get command line arguments
-            /*
-            if (args.Length > 0)
-            {
-                if (ENVLOGLEVEL > 1)
-                {
-                    Console.WriteLine("Command line arguments:");
-                    foreach (string arg in args)
-                    {
-                        Console.WriteLine(arg);
-                    }
-                }
-            }*/
+
 
             ENVLOGLEVEL = int.Parse(args[1]);
             ENVLOGLOCATION = args[2];
+
 
             //get current directory
             string currentDirectory = Directory.GetCurrentDirectory();
@@ -63,11 +39,15 @@ namespace PackageManager
                 fullPathLogger = currentDirectory + "\\" + ENVLOGLOCATION;
             }
 
+
+
             //instantiate logger
             CSharpLogger logger = new CSharpLogger(fullPathLogger, ENVLOGLEVEL);
 
             //Instantiate Startup Agent
             Startup startup = new Startup();
+
+
 
             //check if arg 0 is "install", "build", "test"
             if (args[0] == "install")
@@ -95,26 +75,22 @@ namespace PackageManager
             {
                 Console.WriteLine("Testing...");
                 logger.LogToFile("Testing...", 1);
-                //logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
-                //startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
-                //This should launch a static analysis script
+                //This will call the line coverage and stuff maybe? do later
             }
             else
             {
                 //Test if the arg is a url
                 if (Uri.IsWellFormedUriString(args[0], UriKind.Absolute))
                 {
-                    Console.WriteLine($"Downloading from URL {args[0]}");
-                    logger.LogToFile($"Downloading from URL {args[0]}", 1);
-                    logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
-                    startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
+                    Console.WriteLine($"Input URI Found at  {args[0]}");
+                    logger.LogToFile($"Input URI Found at {args[0]}", 1);
+                    //logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
+                    //startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
                 }
                 else
                 {
                     Console.WriteLine("Invalid command, exiting...");
                     logger.LogToFile("Invalid command, exiting...", 1);
-                    //logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
-                    //startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
                     Environment.Exit(1);
                 }
             
@@ -125,53 +101,6 @@ namespace PackageManager
 
         }
 
-
-
-
-        //define function for running a command #DEPRECATED, ONLY FOR TESTING
-        string RunCommand(string command)
-        {
-            Process process = new Process();
-            ProcessStartInfo startInfo = new ProcessStartInfo();
-            startInfo.FileName = "cmd.exe";
-            startInfo.Arguments = command;
-            process.StartInfo = startInfo;
-            startInfo.UseShellExecute = false;
-            
-            startInfo.RedirectStandardOutput = true;
-            process.Start();
-            string output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-            return output;
-        }
-
-
-        //Runs pip install requirements if needed, HANDLED BY SHELL SCRIPT NOW
-        void Install(Startup startup, CSharpLogger logger)
-        {
-            //check if python is installed
-            string pythonversion = startup.RunCommand("/C python --version");
-            logger.LogToFile(pythonversion, 1);
-            //check if pip is installed
-            string pipversion = startup.RunCommand("/C pip --version");
-            logger.LogToFile(pipversion, 2);
-
-            //install requirements
-            string pipinstall = startup.RunCommand("/C pip install -r requirements.txt");
-            logger.LogToFile(pipinstall, 2);
-
-
-            //WE DO NOT NEED TO INSTALL DOTNET PACKAGES BECAUSE THEY ARE COMPILED
-            //install dotnet package newtonsoft.json
-            //string dotnetinstall = startup.RunCommand("/C dotnet add package Newtonsoft.Json");
-            //logger.LogToFile(dotnetinstall, 2);
-        }
-
-        void Build(Startup startup, CSharpLogger logger) //HANDLED BY SHELL SCRIPT NOW
-        {
-            //builds anything we need, I'm not sure we need anything here...
-            startup.Install(startup, logger);
-        }
 
     }
 
