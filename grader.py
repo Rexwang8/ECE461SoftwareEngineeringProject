@@ -12,6 +12,8 @@ class Score:
         self.correctness = correctness
         self.responsiveMaintainer = responsiveMaintainer
         self.license = license
+        self.licenseScore = 0
+        self.lastUpdated = datetime.datetime.now()
         self.denominator = denominator
     
     #this function is used for debugging
@@ -22,13 +24,26 @@ class Score:
     def ModifyDenominator(self, value):
         self.denominator += value
         return
+    
+    def ApplyDenominator(self):
+        self.busFactor = self.busFactor / self.denominator
+        self.rampUp = self.rampUp / self.denominator
+        self.correctness = self.correctness / self.denominator
+        self.responsiveMaintainer = self.responsiveMaintainer / self.denominator
+        return
 
     def NormalizeScores(self):
-        self.busFactor = self.busFactorRaw / self.denominator
-        self.netScore = self.netScoreRaw / self.denominator
-        self.rampUp = self.rampUpRaw / self.denominator
-        self.responsiveMaintainer = self.responsiveMaintainerRaw / self.denominator
-        return
+        pass
+    
+    def CalculateLicenseScore(self):
+        pass
+    
+    def CalculateNetScore(self):
+        pass
+    
+    def CalculateLicenseScore(self):
+        pass
+    
   
   #structured holder of the npm response      
 class npmResponse:
@@ -45,7 +60,51 @@ class npmResponse:
     def __str__(self) -> str:
         return f"Name: {self.name}\nDate: {self.date}\nnpm url: {self.npmurl}\nGit repo: {self.gitrepo}\nAuthor: {self.author}\nMaintainers: {self.maintainers}\nFlags: {self.flags}\nNPM Scores: {self.npmScores}"
         
+  #structured holder of the npm response      
+class gitResponse:
+    def __init__(self, reponame='DefaultName', updateddate=datetime.datetime.now(), diskusage=0, license='MIT', isempty=False, isdisabled=False, isfork=False, isprivate=False, collaborators=0, discussions=0, forkcount=0, stargazers=0):
+        self.reponame = reponame
+        self.updateddate = updateddate
+        self.diskusage = diskusage
+        self.license = license
+        self.isempty = isempty
+        self.isdisabled = isdisabled
+        self.isfork = isfork
+        self.isprivate = isprivate
+        self.collaborators = collaborators
+        self.discussions = discussions
+        self.forkcount = forkcount
+        self.stargazers = stargazers
+        
+    def __str__(self) -> str:
+        response = f"Repo Name: {self.reponame}\nUpdated Date: {self.updateddate}\nDisk Usage: {self.diskusage}\nLicense: {self.license}\nIs Empty: {self.isempty}\nIs Disabled: {self.isdisabled}\nIs Fork: {self.isfork}\nIs Private: {self.isprivate}\nCollaborators: {self.collaborators}\nDiscussions: {self.discussions}\nFork Count: {self.forkcount}\nStargazers: {self.stargazers}"
+        return response
 
+#turn a raw json for npm into a gitResponse object
+def ParseGitJSON(data):
+    if(data == None):
+        return None
+    
+    reponame = data['data']['repository']['name']
+    updatedAt = datetime.datetime.strptime(data['data']['repository']['updatedAt'], "%Y-%m-%dT%H:%M:%SZ")
+    diskUsage = data['data']['repository']['diskUsage']
+    license = data['data']['repository']['licenseInfo']
+    isempty = data['data']['repository']['isEmpty']
+    isfork = data['data']['repository']['isFork']
+    isprivate = data['data']['repository']['isPrivate']
+    isdisabled = data['data']['repository']['isDisabled']
+    collaborators = len(data['data']['repository']['collaborators']['nodes'])
+    discussions = len(data['data']['repository']['discussions']['edges'])
+    forkcount = data['data']['repository']['forkCount']
+    stargazers = data['data']['repository']['stargazers']['totalCount']
+    
+    
+    
+    resp = gitResponse(reponame=reponame, updateddate=updatedAt, diskusage=diskUsage, license=license, isempty=isempty,
+                       isfork=isfork, isprivate=isprivate, isdisabled=isdisabled, collaborators=collaborators,
+                          discussions=discussions, forkcount=forkcount, stargazers=stargazers)
+    
+    return resp
 
 #turn a raw json for npm into a npmResponse object
 def ParseNPMJSON(data):
@@ -169,22 +228,26 @@ def logjson(data, DebugLogger):
 def main():
     #test main to check stuff works
     #import the json files
-    json1 = ImportJSON("npmex.json")
-    npmscore = ParseNPMJSON(json1)
+    npmjson = ImportJSON("npmex.json")
+    npmscore = ParseNPMJSON(npmjson)
     
-    ExportJSON(json1, "npm.json")
-
+    gitjson = ImportJSON("github_api/githubexample.json")
+    gitscore = ParseGitJSON(gitjson)
+    
+    ExportJSON(npmjson, "npm.json")
+    ExportJSON(gitjson, "git.json")
     
     
     print(str(npmscore))
+    print(str(gitscore))
     
-    
-    
-    #json2 = ImportJSON("Build\jsonexample.json")
+
     #json3 = ImportJSON("Build\jsonexample.json")
     Debug = logger.Logger("log.txt", 2)
     Debug.log("Testing json import", 2)
-    logjson(json1, Debug)
+    
+    logjson(npmjson, Debug)
+    logjson(gitjson, Debug)
     
     
     

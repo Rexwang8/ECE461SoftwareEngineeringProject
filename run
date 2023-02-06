@@ -68,6 +68,9 @@ case "$1" in
         rm -rf CLIParse
         rm -rf cache
         rm -rf log.txt
+        rm -rf npm.json
+        rm -rf git.json
+        
         echo "[BUILD] - Old build removed"
 
         ;;
