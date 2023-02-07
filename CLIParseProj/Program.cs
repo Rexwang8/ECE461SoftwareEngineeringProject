@@ -37,7 +37,7 @@ namespace PackageManager
 
             if (System.IO.Path.IsPathRooted(ENVLOGLOCATION))
             {
-                if(logLevel > 1)
+                if(ENVLOGLEVEL > 1)
                 {
                     Console.WriteLine("Log File Location is absolute path, using as is...");
                 }
@@ -45,7 +45,7 @@ namespace PackageManager
             }
             else
             {
-                if(logLevel > 1)
+                if(ENVLOGLEVEL > 1)
                 {
                     Console.WriteLine(
                         "Log File Location is relative path, appending to current directory...");
@@ -56,7 +56,7 @@ namespace PackageManager
             fullPathLogger = ENVLOGLOCATION;
             string command = args[0];
 
-            if(logLevel >= 1)
+            if(ENVLOGLEVEL >= 1)
             {
                 Console.WriteLine("Log File Location: " + fullPathLogger);
                 Console.WriteLine("Log Level: " + ENVLOGLEVEL);
@@ -128,7 +128,7 @@ namespace PackageManager
                 string[] lines = File.ReadAllLines(command);
                 foreach (string line in lines)
                 {
-                    Logger.Log(line, 1);
+                    logger.Log(line, 1);
                 }
                 Environment.Exit(0);
             }
