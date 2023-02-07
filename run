@@ -1,38 +1,65 @@
 #!/bin/bash
 
 # This script is used to build, test, and install the project
-echo "Running ./run"
-
-
-
 
 
 
 #log environment variables $LOG_PATH and $LOG_LEVEL
 loglevel="${LOG_LEVEL:-2}"
-logdirectorypath="${LOG_FILE:-log.txt}"
+logdirectorypath="${LOG_FILE:-/home/shay/a/wang5009/461/ECE461SoftwareEngineeringProject/testcache2}"
+mkdir -p $logdirectorypath
+mkdir -p cache
+touch cache/build.txt
 ghtoken="${GITHUB_TOKEN:-faketokengithub}"
-logfullpath= "$(logdirectorypath)/log.txt"
+logfullpath="$logdirectorypath/log.txt"
 
-echo "LOG_FILE: $logdirectorypath"
-echo "LOG FULL PATH: $logfullpath"
-echo "LOG_LEVEL: $loglevel"
-echo "Github Token: $ghtoken"
 
+function logInfo() {
+    if [ $loglevel -gt 0 ] 
+    then
+    echo "[BUILD|Priority: 1(info)] $1" | tee -a $logfullpath cache/build.txt
+    fi
+}
+
+function logDebug() {
+    if [ $loglevel -gt 1 ] 
+    then
+    echo "[BUILD|Priority: 2(debug)] $1" | tee -a $logfullpath cache/build.txt
+    fi
+}
+
+
+logInfo "LOG_FILE: $logdirectorypath"
+logInfo "LOG FULL PATH: $logfullpath"
+logInfo "LOG_LEVEL: $loglevel"
+logInfo "Github Token: $ghtoken"
 
 
 case "$1" in
     "build")
         #getting rid of old build
-        echo "[BUILD] - Removing old build"
+        if [ $loglevel -gt 0 ] 
+        then
+        echo "[BUILD|Priority: 1(info)] - Removing old build" 
+        fi
+
         rm -rf CLIParse
         rm -rf cache
         rm -rf log.txt
         rm -rf $logfullpath
-        echo "[BUILD] - Old build removed"
+        
+        if [ $loglevel -gt 0 ] 
+        then
+        echo "[BUILD|Priority: 1(info)] - Old build removed" 
+        fi
 
         #make cache folders
-        echo "Making cache folders"
+
+        if [ $loglevel -gt 1 ] 
+        then
+        echo "[BUILD|Priority: 2(debug)] - Making cache folders" | tee -a $logfullpath cache/build.txt
+        fi
+
         mkdir -p cache
         touch cache/pip.txt
         touch cache/build.txt
@@ -42,44 +69,51 @@ case "$1" in
         
 
         # build function code here
-        echo "[BUILD] - Building C# CLI Parser"
+
+
         #check if loglevel is greater than 0
-        if [ $loglevel -gt 0 ] 
+        logDebug "Building C# CLI Parser"
+
+        if [ $loglevel -gt 1 ] 
         then
-        echo "[BUILD|Priority: 1 (info)] - Building C# CLI Parser" | tee -a $logfullpath cache/build.txt
-        fi
 
         dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt
-        cp CLIParseProj/bin/Debug/net6.0/linux-x64/publish/CLIParse .
-        echo "[BUILD] - C# CLI Parser built"
-
-        
-
-        echo "[BUILD] - Build complete"
-        if [ $loglevel -gt 0 ] 
-        then
-        echo "[BUILD|Priority: 1 (info)] - Build complete" | tee -a $logfullpath cache/build.txt
+        logDebug "C# CLI Parser built"
+        else
+        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true > /dev/null
         fi
+
+        cp CLIParseProj/bin/Debug/net6.0/linux-x64/publish/CLIParse .
+        logInfo "Build complete"
+
         ;;
     "test")
         # test function code here
-        echo "Running tests"
-        if [ $loglevel -gt 1 ] 
-        then
-        echo "BUILD|Priority: 2 (debug) - Running tests" | tee -a $logfullpath cache/build.txt
-        fi
+
+
+        logDebug "Running tests"
         ;;
     "clean")
-        #getting rid of old build
-        echo "[BUILD] - Removing old build"
+        #getting rid of old build, we dont redirect to log file because we are deleting it
+        if [ $loglevel -gt 0 ] 
+        then
+        echo "[BUILD|Priority: 1(info)] - Removing old build" 
+        fi
+
         rm -rf CLIParse
         rm -rf cache
         rm -rf log.txt
         rm -rf npm.json
         rm -rf git.json
         rm -rf $logfullpath
+        rm -rf $logdirectorypath
 
-        echo "[BUILD] - Old build removed"
+        export $(cat examples/.env | xargs)
+
+        if [ $loglevel -gt 0 ] 
+        then
+        echo "[BUILD|Priority: 1(info)] - Old build removed" 
+        fi
 
         ;;
     "install")
@@ -120,13 +154,14 @@ case "$1" in
         fi
         ;;
     *)
-        # code for running parse.exe with URL argument
-        echo "Running parse.exe with FILE URI: $1"
-        if [ $loglevel -gt 0 ] 
-        then
-        ./CLIParse $1 $logdirectorypath $loglevel
-        fi
+        # code for running parse with URL argument
+
+        logInfo "Running parse with FILE URI: $1"
+
+        ./CLIParse $1 $logfullpath $loglevel
         ;;
 
 
 esac
+
+

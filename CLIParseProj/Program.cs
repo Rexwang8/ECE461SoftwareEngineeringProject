@@ -10,36 +10,58 @@ namespace PackageManager
     {
         static void Main(string[] args)
         {
-            
             StaticAnalysis.Test();
-            
+            Console.WriteLine("Hello World!");
+
             //get environment variables
             int ENVLOGLEVEL = 2;
             string ENVLOGLOCATION = "log.txt";
 
-
             //get command line arguments
-
-
-            ENVLOGLEVEL = int.Parse(args[1]);
-            ENVLOGLOCATION = args[2];
-
+            bool success = int.TryParse(args[2], out ENVLOGLEVEL);
+            if (!success)
+            {
+                if (ENVLOGLEVEL != 0)
+                {
+                    Console.WriteLine("Invalid log level, exiting...");
+                }
+                Environment.Exit(1);
+            }
+            ENVLOGLOCATION = args[1];
 
             //get current directory
             string currentDirectory = Directory.GetCurrentDirectory();
 
             //check if log file is absolute or relative path
             string fullPathLogger = "";
+
             if (System.IO.Path.IsPathRooted(ENVLOGLOCATION))
             {
+                if(logLevel > 1)
+                {
+                    Console.WriteLine("Log File Location is absolute path, using as is...");
+                }
                 fullPathLogger = ENVLOGLOCATION;
             }
             else
             {
+                if(logLevel > 1)
+                {
+                    Console.WriteLine(
+                        "Log File Location is relative path, appending to current directory...");
+                }
                 fullPathLogger = currentDirectory + "\\" + ENVLOGLOCATION;
             }
 
+            fullPathLogger = ENVLOGLOCATION;
+            string command = args[0];
 
+            if(logLevel >= 1)
+            {
+                Console.WriteLine("Log File Location: " + fullPathLogger);
+                Console.WriteLine("Log Level: " + ENVLOGLEVEL);
+                Console.WriteLine("Command: " + command);
+            }
 
             //instantiate logger
             CSharpLogger logger = new CSharpLogger(fullPathLogger, ENVLOGLEVEL);
@@ -47,63 +69,84 @@ namespace PackageManager
             //Instantiate Startup Agent
             Startup startup = new Startup();
 
-
-
             //check if arg 0 is "install", "build", "test"
             if (args[0] == "install")
             {
                 //We have already run the installation script, but we need to logg it out
-                Console.WriteLine("Logging Installation to file...");
-                logger.LogToFile("Logging Installation to file...", 1);
-
-                //We take the results from the /cache/pip.txt file and log it to the log file
-                string pipinstall = File.ReadAllText("cache/pip.txt");
-                logger.LogToFile(pipinstall, 2);
-
+                logger.Log("Installing...", 1);
+                Environment.Exit(0);
             }
             else if (args[0] == "build")
             {
-                Console.WriteLine("Building...");
-                logger.LogToFile("Building...", 1);
-
-                //We take the results from the /cache/build.txt file and log it to the log file
-                string build = File.ReadAllText("cache/build.txt");
-                logger.LogToFile(build, 2);
+                logger.Log("Building...", 1);
+                Environment.Exit(0);
             }
-
             else if (args[0] == "test")
             {
-                Console.WriteLine("Testing...");
-                logger.LogToFile("Testing...", 1);
+                logger.Log("Testing...", 1);
                 //This will call the line coverage and stuff maybe? do later
+                Environment.Exit(0);
             }
             else
             {
+
+
+                logger.Log("Command: " + command, 1);
+
+
                 //Test if the arg is a url
-                if (Uri.IsWellFormedUriString(args[0], UriKind.Absolute))
+                if (!Path.IsPathRooted(command))
                 {
-                    Console.WriteLine($"Input URI Found at  {args[0]}");
-                    logger.LogToFile($"Input URI Found at {args[0]}", 1);
-                    //logger.LogToFile($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}", ENVLOGLEVEL);
-                    //startup.RunCommand($"/C python startup.py {args[0]} {ENVLOGLEVEL} {ENVLOGLOCATION}");
-                }
-                else
-                {
-                    Console.WriteLine("Invalid command, exiting...");
-                    logger.LogToFile("Invalid command, exiting...", 1);
+
+                    logger.Log("Invalid command, exiting...", 1);
                     Environment.Exit(1);
                 }
-            
+                logger.Log($"Input URI Found at {args[0]}", 1);
+
+                //check if file exists
+                if (!File.Exists(command))
+                {
+                    logger.Log("File does not exist, exiting...", 1);
+                    Environment.Exit(1);
+                }
+
+                //check if file is a text file
+                if (Path.GetExtension(command) != ".txt")
+                {
+                    logger.Log("File is not a text file, exiting...", 1);
+                    Environment.Exit(1);
+                }
+
+                //check if file is empty
+                if (new System.IO.FileInfo(command).Length == 0)
+                {
+                    logger.Log("File is empty, exiting...", 1);
+                    Environment.Exit(1);
+                }
+
+                //Read the file at the path
+                string[] lines = File.ReadAllLines(command);
+                foreach (string line in lines)
+                {
+                    Logger.Log(line, 1);
+                }
+                Environment.Exit(0);
             }
 
-            
-            logger.LogToFile("Finished Executing C# starter script!", 1);
-
+            logger.Log("Finished Executing C# starter script! SHOULDN't GET TO THIS POINT", 1);
+            Environment.Exit(0);
         }
 
-
+        //https://learn.microsoft.com/en-us/dotnet/api/system.io.path.ispathfullyqualified?view=net-7.0
+        private static void ShowPathInfo(string path)
+        {
+            Console.WriteLine($"Path: {path}");
+            Console.WriteLine($"   Rooted: {Path.IsPathRooted(path)}");
+            Console.WriteLine($"   Fully qualified: {Path.IsPathFullyQualified(path)}");
+            Console.WriteLine($"   Full path: {Path.GetFullPath(path)}");
+            Console.WriteLine();
+        }
     }
-
 
     public class CSharpLogger
     {
@@ -135,12 +178,11 @@ namespace PackageManager
             {
                 return false;
             }
-
         }
 
         //defines a function that is able to log out to log file
         /*Your software must produce a log file stored in the location named in the environment variable
-         * $LOG_FILE and using the verbosity level indicated in the environment variable $LOG_LEVEL 
+         * $LOG_FILE and using the verbosity level indicated in the environment variable $LOG_LEVEL
          * (0 means silent, 1 means informational messages, 2 means debug messages).
          * Default log verbosity is 0.*/
         public void LogToFile(string text, int priority)
@@ -151,8 +193,25 @@ namespace PackageManager
             }
 
             //string logFile = "log.txt";
-            string logLine = "[C# Command Parser] " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " Priority " + priority.ToString() + " | " + text;
+            string logLine =
+                "[C# Command Parser] "
+                + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+                + " Priority "
+                + priority.ToString()
+                + " | "
+                + text;
             File.AppendAllText(logFile, logLine + Environment.NewLine);
+        }
+
+        public void Log(string text, int priority)
+        {
+            if (!ShouldLog(this.logLevel, priority))
+            {
+                return;
+            }
+
+            Console.WriteLine(text);
+            LogToFile(text, priority);
         }
     }
 }
