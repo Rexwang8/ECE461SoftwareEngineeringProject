@@ -1,9 +1,9 @@
 # ECE461SoftwareEngineeringProject
- ECE 461 - Purdue Package manager for Software Engineering class.
+ECE 461 - Purdue Package manager for Software Engineering class.
 
 Names: Rex Wang, Joseph Ma, Alan Zhang, Kevin Lin
 
-A local CLI package manager project for ECE 461 - Software engineering (At purdue). 
+A local CLI package manager project for ECE 461 - Software engineering (At purdue). Built mainly using C# and Python.
 
 
 ---
@@ -16,28 +16,34 @@ The main script will call all the api calls and other data parsing in order for 
 
 ## File structure
 
-README.md
-.gitignore
-.git
-.gitattributes
-.vs
->Command line Parser
->Command line Parser/Command line parser SLN and other files
->Build
->Build/test.py
->Build/run.exe
+run - shell script
+Readme.md
+CLIParserProj - CLI interface for shell script (C#)
+startup.py - called by c# proj, calls all other scripts
+...
 
 ---
 
-## How to build CLI Parser (C#)
+## How to run program
 
-1. Open .sln in visual studio
-2. go to the top bar, Build > Build Solution
-3. go to the folder /bin/debug/run.exe and copy it out to wherever you want to run it. Make sure it's in the same folder as the python files it's trying to run.
+Go to /Build and execute one of the following commands
+
+run install - installs all dependencies including pip dependencies
+
+run build - compiles anything that needs to be compiled
+
+run <URL> - downloads the following URL from either npm or github and produces a NDJSON file for grades for the package.
+
+run test - runs the static analysis test suite and exits 0 if successful
+
+run clean - cleans all cache and log files
 
 ---
 
+## Environment Variables
 
+$LOG_FILE - Path to where the log file will be saved
 
+$LOG_LEVEL - Level of logging, 0 is silent, 1 is info only, 2 is debug (everything).
 
-
+$GITHUB_TOKEN - Used to access Github's graphql API
