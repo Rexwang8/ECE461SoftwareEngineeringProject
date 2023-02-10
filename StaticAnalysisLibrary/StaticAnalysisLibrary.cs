@@ -12,22 +12,72 @@ namespace StaticAnalysisLibrary
 {
     public class FileInfo
     {
-        public int lineCount { get; set; }
+        public int codeCount { get; set; }
         public int commentCount { get; set; }
         public FileInfo() 
         {
-            lineCount = 0; 
+            codeCount = 0; 
             commentCount = 0;
         }
     }
+
+    static public class DirectoryTool
+    {
+
+        static public List<string> fileEntries = new List<string>();
+
+        //This function gets all the files inside dirTargetName inside directoryPath
+        static public void getFiles(string directoryPath, string dirTargetName)
+        {
+            try
+            {
+                string[] dirs = Directory.GetDirectories(directoryPath, dirTargetName, SearchOption.TopDirectoryOnly);
+                string dirRoot = dirs[0];
+                
+                getAllFiles(dirRoot);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("The process failed: {0}", e.ToString());
+            }
+        }
+
+        //recursive call for getFiles
+        static public void getAllFiles(string directoryPath)
+        {
+            //Gets all files in directory path
+            string[] fileNames = Directory.GetFiles(directoryPath); 
+            foreach (string fileName in fileNames)
+            {
+                
+                fileEntries.Add(fileName); 
+            }
+
+            string[] dirs = Directory.GetDirectories(directoryPath, "*", SearchOption.TopDirectoryOnly);
+            foreach (string dir in dirs)
+            {
+                getAllFiles(dir);
+            }
+        }
+    }
+
     static public class StaticAnalysis
     {
         static FileInfo fileInfo = new FileInfo();
 
-        static public void Test()
+        static public void Analyze(string repoBin, string targetName, string resultJsonFile)
         {
-            Console.WriteLine("FUCK");
+            DirectoryTool.getFiles(repoBin, targetName);
+            foreach(string file in DirectoryTool.fileEntries)
+            {
+                ReadFile(file);
+            }
+            
+            WriteFile(resultJsonFile);
+
+            DirectoryTool.fileEntries.Clear();
         }
+
         //Reads the file and does the static analysis on the file
         static public void ReadFile(string filename)
         {
@@ -42,9 +92,11 @@ namespace StaticAnalysisLibrary
                 //Continue to read until you reach end of file
                 while (line != null)
                 {
+                    //Console.WriteLine(line);
                     AnalyzeLine(line);
                     //Read the next line
                     line = sr.ReadLine();
+                    
                 }
                 //close the file
                 sr.Close();
@@ -53,21 +105,23 @@ namespace StaticAnalysisLibrary
             {
                 Console.WriteLine("Exception: " + e.Message);
             }
-            finally
-            {
-                Console.WriteLine("Executing finally block.");
-            }
-
         }
 
         //
         static public void AnalyzeLine(string text)
         {
-            fileInfo.lineCount++;
-
-            if (text.Contains("//"))
+            if (text.StartsWith("//") || text.StartsWith("/*"))
             {
                 fileInfo.commentCount++;
+            }
+            else if (text.Contains("//") || text.Contains("/*"))
+            {
+                fileInfo.commentCount++;
+                fileInfo.codeCount++;
+            }
+            else
+            {
+                fileInfo.codeCount++;
             }
 
 
@@ -77,7 +131,7 @@ namespace StaticAnalysisLibrary
 
         static public void WriteFile(string filename)
         {
-            Console.WriteLine("There are " + fileInfo.lineCount + " lines");
+            Console.WriteLine("There are " + fileInfo.codeCount + " lines of code");
             Console.WriteLine("There are " + fileInfo.commentCount + " comments");
 
             // need to create a list of data for each file inside the library 
