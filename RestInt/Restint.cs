@@ -34,7 +34,14 @@ namespace ConsoleProgram
             // List data response.
             string outputFile = args[0];
             string npmreg = args[1];
-            HttpResponseMessage response1 = await client.GetAsync(npmreg);
+
+
+            int index = str.IndexOf("/package/");  
+            string result = str.Substring(index, npmreg.Length);
+            Console.WriteLine(result);
+            
+            string regURL = "https://registry.npmjs.org/" + result;
+            HttpResponseMessage response1 = await client.GetAsync(regURL);
 
             response1.EnsureSuccessStatusCode();
             string responseBody1 = await response1.Content.ReadAsStringAsync();
