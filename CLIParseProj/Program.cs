@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using StaticAnalysisLibrary;
+using CliWrap;
 
 // Hello World! program
 namespace PackageManager
@@ -70,7 +71,7 @@ namespace PackageManager
             Startup startup = new Startup();
 
             //check if arg 0 is "install", "build", "test"
-            if (args[0] == "install")
+           /* if (args[0] == "install")
             {
                 //We have already run the installation script, but we need to logg it out
                 logger.Log("Installing...", 1);
@@ -81,7 +82,8 @@ namespace PackageManager
                 logger.Log("Building...", 1);
                 Environment.Exit(0);
             }
-            else if (args[0] == "test")
+            else */
+            if (args[0] == "test")
             {
                 logger.Log("Testing...", 1);
                 //This will call the line coverage and stuff maybe? do later
@@ -129,6 +131,12 @@ namespace PackageManager
                 foreach (string line in lines)
                 {
                     logger.Log(line, 1);
+
+                    var result =  Cli.Wrap("echo")
+                    .WithArguments("arguments")
+                    .ExecuteAsync();
+                    Console.WriteLine(result);
+                
                 }
                 Environment.Exit(0);
             }
