@@ -17,14 +17,14 @@ logfullpath="$logdirectorypath/log.txt"
 function logInfo() {
     if [ $loglevel -gt 0 ] 
     then
-    echo "[BUILD|Priority: 1(info)] $1" | tee -a $logfullpath cache/build.txt
+    echo "[BUILD|Priority: 1(info)] $1" | tee $logfullpath cache/build.txt
     fi
 }
 
 function logDebug() {
     if [ $loglevel -gt 1 ] 
     then
-    echo "[BUILD|Priority: 2(debug)] $1" | tee -a $logfullpath cache/build.txt
+    echo "[BUILD|Priority: 2(debug)] $1" | tee $logfullpath cache/build.txt
     fi
 }
 
@@ -57,7 +57,7 @@ case "$1" in
 
         if [ $loglevel -gt 1 ] 
         then
-        echo "[BUILD|Priority: 2(debug)] - Making cache folders" | tee -a $logfullpath cache/build.txt
+        echo "[BUILD|Priority: 2(debug)] - Making cache folders" | tee $logfullpath cache/build.txt
         fi
 
         mkdir -p cache
@@ -77,7 +77,7 @@ case "$1" in
         if [ $loglevel -gt 1 ] 
         then
 
-        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt
+        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee $logfullpath cache/build.txt
         logDebug "C# CLI Parser built"
         else
         dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true > /dev/null
@@ -125,33 +125,22 @@ case "$1" in
         touch cache/log.txt
 
         # install function code here
-        echo "Installing Dependencies"
-        if [ $loglevel -gt 0 ] 
-        then
-        echo "[BUILD|Priority: 1 (info)] - Installing Dependencies" | tee -a $logfullpath cache/build.txt
-        fi
+        logInfo "Installing Dependencies"
 
-        echo "Installing Python Dependencies with pip"
-        if [ $loglevel -gt 1 ] 
-        then
-        echo "[BUILD|Priority: 2 (debug)] - Installing Python Dependencies with pip" | tee -a $logfullpath cache/build.txt
-        fi
+        logDebug "Installing Python Dependencies with pip"
         
         pip install -r requirements.txt > cache/pip.txt
-        echo "Python Dependencies installed"
-        if [ $loglevel -gt 1 ] 
-        then
-        echo "[BUILD|Priority: 2 (debug)] - Python Dependencies installed" | tee -a $logfullpath cache/build.txt
-        fi
+
+
+        logDebug "Python Dependencies installed (1)"
+        logInfo "Installing C# Dependencies"
+        dotnet add package libgit2sharp -Version 0.26.2 | tee -a $logfullpath cache/build.txt
+        logInfo "C# Dependencies installed"
 
         #call logger
         ./CLIParse install $logdirectorypath $loglevel 
 
-        echo "Dependencies installed"
-        if [ $loglevel -gt 0 ] 
-        then
-        echo "[BUILD|Priority: 1 (info)] - Dependencies installed" | tee -a $logfullpath cache/build.txt
-        fi
+        logInfo "2 Dependencies installed"
         ;;
     *)
         # code for running parse with URL argument

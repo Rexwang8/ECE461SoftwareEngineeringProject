@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using StaticAnalysisLibrary;
 
+
 // Hello World! program
 namespace PackageManager
 {
@@ -10,12 +11,13 @@ namespace PackageManager
     {
         static void Main(string[] args)
         {
-            StaticAnalysis.Test();
-            Console.WriteLine("Hello World!");
-
             //get environment variables
             int ENVLOGLEVEL = 2;
             string ENVLOGLOCATION = "log.txt";
+
+            
+
+
 
             //get command line arguments
             bool success = int.TryParse(args[2], out ENVLOGLEVEL);
