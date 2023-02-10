@@ -1,0 +1,2 @@
+pathlib
+GitPython=3.1.30

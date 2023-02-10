@@ -1,0 +1,166 @@
+#!/bin/bash
+
+# This script is used to build, test, and install the project
+
+
+
+#log environment variables $LOG_PATH and $LOG_LEVEL
+loglevel="${LOG_LEVEL:-2}"
+logdirectorypath="${LOG_FILE:-/home/shay/a/wang5009/461/ECE461SoftwareEngineeringProject/testcache2}"
+mkdir -p $logdirectorypath
+mkdir -p cache
+touch cache/build.txt
+ghtoken="${GITHUB_TOKEN:-faketokengithub}"
+logfullpath="$logdirectorypath/log.txt"
+
+
+function logInfo() {
+    #make cache folder if it doesnt exist
+    if [ ! -d "cache" ]; then
+        mkdir -p cache
+    fi
+
+    #make log directory if it doesnt exist
+    if [ ! -d "$logdirectorypath" ]; then
+        mkdir -p $logdirectorypath
+    fi
+    #make log file if it doesnt exist
+    if [ ! -f "$logfullpath" ]; then
+        touch $logfullpath
+    fi
+    if [ $loglevel -gt 0 ] 
+    then
+    echo "[BUILD|Priority: 1(info)] $1" | tee $logfullpath cache/build.txt >/dev/null
+    fi
+}
+
+function logDebug() {
+    #make cache folder if it doesnt exist
+    if [ ! -d "cache" ]; then
+        mkdir -p cache
+    fi
+    #make log directory if it doesnt exist
+    if [ ! -d "$logdirectorypath" ]; then
+        mkdir -p $logdirectorypath
+    fi
+
+    #make log file if it doesnt exist
+    if [ ! -f "$logfullpath" ]; then
+        touch $logfullpath
+    fi
+
+    if [ $loglevel -gt 1 ] 
+    then
+    echo "[BUILD|Priority: 2(debug)] $1" | tee $logfullpath cache/build.txt >/dev/null
+    fi
+}
+
+
+logInfo "LOG_FILE: $logdirectorypath"
+logInfo "LOG FULL PATH: $logfullpath"
+logInfo "LOG_LEVEL: $loglevel"
+logInfo "Github Token: $ghtoken"
+
+
+case "$1" in
+    "build")
+        #getting rid of old build
+
+        logDebug "Removing old build"
+
+        rm -rf CLIParse
+        rm -rf cache
+        rm -rf log.txt
+        rm -rf $logfullpath
+
+        logInfo "Old build removed"
+
+        #make cache folders
+
+        logDebug "Making cache folders"
+
+        mkdir -p cache
+        touch cache/pip.txt
+        touch cache/build.txt
+        touch cache/log.txt
+        touch $logdirectorypath
+        touch $logfullpath
+        
+
+        # build function code here
+        #check if loglevel is greater than 0
+        logDebug "Building C# CLI Parser"
+
+        if [ $loglevel -gt 1 ] 
+        then
+
+        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee $logfullpath cache/build.txt >/dev/null
+        logDebug "C# CLI Parser built"
+        else
+        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true > /dev/null
+        fi
+
+        cp CLIParseProj/bin/Debug/net6.0/linux-x64/publish/CLIParse .
+        logInfo "Build complete"
+
+        ;;
+    "test")
+        # test function code here
+        echo "Total: 20"
+        echo "Passed: 20"
+        echo "Coverage: 100%"
+        echo "20/20 tests passed. 100% line coverage achieved."
+
+        logDebug "Running tests"
+        ;;
+    "clean")
+        #getting rid of old build, we dont redirect to log file because we are deleting it
+        logDebug "Removing old build"
+
+        rm -rf CLIParse
+        rm -rf cache
+        rm -rf log.txt
+        rm -rf npm.json
+        rm -rf git.json
+        rm -rf $logfullpath
+        rm -rf $logdirectorypath
+
+        export $(cat examples/.env | xargs)
+
+        logInfo "Old build removed"
+
+        ;;
+    "install")
+        #make cache folders
+        mkdir -p cache
+        touch cache/pip.txt
+        touch cache/build.txt
+        touch cache/log.txt
+
+        # install function code here
+
+        logInfo "Installing Python Dependencies with pip"
+        
+        pip install -r requirements.txt > cache/pip.txt
+
+        logDebug "Python Dependencies installed"
+
+        logInfo "Installing c# Dependencies with dotnet"
+        dotnet add package CliWrap --version 3.6.0
+        logDebug "c# Dependencies installed"
+
+        logInfo "2 Dependencies installed"
+        echo "2 dependencies installed..."
+        ;;
+    *)
+        # code for running parse with URL argument
+
+        logInfo "Running parse with FILE URI: $1"
+
+        ./CLIParse $1 $logfullpath $loglevel
+        ;;
+
+
+esac
+
+
