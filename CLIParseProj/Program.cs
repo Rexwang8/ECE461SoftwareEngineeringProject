@@ -132,6 +132,30 @@ namespace PackageManager
                 {
                     logger.LogToFile(line, 1);
                     Console.WriteLine(line);
+                    //search string for either "github.com" or "npmjs.com"
+                    if (line.contains("github.com"))
+                    {
+                        packageName = line.Substring(line.LastIndexOf('/') + 1);
+                        //call github script
+                        logger.LogToFile("Calling Github Script...", 1);
+                        console.WriteLine("Calling Github Script...");
+                        console.WriteLine(packageName);
+                        //startup.GithubScript(line);
+                    }
+                    else if (line.contains("npmjs.com"))
+                    {
+                        packageName = line.Substring(line.LastIndexOf('/') + 1);
+                        //call npm script
+                        logger.LogToFile("Calling NPM Script...", 1);
+                        console.WriteLine("Calling NPM Script...");
+                        console.WriteLine(packageName);
+                        //startup.NpmScript(line);
+                    }
+                    else
+                    {
+                        logger.LogToFile("Invalid URI, exiting...", 1);
+                        Environment.Exit(1);
+                    }
                     
                 
                 }

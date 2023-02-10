@@ -146,7 +146,9 @@ case "$1" in
         logDebug "Python Dependencies installed"
 
         logInfo "Installing c# Dependencies with dotnet"
-        dotnet add package CliWrap --version 3.6.0
+        cd CLIParseProj
+        dotnet add package CliWrap --version 3.6.0 | tee $logfullpath ../cache/build.txt >/dev/null
+        cd ..
         logDebug "c# Dependencies installed"
 
         logInfo "2 Dependencies installed"
