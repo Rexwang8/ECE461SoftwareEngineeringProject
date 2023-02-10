@@ -3,7 +3,7 @@ import requests
 import sys
 import os
 
-if len(sys.argv) != 4: #1st arg name of json file 2nd arg github url 3rd 
+if len(sys.argv) != 4: #1st arg name of json file 2nd arg github url 3rd arg is token
     print("Error: URL argument missing")
     sys.exit(1)
 
