@@ -3,11 +3,11 @@ import requests
 import sys
 import os
 
-if len(sys.argv) != 2:
+if len(sys.argv) != 3:
     print("Error: URL argument missing")
     sys.exit(1)
 
-url = sys.argv[1]
+url = sys.argv[2]
 
 the_owner = "Rexwang8"
 the_repo = "ECE461SoftwareEngineeringProject"
@@ -37,7 +37,7 @@ get_security_vulnerabilities(OWNER, REPO)
 # Example GraphQL query to retrieve repository information
 query = """
 query {
-  repository(owner:"Rexwang8", name:"ECE461SoftwareEngineeringProject") {
+  repository(owner:the_owner, name:the_repo) {
     name
     description
     createdAt
@@ -84,7 +84,7 @@ query {
 }
 """
 
-response = requests.post(url, json={'query': query}, headers=headers)
+response = requests.post("https://api.github.com/graphql", json={'query': query}, headers=headers)
 
 # Check for API response status
 if response.status_code != 200:
@@ -92,10 +92,11 @@ if response.status_code != 200:
     sys.exit(1)
 
 # Write JSON response to output file
-with open("output.json", "w") as f:
+with open(sys.argv[1] + ".json", "w") as f:
     json.dump(response.json(), f)
+    print(response.json())
 print(response)
-print("Repository information successfully written to output.json.")
+print("Repository information successfully written to " + sys.argv[1] + ".json")
 
 
 
