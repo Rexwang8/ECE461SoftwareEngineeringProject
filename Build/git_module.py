@@ -3,7 +3,7 @@ import requests
 import sys
 import os
 
-if len(sys.argv) != 3:
+if len(sys.argv) != 4:
     print("Error: URL argument missing")
     sys.exit(1)
 
@@ -13,7 +13,7 @@ def parse_github_url(url):
 the_owner, the_repo = parse_github_url(sys.argv[2])
 
 headers = {
-    "Authorization": "Bearer " + os.environ.get("GITHUB_API_TOKEN"),
+    "Authorization": "Bearer " + sys.argv[3],	#the token
     "Content-Type": "application/json"
 }
 
