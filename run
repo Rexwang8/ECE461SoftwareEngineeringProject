@@ -147,6 +147,12 @@ case "$1" in
         #call logger
         ./CLIParse install $logdirectorypath $loglevel 
 
+        logInfo "Installing c# Dependencies with dotnet"
+        dotnet add package CliWrap --version 3.6.0
+        logDebug "c# Dependencies installed"
+        
+        logInfo "2 Dependencies installed"
+        echo "2 dependencies installed..."
         echo "Dependencies installed"
         if [ $loglevel -gt 0 ] 
         then
