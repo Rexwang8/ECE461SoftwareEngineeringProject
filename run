@@ -110,7 +110,7 @@ case "$1" in
         echo "Passed: 20"
         echo "Coverage: 100%"
         echo "20/20 tests passed. 100% line coverage achieved."
-
+        #python3 github_api/git_module.py github_api/data/lodash http://github.com/lodash/lodash $ghtoken
         logDebug "Running tests"
         ;;
     "clean")
@@ -146,7 +146,9 @@ case "$1" in
         logDebug "Python Dependencies installed"
 
         logInfo "Installing c# Dependencies with dotnet"
-        dotnet add package CliWrap --version 3.6.0
+        cd CLIParseProj
+        dotnet add package CliWrap --version 3.6.0 | tee $logfullpath ../cache/build.txt >/dev/null
+        cd ..
         logDebug "c# Dependencies installed"
 
         logInfo "2 Dependencies installed"

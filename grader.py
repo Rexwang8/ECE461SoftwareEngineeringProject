@@ -62,7 +62,7 @@ class npmResponse:
         
   #structured holder of the npm response      
 class gitResponse:
-    def __init__(self, reponame='DefaultName', updateddate=datetime.datetime.now(), diskusage=0, license='MIT', isempty=False, isdisabled=False, isfork=False, isprivate=False, collaborators=0, discussions=0, forkcount=0, stargazers=0):
+    def __init__(self, reponame='DefaultName', updateddate=datetime.datetime.now(), diskusage=0, license='MIT', isempty=False, isdisabled=False, isfork=False, isprivate=False, issues=0, forkcount=0, stargazers=0):
         self.reponame = reponame
         self.updateddate = updateddate
         self.diskusage = diskusage
@@ -71,13 +71,12 @@ class gitResponse:
         self.isdisabled = isdisabled
         self.isfork = isfork
         self.isprivate = isprivate
-        self.collaborators = collaborators
-        self.discussions = discussions
+        self.issues = issues
         self.forkcount = forkcount
         self.stargazers = stargazers
         
     def __str__(self) -> str:
-        response = f"Repo Name: {self.reponame}\nUpdated Date: {self.updateddate}\nDisk Usage: {self.diskusage}\nLicense: {self.license}\nIs Empty: {self.isempty}\nIs Disabled: {self.isdisabled}\nIs Fork: {self.isfork}\nIs Private: {self.isprivate}\nCollaborators: {self.collaborators}\nDiscussions: {self.discussions}\nFork Count: {self.forkcount}\nStargazers: {self.stargazers}"
+        response = f"Repo Name: {self.reponame}\nUpdated Date: {self.updateddate}\nDisk Usage: {self.diskusage}\nLicense: {self.license}\nIs Empty: {self.isempty}\nIs Disabled: {self.isdisabled}\nIs Fork: {self.isfork}\nIs Private: {self.isprivate}\nIssues: {self.issues}\nFork Count: {self.forkcount}\nStargazers: {self.stargazers}"
         return response
 
 #turn a raw json for npm into a gitResponse object
@@ -93,16 +92,15 @@ def ParseGitJSON(data):
     isfork = data['data']['repository']['isFork']
     isprivate = data['data']['repository']['isPrivate']
     isdisabled = data['data']['repository']['isDisabled']
-    collaborators = len(data['data']['repository']['collaborators']['nodes'])
-    discussions = len(data['data']['repository']['discussions']['edges'])
+    issues = data['data']['repository']['issues']['totalCount']
     forkcount = data['data']['repository']['forkCount']
     stargazers = data['data']['repository']['stargazers']['totalCount']
     
     
     
     resp = gitResponse(reponame=reponame, updateddate=updatedAt, diskusage=diskUsage, license=license, isempty=isempty,
-                       isfork=isfork, isprivate=isprivate, isdisabled=isdisabled, collaborators=collaborators,
-                          discussions=discussions, forkcount=forkcount, stargazers=stargazers)
+                       isfork=isfork, isprivate=isprivate, isdisabled=isdisabled,
+                          issues=issues, forkcount=forkcount, stargazers=stargazers)
     
     return resp
 
@@ -231,7 +229,7 @@ def main():
     npmjson = ImportJSON("npmex.json")
     npmscore = ParseNPMJSON(npmjson)
     
-    gitjson = ImportJSON("github_api/githubexample.json")
+    gitjson = ImportJSON("github_api/data/lodash.json")
     gitscore = ParseGitJSON(gitjson)
     
     ExportJSON(npmjson, "npm.json")
