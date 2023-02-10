@@ -1,0 +1,70 @@
+MODE 1: INSTALL DEPENDENCIES
+
+Sample Command: "./run install"
+
+Sample Output (to Stdout):
+
+7 dependencies installed...
+
+
+MODE 2: RANK MODULES
+
+Sample Command: "./run /Users/myUser/IdeaProjects/files/sample-url-file.txt"
+Where the content enclosed in quotation marks is the absolute path to a file containing the list of urls.
+A sample file with name "sample-input" is also provided
+
+Sample Output (to Stdout):
+
+{"URL":"https://github.com/nullivex/nodist", "NET_SCORE":0.9, "RAMP_UP_SCORE":0.5, "CORRECTNESS_SCORE":0.7, "BUS_FACTOR_SCORE":0.3, "RESPONSIVE_MAINTAINER_SCORE":0.4, "LICENSE_SCORE":1}
+{"URL":"https://www.npmjs.com/package/browserify", "NET_SCORE":0.76, "RAMP_UP_SCORE":0.5, "CORRECTNESS_SCORE":0.7, "BUS_FACTOR_SCORE":0.3, "RESPONSIVE_MAINTAINER_SCORE":0.6, "LICENSE_SCORE":1}
+{"URL":"https://github.com/cloudinary/cloudinary_npm", "NET_SCORE":0.6, "RAMP_UP_SCORE":0.5, "CORRECTNESS_SCORE":0.7, "BUS_FACTOR_SCORE":0.3, "RESPONSIVE_MAINTAINER_SCORE":0.2, "LICENSE_SCORE":1}
+{"URL":"https://github.com/lodash/lodash", "NET_SCORE":0.5, "RAMP_UP_SCORE":0.5, "CORRECTNESS_SCORE":0.3, "BUS_FACTOR_SCORE":0.7, "RESPONSIVE_MAINTAINER_SCORE":0.6, "LICENSE_SCORE":1}
+{"URL":"https://www.npmjs.com/package/express", "NET_SCORE":0, "RAMP_UP_SCORE":0.5, "CORRECTNESS_SCORE":0.7, "BUS_FACTOR_SCORE":0.3, "RESPONSIVE_MAINTAINER_SCORE":0.6, "LICENSE_SCORE":0}
+
+
+NOTE: If you do not complete an implementation of some metric, please print a -1 as a placeholder so our auto-grader can parse the output. Your project report should discuss such cases.
+
+
+MODE 3: RUN TESTS
+
+Sample Command: "./run test"
+
+Sample Output (to Stdout):
+
+Total: 10
+Passed: 9
+Coverage: 90%
+9/10 test cases passed. 90% line coverage achieved.
+
+
+NOTE (This should not be included in the output):
+1. The Stdout lines from the test mode should indicate number of total tests, number of tests passed and test coverage in
+    percentage. These lines should begin with "Total", "Passed" and "Coverage" respectively as shown above.
+2. If you have failing test cases, your project report should indicate what behavior(s) are missing
+
+
+SAMPLE ENVIRONMENT VARIABLES
+
+A sample env file has been provided for you. To be able to upload it to Brightspace, we changed the file to a normal text document. Copy the contents to your .env file
+You can load the environment variables defined in the .env file using the command "export $(cat .env | xargs)"
+The command "printenv" prints out all the environment variables in your bash terminal. You should confirm the variables defined in your .env file are also returned with this command
+
+Sample printenv terminal output:
+
+PATH=/usr/local/opt/openjdk@11/bin:/usr/local/opt/openjdk@11/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+SHELL=/bin/zsh
+TERM=xterm-256color
+.
+.
+.
+GITHUB_TOKEN=ghp_nqp7EaHtK5SKzj5WEA2hRbsq6zeejjnnfuHwR
+LOG_LEVEL=1
+LOG_FILE=/Users/myUser/IdeaProjects/files/project-1-1.log
+
+
+
+LOG FILES
+1. The "LOG_FILE" environment variable specifies the absolute path and file name of your log file.
+2. Before attempting to write to the log file, you should first confirm the file exists and create a new file if it doesn't exist.
+3. Only the information and results specified above should be printed to stdout. All other information and logs should be printed to the log file
+
