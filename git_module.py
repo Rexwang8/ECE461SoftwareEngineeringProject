@@ -4,7 +4,7 @@ import sys
 import os
 
 if len(sys.argv) != 4:
-    print("Error: URL argument missing")
+    print("Error: check num args")
     sys.exit(1)
 
 def parse_github_url(url):
