@@ -74,18 +74,18 @@ namespace PackageManager
            /* if (args[0] == "install")
             {
                 //We have already run the installation script, but we need to logg it out
-                logger.Log("Installing...", 1);
+                logger.LogToFile("Installing...", 1);
                 Environment.Exit(0);
             }
             else if (args[0] == "build")
             {
-                logger.Log("Building...", 1);
+                logger.LogToFile("Building...", 1);
                 Environment.Exit(0);
             }
             else */
             if (args[0] == "test")
             {
-                logger.Log("Testing...", 1);
+                logger.LogToFile("Testing...", 1);
                 //This will call the line coverage and stuff maybe? do later
                 Environment.Exit(0);
             }
@@ -93,36 +93,36 @@ namespace PackageManager
             {
 
 
-                logger.Log("Command: " + command, 1);
+                logger.LogToFile("Command: " + command, 1);
 
 
                 //Test if the arg is a url
                 if (!Path.IsPathRooted(command))
                 {
 
-                    logger.Log("Invalid command, exiting...", 1);
+                    logger.LogToFile("Invalid command, exiting...", 1);
                     Environment.Exit(1);
                 }
-                logger.Log($"Input URI Found at {args[0]}", 1);
+                logger.LogToFile($"Input URI Found at {args[0]}", 1);
 
                 //check if file exists
                 if (!File.Exists(command))
                 {
-                    logger.Log("File does not exist, exiting...", 1);
+                    logger.LogToFile("File does not exist, exiting...", 1);
                     Environment.Exit(1);
                 }
 
                 //check if file is a text file
                 if (Path.GetExtension(command) != ".txt")
                 {
-                    logger.Log("File is not a text file, exiting...", 1);
+                    logger.LogToFile("File is not a text file, exiting...", 1);
                     Environment.Exit(1);
                 }
 
                 //check if file is empty
                 if (new System.IO.FileInfo(command).Length == 0)
                 {
-                    logger.Log("File is empty, exiting...", 1);
+                    logger.LogToFile("File is empty, exiting...", 1);
                     Environment.Exit(1);
                 }
 
@@ -130,18 +130,15 @@ namespace PackageManager
                 string[] lines = File.ReadAllLines(command);
                 foreach (string line in lines)
                 {
-                    logger.Log(line, 1);
-
-                    var result =  Cli.Wrap("echo")
-                    .WithArguments("arguments")
-                    .ExecuteAsync();
-                    Console.WriteLine(result);
+                    logger.LogToFile(line, 1);
+                    Console.WriteLine(line);
+                    
                 
                 }
                 Environment.Exit(0);
             }
 
-            logger.Log("Finished Executing C# starter script! SHOULDN't GET TO THIS POINT", 1);
+            logger.LogToFile("Finished Executing C# starter script! SHOULDN't GET TO THIS POINT", 1);
             Environment.Exit(0);
         }
 
