@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using StaticAnalysisLibrary;
 using CliWrap;
+using System.Text;
 
 // Hello World! program
 namespace PackageManager
@@ -11,8 +12,7 @@ namespace PackageManager
     {
         static void Main(string[] args)
         {
-            StaticAnalysis.Test();
-            Console.WriteLine("Hello World!");
+            //StaticAnalysis.Test();
 
             //get environment variables
             int ENVLOGLEVEL = 2;
@@ -29,6 +29,8 @@ namespace PackageManager
                 Environment.Exit(1);
             }
             ENVLOGLOCATION = args[1];
+            string GHTOKEN = args[3];
+            
 
             //get current directory
             string currentDirectory = Directory.GetCurrentDirectory();
@@ -127,28 +129,53 @@ namespace PackageManager
                 }
 
                 //Read the file at the path
+                var stdOutBuffer = new StringBuilder();
+                var stdErrBuffer = new StringBuilder();
                 string[] lines = File.ReadAllLines(command);
                 foreach (string line in lines)
                 {
+                    //wait 100ms for github api to not get rate limited
+                    System.Threading.Thread.Sleep(100);
+
                     logger.LogToFile(line, 1);
                     Console.WriteLine(line);
                     //search string for either "github.com" or "npmjs.com"
-                    if (line.contains("github.com"))
+                    if (line.Contains("github.com"))
                     {
-                        packageName = line.Substring(line.LastIndexOf('/') + 1);
+                        string packageName = line.Substring(line.LastIndexOf('/') + 1);
                         //call github script
                         logger.LogToFile("Calling Github Script...", 1);
-                        console.WriteLine("Calling Github Script...");
-                        console.WriteLine(packageName);
-                        //startup.GithubScript(line);
+                        //Console.WriteLine("Calling Github Script...");
+                        logger.LogToFile(packageName, 1);
+                        logger.LogToFile($"command is python3 github_api/git_module.py github_api/data/" + packageName + " " + line + " " + GHTOKEN, 2);
+
+                       /* var result = Cli.Wrap("python3")
+                            .WithArguments($"github_api/git_module.py github_api/" + packageName + " " + line + " " + GHTOKEN)
+                            .ExecuteAsync()
+                            .GetAwaiter()
+                            .GetResult();
+                            */
+                        var result = Cli.Wrap("python3")
+                            .WithArguments($"github_api/git_module.py github_api/" + packageName + " " + line + " " + GHTOKEN)
+                            .WithValidation(CommandResultValidation.None)
+                            .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
+                            .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer))
+                            .ExecuteAsync()
+                            .GetAwaiter()
+                            .GetResult();
+
+                        //Console.WriteLine("StdOut:" + stdOutBuffer.ToString());
+                        //Console.WriteLine("StdErr:" + stdErrBuffer.ToString());
+
+
                     }
-                    else if (line.contains("npmjs.com"))
+                    else if (line.Contains("npmjs.com"))
                     {
-                        packageName = line.Substring(line.LastIndexOf('/') + 1);
+                        string packageName = line.Substring(line.LastIndexOf('/') + 1);
                         //call npm script
                         logger.LogToFile("Calling NPM Script...", 1);
-                        console.WriteLine("Calling NPM Script...");
-                        console.WriteLine(packageName);
+                        Console.WriteLine("Calling NPM Script...");
+                        Console.WriteLine(packageName);
                         //startup.NpmScript(line);
                     }
                     else

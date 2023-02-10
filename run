@@ -30,7 +30,7 @@ function logInfo() {
     fi
     if [ $loglevel -gt 0 ] 
     then
-    echo "[BUILD|Priority: 1(info)] $1" | tee $logfullpath cache/build.txt >/dev/null
+    echo "[BUILD|Priority: 1(info)] $1" | tee -a $logfullpath cache/build.txt >/dev/null
     fi
 }
 
@@ -51,7 +51,7 @@ function logDebug() {
 
     if [ $loglevel -gt 1 ] 
     then
-    echo "[BUILD|Priority: 2(debug)] $1" | tee $logfullpath cache/build.txt >/dev/null
+    echo "[BUILD|Priority: 2(debug)] $1" | tee -a $logfullpath cache/build.txt >/dev/null
     fi
 }
 
@@ -80,6 +80,7 @@ case "$1" in
         logDebug "Making cache folders"
 
         mkdir -p cache
+        mkdir -p github_api/data
         touch cache/pip.txt
         touch cache/build.txt
         touch cache/log.txt
@@ -91,14 +92,10 @@ case "$1" in
         #check if loglevel is greater than 0
         logDebug "Building C# CLI Parser"
 
-        if [ $loglevel -gt 1 ] 
-        then
-
-        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee $logfullpath cache/build.txt >/dev/null
+   
+        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
         logDebug "C# CLI Parser built"
-        else
-        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true > /dev/null
-        fi
+
 
         cp CLIParseProj/bin/Debug/net6.0/linux-x64/publish/CLIParse .
         logInfo "Build complete"
@@ -124,6 +121,7 @@ case "$1" in
         rm -rf git.json
         rm -rf $logfullpath
         rm -rf $logdirectorypath
+        rm -rf github_api/data
 
         export $(cat examples/.env | xargs)
 
@@ -133,6 +131,7 @@ case "$1" in
     "install")
         #make cache folders
         mkdir -p cache
+        mkdir -p github_api/data
         touch cache/pip.txt
         touch cache/build.txt
         touch cache/log.txt
@@ -147,7 +146,7 @@ case "$1" in
 
         logInfo "Installing c# Dependencies with dotnet"
         cd CLIParseProj
-        dotnet add package CliWrap --version 3.6.0 | tee $logfullpath ../cache/build.txt >/dev/null
+        dotnet add package CliWrap --version 3.6.0 | tee -a $logfullpath ../cache/build.txt >/dev/null
         cd ..
         logDebug "c# Dependencies installed"
 
@@ -159,7 +158,7 @@ case "$1" in
 
         logInfo "Running parse with FILE URI: $1"
 
-        ./CLIParse $1 $logfullpath $loglevel
+        ./CLIParse $1 $logfullpath $loglevel $ghtoken
         ;;
 
 

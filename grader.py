@@ -229,7 +229,7 @@ def main():
     npmjson = ImportJSON("npmex.json")
     npmscore = ParseNPMJSON(npmjson)
     
-    gitjson = ImportJSON("github_api/data/lodash.json")
+    gitjson = ImportJSON("github_api/data/cloudinary.json")
     gitscore = ParseGitJSON(gitjson)
     
     ExportJSON(npmjson, "npm.json")
