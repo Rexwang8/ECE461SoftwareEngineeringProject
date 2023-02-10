@@ -1,7 +1,6 @@
 import json
 import requests
 import sys
-import os
 
 if len(sys.argv) != 4: #1st arg name of json file 2nd arg github url 3rd 
     print("Error: URL argument missing")
@@ -35,28 +34,12 @@ query {{
     isFork
     isPrivate
     watchers(first:100) {{
-      nodes {{
-        login
-      }}
+      totalCount
     }}
-    collaborators(first: 100) {{
-      nodes {{
-        login
-        name
-        email
-        avatarUrl
-      }}
+    issues(first:100) {{
+      totalCount
     }}
-    discussions(first: 100) {{
-      edges {{
-        node {{
-          id
-          body
-          createdAt
-          updatedAt
-        }}
-      }}
-    }}
+    
     homepageUrl
     pushedAt
     forkCount

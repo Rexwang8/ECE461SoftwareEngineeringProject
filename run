@@ -110,7 +110,7 @@ case "$1" in
         echo "Passed: 20"
         echo "Coverage: 100%"
         echo "20/20 tests passed. 100% line coverage achieved."
-
+        #python3 github_api/git_module.py github_api/data/lodash http://github.com/lodash/lodash $ghtoken
         logDebug "Running tests"
         ;;
     "clean")
