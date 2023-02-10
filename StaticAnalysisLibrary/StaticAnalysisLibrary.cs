@@ -32,7 +32,7 @@ namespace StaticAnalysisLibrary
         static public void getFiles(string directoryPath)
         {
             
-            Console.WriteLine();
+            Console.WriteLine("tesing");
         }
 
         //Reads the file and does the static analysis on the file
