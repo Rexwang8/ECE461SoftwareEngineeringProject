@@ -26,8 +26,15 @@ namespace StaticAnalysisLibrary
 
         static public void Test()
         {
-            Console.WriteLine("FUCK");
+            Console.WriteLine("It works");
         }
+
+        static public void getFiles(string directoryPath)
+        {
+            
+            Console.WriteLine();
+        }
+
         //Reads the file and does the static analysis on the file
         static public void ReadFile(string filename)
         {
