@@ -149,7 +149,6 @@ case "$1" in
         dotnet add package CliWrap --version 3.6.0
         logDebug "c# Dependencies installed"
 
-
         logInfo "2 Dependencies installed"
         echo "2 dependencies installed..."
         ;;
