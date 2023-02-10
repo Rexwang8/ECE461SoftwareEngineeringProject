@@ -15,16 +15,33 @@ logfullpath="$logdirectorypath/log.txt"
 
 
 function logInfo() {
+    #make cache folder if it doesnt exist
+    if [ ! -d "cache" ]; then
+        mkdir -p cache
+    fi
+    #make log file if it doesnt exist
+    if [ ! -f "$logfullpath" ]; then
+        touch $logfullpath
+    fi
     if [ $loglevel -gt 0 ] 
     then
-    echo "[BUILD|Priority: 1(info)] $1" | tee -a $logfullpath cache/build.txt
+    echo "[BUILD|Priority: 1(info)] $1" | tee $logfullpath cache/build.txt
     fi
 }
 
 function logDebug() {
+    #make cache folder if it doesnt exist
+    if [ ! -d "cache" ]; then
+        mkdir -p cache
+    fi
+    #make log file if it doesnt exist
+    if [ ! -f "$logfullpath" ]; then
+        touch $logfullpath
+    fi
+
     if [ $loglevel -gt 1 ] 
     then
-    echo "[BUILD|Priority: 2(debug)] $1" | tee -a $logfullpath cache/build.txt
+    echo "[BUILD|Priority: 2(debug)] $1" | tee $logfullpath cache/build.txt
     fi
 }
 
@@ -38,27 +55,19 @@ logInfo "Github Token: $ghtoken"
 case "$1" in
     "build")
         #getting rid of old build
-        if [ $loglevel -gt 0 ] 
-        then
-        echo "[BUILD|Priority: 1(info)] - Removing old build" 
-        fi
+
+        logDebug "Removing old build"
 
         rm -rf CLIParse
         rm -rf cache
         rm -rf log.txt
         rm -rf $logfullpath
-        
-        if [ $loglevel -gt 0 ] 
-        then
-        echo "[BUILD|Priority: 1(info)] - Old build removed" 
-        fi
+
+        logInfo "Old build removed"
 
         #make cache folders
 
-        if [ $loglevel -gt 1 ] 
-        then
-        echo "[BUILD|Priority: 2(debug)] - Making cache folders" | tee -a $logfullpath cache/build.txt
-        fi
+        logDebug "Making cache folders"
 
         mkdir -p cache
         touch cache/pip.txt
@@ -69,15 +78,13 @@ case "$1" in
         
 
         # build function code here
-
-
         #check if loglevel is greater than 0
         logDebug "Building C# CLI Parser"
 
         if [ $loglevel -gt 1 ] 
         then
 
-        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt
+        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee $logfullpath cache/build.txt
         logDebug "C# CLI Parser built"
         else
         dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true > /dev/null
@@ -95,10 +102,7 @@ case "$1" in
         ;;
     "clean")
         #getting rid of old build, we dont redirect to log file because we are deleting it
-        if [ $loglevel -gt 0 ] 
-        then
-        echo "[BUILD|Priority: 1(info)] - Removing old build" 
-        fi
+        log Debug "Removing old build"
 
         rm -rf CLIParse
         rm -rf cache
@@ -110,48 +114,28 @@ case "$1" in
 
         export $(cat examples/.env | xargs)
 
-        if [ $loglevel -gt 0 ] 
-        then
-        echo "[BUILD|Priority: 1(info)] - Old build removed" 
-        fi
+        logInfo "Old build removed"
 
         ;;
     "install")
         #make cache folders
-        echo "Making cache folders"
         mkdir -p cache
         touch cache/pip.txt
         touch cache/build.txt
         touch cache/log.txt
 
         # install function code here
-        echo "Installing Dependencies"
-        if [ $loglevel -gt 0 ] 
-        then
-        echo "[BUILD|Priority: 1 (info)] - Installing Dependencies" | tee -a $logfullpath cache/build.txt
-        fi
 
-        echo "Installing Python Dependencies with pip"
-        if [ $loglevel -gt 1 ] 
-        then
-        echo "[BUILD|Priority: 2 (debug)] - Installing Python Dependencies with pip" | tee -a $logfullpath cache/build.txt
-        fi
+        logInfo "Installing Python Dependencies with pip"
         
         pip install -r requirements.txt > cache/pip.txt
-        echo "Python Dependencies installed"
-        if [ $loglevel -gt 1 ] 
-        then
-        echo "[BUILD|Priority: 2 (debug)] - Python Dependencies installed" | tee -a $logfullpath cache/build.txt
-        fi
+
+        logDebug "Python Dependencies installed"
 
         #call logger
         ./CLIParse install $logdirectorypath $loglevel 
 
-        echo "Dependencies installed"
-        if [ $loglevel -gt 0 ] 
-        then
-        echo "[BUILD|Priority: 1 (info)] - Dependencies installed" | tee -a $logfullpath cache/build.txt
-        fi
+        logInfo "Dependencies installed"
         ;;
     *)
         # code for running parse with URL argument
