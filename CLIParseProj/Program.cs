@@ -149,14 +149,8 @@ namespace PackageManager
                         logger.LogToFile(packageName, 1);
                         logger.LogToFile($"command is python3 github_api/git_module.py github_api/data/" + packageName + " " + line + " " + GHTOKEN, 2);
 
-                       /* var result = Cli.Wrap("python3")
-                            .WithArguments($"github_api/git_module.py github_api/" + packageName + " " + line + " " + GHTOKEN)
-                            .ExecuteAsync()
-                            .GetAwaiter()
-                            .GetResult();
-                            */
                         var result = Cli.Wrap("python3")
-                            .WithArguments($"github_api/git_module.py github_api/" + packageName + " " + line + " " + GHTOKEN)
+                            .WithArguments($"github_api/git_module.py github_api/data/" + packageName + " " + line + " " + GHTOKEN)
                             .WithValidation(CommandResultValidation.None)
                             .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
                             .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer))
@@ -176,6 +170,19 @@ namespace PackageManager
                         logger.LogToFile("Calling NPM Script...", 1);
                         Console.WriteLine("Calling NPM Script...");
                         Console.WriteLine(packageName);
+                        Console.WriteLine("./RestInt npmData " + packageName + " " + line + " " + ENVLOGLEVEL + " " + ENVLOGLOCATION);
+                        logger.LogToFile($"command is ./RestInt npmData " + line + " " + packageName + " " + ENVLOGLEVEL + " " + ENVLOGLOCATION, 2);
+                        var result = Cli.Wrap("./RestInt")
+                            .WithArguments($"npmData " + line + " " + packageName + " " + ENVLOGLEVEL + " " + ENVLOGLOCATION)
+                            .WithValidation(CommandResultValidation.None)
+                            .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
+                            .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer))
+                            .ExecuteAsync()
+                            .GetAwaiter()
+                            .GetResult();
+                        
+                        Console.WriteLine("StdOut:" + stdOutBuffer.ToString());
+                        Console.WriteLine("StdErr:" + stdErrBuffer.ToString());
                         //startup.NpmScript(line);
                     }
                     else

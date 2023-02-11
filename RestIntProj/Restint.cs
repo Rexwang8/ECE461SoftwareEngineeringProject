@@ -5,48 +5,78 @@ namespace ConsoleProgram
     {
         static async Task Main(string[] args)
         {
-            int ENVLOGLEVEL = 2;
-            string ENVLOGLOCATION = "log.txt";
-            string currentDirectory = Directory.GetCurrentDirectory();
-            var logpath = Path.Combine(currentDirectory, ENVLOGLOCATION);
-            string command = args[0];
-
-
-            CSharpLogger logger = new CSharpLogger(logpath, ENVLOGLEVEL);
-
-
-            logger.Log("Command: " + command, 1);
-            //Read the file at the path
-            string[] lines = File.ReadAllLines(command);
-            foreach (string line in lines)
-            {
-                logger.Log(line, 1);
-            }
-            Environment.Exit(0);
-
-
-
-
-            logger.Log("Finished Executing C# starter script! SHOULDN't GET TO THIS POINT", 1);
-            Environment.Exit(0);
-
             HttpClient client = new HttpClient();
             // List data response.
-            string outputFile = args[0];
+            //string outputFile = args[0];
             string npmreg = args[1];
+            string packageName = args[2];
+            int ENVLOGLEVEL = 2;
+            bool success = int.TryParse(args[3], out ENVLOGLEVEL);
+            if (!success)
+            {
+                if (ENVLOGLEVEL != 0)
+                {
+                    Console.WriteLine("Invalid log level, exiting...");
+                }
+                Environment.Exit(1);
+            }
+
+            string ENVLOGLOCATION = args[4];
+            //get current directory
+            string currentDirectory = Directory.GetCurrentDirectory();
+
+            //check if log file is absolute or relative path
+            string fullPathLogger = "";
+
+            if (System.IO.Path.IsPathRooted(ENVLOGLOCATION) == true)
+            {
+                if(ENVLOGLEVEL > 1)
+                {
+                    Console.WriteLine("Log File Location is absolute path, using as is...");
+                }
+                fullPathLogger = ENVLOGLOCATION;
+            }
+            else
+            {
+                if(ENVLOGLEVEL > 1)
+                {
+                    Console.WriteLine(
+                        "Log File Location is relative path, appending to current directory...");
+                }
+                fullPathLogger = currentDirectory + "\\" + ENVLOGLOCATION;
+            }
+
+            fullPathLogger = ENVLOGLOCATION;
+
+            CSharpLogger logger = new CSharpLogger(fullPathLogger, ENVLOGLEVEL);
 
 
-            int index = str.IndexOf("/package/");  
-            string result = str.Substring(index, npmreg.Length);
-            Console.WriteLine(result);
             
-            string regURL = "https://registry.npmjs.org/" + result;
-            HttpResponseMessage response1 = await client.GetAsync(regURL);
+            string regURL = "https://registry.npmjs.org/" + packageName;
+            Console.WriteLine("URL: " + regURL);
+            HttpResponseMessage response = await client.GetAsync(regURL);
 
-            response1.EnsureSuccessStatusCode();
-            string responseBody1 = await response1.Content.ReadAsStringAsync();
-            var npmpath = Path.Combine(currentDirectory, outputFile);
-            File.WriteAllText(@npmpath, responseBody1);
+            if(response.IsSuccessStatusCode)
+            {
+                logger.LogToFile("Response from registry.npmjs.org: " + response.StatusCode, 1);
+            }
+            else
+            {
+                logger.LogToFile("Response from registry.npmjs.org: " + response.StatusCode, 1);
+                Environment.Exit(1);
+            }
+
+            string responseBody = await response.Content.ReadAsStringAsync();
+            var npmpath = Path.Combine(currentDirectory, "npmdata/" + packageName + ".json");
+            Console.WriteLine("Writing to file: " + npmpath);
+
+            //make file if it doesn't exist
+            if (!File.Exists(npmpath))
+            {
+                File.Create(npmpath);
+            }
+
+            File.WriteAllText(@npmpath, responseBody);
             // Dispose once all HttpClient calls are complete. This is not necessary if the containing object will be disposed of; for example in this case the HttpClient instance will be disposed automatically when the application terminates so the following call is superfluous.
             client.Dispose();
         }
