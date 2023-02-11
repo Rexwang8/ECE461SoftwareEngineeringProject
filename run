@@ -26,6 +26,7 @@ function removeCaches() {
 
     rm -rf CLIParse
     rm -rf RestInt
+    rm -rf StaticAnalysisTester
 
     rm -rf repo
 }
@@ -56,7 +57,11 @@ function makeCaches() {
     fi
 
     if [ ! -d "results" ]; then
-        mkdir -p npmdata
+        mkdir -p results
+    fi
+
+    if [ ! -d "repo" ]; then
+        mkdir -p repo
     fi
 }
 
@@ -115,6 +120,11 @@ case "$1" in
         dotnet publish RestIntProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
         cp RestIntProj/bin/Debug/net6.0/linux-x64/publish/RestInt .
         logDebug "NPM API Caller built"
+
+        logDebug "Building Static Analysis C#"
+        dotnet publish StaticAnalysisTesterProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
+        cp StaticAnalysisTesterProj/bin/Debug/net6.0/linux-x64/publish/StaticAnalysisTester .
+        logDebug "Static Analysis C# built"
 
 
         
