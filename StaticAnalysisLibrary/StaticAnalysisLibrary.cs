@@ -11,36 +11,40 @@ using System.Text.Json.Serialization;
 namespace StaticAnalysisLibrary
 {   
 
-    public class FileInfo
+    public class RepoInfo
     {
-        public int codeCount { get; set; } //lines if code
-        public int commentCount { get; set; } // lines of comments
-        public int characterCount { get; set; } //code character
-        public FileInfo() 
+        public int codeLineCount { get; set; } //lines if code
+        public int commentLineCount { get; set; } // lines of comments
+        public int codeCharCount { get; set; } //code characters
+        public int commentCharCount { get; set; }
+        public string licensePath { get; set; }
+        public string readmePath { get; set; }
+        public RepoInfo() 
         {
-            codeCount = 0; 
-            commentCount = 0;
-            characterCount = 0;
-            //filesize, extension, readme , license, character count
+            codeLineCount = 0; 
+            commentLineCount = 0;
+            codeCharCount = 0;
+            commentCharCount = 0;
+            licensePath = "";
+            readmePath = "";
         }
     }
 
-    static public class DirectoryTool
+    public class DirectoryTool
     {
-        static public string licensePath;
-        static public string readmePath; 
-        static public List<string> fileEntries = new List<string>();
+        public List<string> sourceCodeEntries = new List<string>();
+        public List<string> mdEntries = new List<string>();
 
-        static public string[] jsFileExt = {".css", ".sass", ".scss", ".less", ".styl", ".html", ".htmls", ".htm", ".js", ".jsx", ".ts", ".tsx", ".cjs", ".mjs", ".iced", ".liticed", ".ls", ".es", ".es6", ".sjs", ".php", ".jsp", ".asp", ".aspx"};
+        public string[] jsFileExt = {".css", ".sass", ".scss", ".less", ".styl", ".html", ".htmls", ".htm", ".js", ".jsx", ".ts", ".tsx", ".cjs", ".mjs", ".iced", ".liticed", ".ls", ".es", ".es6", ".sjs", ".php", ".jsp", ".asp", ".aspx"};
         //This function gets all the files inside dirTargetName inside directoryPath
-        static public void getFiles(string directoryPath, string dirTargetName)
+        public void getFiles(string directoryPath, string dirTargetName, ref RepoInfo repoInfo)
         {
             try
             {
                 string[] dirs = Directory.GetDirectories(directoryPath, dirTargetName, SearchOption.TopDirectoryOnly);
                 string dirRoot = dirs[0];
                 
-                getAllFiles(dirRoot);
+                getAllFiles(dirRoot, ref repoInfo);
             }
             catch (Exception e)
             {
@@ -49,7 +53,7 @@ namespace StaticAnalysisLibrary
         }
 
         //recursive call for getFiles
-        static public void getAllFiles(string directoryPath)
+        public void getAllFiles(string directoryPath, ref RepoInfo repoInfo)
         {
             //Gets important files in directory path
             string[] filePaths = Directory.GetFiles(directoryPath); 
@@ -60,16 +64,20 @@ namespace StaticAnalysisLibrary
 
                 if (jsFileExt.Any(fileName.EndsWith))
                 {
-                    fileEntries.Add(filePath); 
+                    sourceCodeEntries.Add(filePath); 
                 }
                 else if (fileName.ToLower().Contains("license"))
                 {
-                    
-                    licensePath = filePath;
+                    repoInfo.licensePath = filePath;
                 }
                 else if (fileName.ToLower().Contains("readme"))
                 {
-                    readmePath = filePath;
+                    repoInfo.readmePath = filePath;
+                    mdEntries.Add(filePath);
+                }
+                else if (fileName.EndsWith(".md"))
+                {
+                    mdEntries.Add(filePath);
                 }
                 
             }
@@ -77,49 +85,53 @@ namespace StaticAnalysisLibrary
             string[] dirs = Directory.GetDirectories(directoryPath, "*", SearchOption.TopDirectoryOnly);
             foreach (string dir in dirs)
             {
-                getAllFiles(dir);
+                getAllFiles(dir, ref repoInfo);
             }
         }
     }
 
-    static public class StaticAnalysis
+    public class StaticAnalysis
     {
-        static FileInfo fileInfo = new FileInfo();
+        RepoInfo repoInfo = new RepoInfo();
+        DirectoryTool DirectoryTool = new DirectoryTool();
 
-        static public void Analyze(string repoBin, string targetName, string resultJsonFile)
+        public void Analyze(string repoBin, string targetName, string resultJsonFile)
         {
-            DirectoryTool.getFiles(repoBin, targetName);
-            foreach(string file in DirectoryTool.fileEntries)
+            DirectoryTool.getFiles(repoBin, targetName, ref repoInfo);
+            foreach(string file in DirectoryTool.sourceCodeEntries)
             {
                 ReadFile(file);
+            }
+
+            foreach(string file in DirectoryTool.mdEntries)
+            {
+                repoInfo.commentCharCount += File.ReadAllLines(file).Sum(s => s.Length);
             }
             
             WriteFile(resultJsonFile);
 
-            DirectoryTool.fileEntries.Clear();
+            DirectoryTool.sourceCodeEntries.Clear();
+
         }
 
         //Reads the file and does the static analysis on the file
-        static public void ReadFile(string filename)
+        public void ReadFile(string filename)
         {
-            String line;
+            String? line;
            
             try
             {
                 //Pass the file path and file name to the StreamReader constructor
                 StreamReader sr = new StreamReader(filename);
-                //Read the first line of text
+                
                 line = sr.ReadLine();
                 //Continue to read until you reach end of file
                 while (line != null)
                 {
-                    //Console.WriteLine(line);
                     AnalyzeLine(line);
-                    //Read the next line
                     line = sr.ReadLine();
-                    
                 }
-                //close the file
+                
                 sr.Close();
             }
             catch (Exception e)
@@ -129,26 +141,26 @@ namespace StaticAnalysisLibrary
         }
 
         //
-        static public void AnalyzeLine(string text)
+        public void AnalyzeLine(string text)
         {
             if (text.StartsWith("//") || text.StartsWith("/*"))
             {
-                fileInfo.commentCount++;
+                repoInfo.commentLineCount++;
             }
             else if (text.Contains("//") || text.Contains("/*"))
             {
-                fileInfo.commentCount++;
-                fileInfo.codeCount++;
+                repoInfo.commentLineCount++;
+                repoInfo.codeLineCount++;
                 
                 //finds length of code in lines with code and comments
                 String[] separator = { "//,", "/*" };
                 String[] textArr = text.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-                fileInfo.characterCount += textArr[0].Length;
+                repoInfo.codeCharCount += textArr[0].Length;
             }
             else
             {
-                fileInfo.codeCount++;
-                fileInfo.characterCount += text.Length;
+                repoInfo.codeLineCount++;
+                repoInfo.codeCharCount += text.Length;
             }
 
 
@@ -156,16 +168,17 @@ namespace StaticAnalysisLibrary
 
         //Writes the results of Static Analysis to a file
 
-        static public void WriteFile(string filename)
+        public void WriteFile(string filename)
         {
-            Console.WriteLine("There are " + fileInfo.codeCount + " lines of code");
-            Console.WriteLine("There are " + fileInfo.commentCount + " comments");
-            Console.WriteLine("There are " + fileInfo.characterCount + " code characters"); 
-            Console.WriteLine("There is a license path: " + DirectoryTool.licensePath );
-            Console.WriteLine("There is a license path: " + DirectoryTool.readmePath );
+            Console.WriteLine("There are " + repoInfo.codeLineCount + " lines of code");
+            Console.WriteLine("There are " + repoInfo.commentLineCount + " comments");
+            Console.WriteLine("There are " + repoInfo.codeCharCount + " code characters"); 
+            Console.WriteLine("There are " + repoInfo.commentCharCount + " comment characters"); 
+            Console.WriteLine("There is a license path: " + repoInfo.licensePath );
+            Console.WriteLine("There is a readme path: " + repoInfo.readmePath );
             
 
-            string json = JsonSerializer.Serialize(fileInfo);
+            string json = JsonSerializer.Serialize(repoInfo);
             File.WriteAllText(filename, json);
         }
     }
