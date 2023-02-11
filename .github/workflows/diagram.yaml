@@ -15,4 +15,4 @@ jobs:
         with:
           excluded_paths: "ignore,.github,node_modules,cache,.vs,testcache2,examples,.gitignore,.gitattributes,diagram.svg"
           excluded_globs: "**/*.csproj,**/bin,**/obj"
-          file_colors: {"py": "green","cs": "red"}
+          file_colors: '{"py": "green","cs": "red"}'
