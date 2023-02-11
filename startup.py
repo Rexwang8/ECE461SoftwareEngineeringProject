@@ -5,75 +5,63 @@ import os
 
 import logger #logger.py
 import grader #grader.py
+import gitPython #gitPython.py
 
 #get args
 def main():
     #current working dir
     dir = pathlib.Path().absolute()
 
-   
-    #get first arg as command
-    command = sys.argv[1]
-    #get second arg LOG LEVEL
-    loglevel = sys.argv[2]
-    #get third arg as log file
-    logfile = sys.argv[3]
-    #get fourth arg as the URL if it exists
-    url = "_"
-    if(len(sys.argv) > 4):
-        url = sys.argv[4]
+    #get first arg LOG LEVEL
+    loglevel = sys.argv[1]
+    #get second arg as log file
+    logfile = sys.argv[2] + "log.txt"
     
-    #append "log.txt" to current working dir variable
-    logpath = str(dir) + "\\" + logfile
-    
+    #get third arg as all input packages
+    inputfile = sys.argv[3]
 
-    Debug = logger.Logger(logpath, 2, "Main")
-    
-    logstr = f"ARGS: {sys.argv}, logpath: {logpath}, cmd: {command}, loglevel: {loglevel} url: {url}"
-    Debug.log(logstr, 2)
+    Debug = logger.Logger(logfile, 2, "Main")
+
     
     Debug.log("Starting main script...", 1)
-    
-    MakeFolderCache(Debug)
+    #if repo folder exists, delete it
+    if os.path.exists("repo"):
+        os.rmdir("repo")
+    #make the folder repo
     MakeFolderRepo(Debug)
+    #make the folder results
     MakeFolderResults(Debug)
     
+    #we get a list of all packages from arg 3
+    packages = ParseInput(inputfile, Debug)
+    print(packages)
     
-    #we check if command is install
-    if(command == "install"):
-        #command is install
-        Debug.log("Recieved command: install, already run by C# parser, exiting python script.", 1)
-    elif(command == "build"):
-        #command is build
-        Debug.log("Recieved command: build, already run by C# parser, exiting python script.", 1)
-    elif(command == "test"):
-        #this is where we test the loaded packages
-        Debug.log("Recieved command: test, Testing code with test cases...", 1)
-        pass
-    else:
-        #this is where we call our api analysis script with the URLS
-        Debug.log(f"Recieved command: run, URL recieved is {url}", 1)
-        config = []
-        invokeGIT(config, logpath, loglevel)
-        invokeNPM(config, logpath, loglevel)
-        invokeStatic(config, logpath, loglevel)
-        pass
+    #we loop through the list of packages and pull them down
+    for package in packages:
+        pathToRepo = "repo/" + package[0]
         
+        if(package[1] == "github"):
+            Debug.log(f"Cloning {package[0]} from github...", 1)
+            #print(f"{package[2]} {pathToRepo}")
+            gitPython.pythonGit.pyClone(url=package[2], path=pathToRepo)
+        elif(package[1] == "npm"):
+            #we can find the json at npmdata folder/(name of package).json
+            name = package[0]
+            npmjson = grader.ImportJSON(f"npmdata/{name}.json")
+            githuburl = npmjson["repository"]["url"]
+            #clean up url
+            githuburl = githuburl.replace("git+", "").replace(".git", "").replace("ssh://", "https://").replace("git://", "https://").replace("git@", "")
+            #print(f"{githuburl} {pathToRepo}")
+            gitPython.pythonGit.pyClone(url=githuburl, path=pathToRepo)
+    
+    #we now pass to the static analysis tool with c#
+    os.system("./StaticAnalysisTest")
+    
     Debug.log("Exiting main script...", 1)
 
     return 0
 
 
-def MakeFolderCache(Logger):
-    #We make a folder called cache in the current working directory to store data
-    
-    #check if folder exists
-    if(os.path.exists("cache")):
-        Logger.log(f"Cache folder already exists at {pathlib.Path().absolute()}", 2)
-        return
-    os.mkdir("cache")
-    Logger.log(f"Cache folder created at {pathlib.Path().absolute()}", 2)
-    return
     
 def MakeFolderRepo(Logger):
     #We make a folder called repo in the current working directory to store the downloaded repo
@@ -97,18 +85,30 @@ def MakeFolderResults(Logger):
     Logger.log(f"Results folder created at {pathlib.Path().absolute()}", 2)
     return
 
+def ParseInput(inputfile, Logger):
+    #we get a list of all packages from arg 3 by line
+    with open(inputfile, 'r') as f:
+        packages = f.readlines()
+        f.close()   
+    Logger.log(f"Recieved {len(packages)} packages from input file.", 2)
+    
+    ParsedPackages = []
+    for package in packages:
+        pkgtype = ""
+        #we get the package type by checking if it contains a string "github.com"
+        if("github.com" in package):
+            #this is a github repo
+            pkgtype = "github"
+        elif("npmjs.com" in package):
+            pkgtype = "npm"
+        
+        #we get the package name by splitting the string by "/"
+        pkgname = package.split("/")[-1]
+        #we append a tuple of package name, package type, and package url to the list
+        ParsedPackages.append((pkgname.replace("\n", ""), pkgtype.replace("\n", ""), package.replace("\n", "")))
+    return ParsedPackages
+        
 
-def invokeNPM(config, logpath, loglevel):
-    #this is where we call the npm script
-    pass
-
-def invokeGIT(config, logpath, loglevel):
-    #this is where we call the git script
-    pass
-
-def invokeStatic(config, logpath, loglevel):
-    #this is where we call the static analysis script
-    pass
 
 
 def SendToGrader(config, npmjsonpath, gitjsonpath, staticjsonpath, logpath, loglevel):

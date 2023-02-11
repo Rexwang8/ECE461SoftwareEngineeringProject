@@ -26,6 +26,8 @@ function removeCaches() {
 
     rm -rf CLIParse
     rm -rf RestInt
+
+    rm -rf repo
 }
 
 function makeCaches() {
@@ -50,6 +52,10 @@ function makeCaches() {
     fi
 
     if [ ! -d "npmdata" ]; then
+        mkdir -p npmdata
+    fi
+
+    if [ ! -d "results" ]; then
         mkdir -p npmdata
     fi
 }

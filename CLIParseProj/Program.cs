@@ -135,17 +135,17 @@ namespace PackageManager
                 foreach (string line in lines)
                 {
                     //wait 100ms for github api to not get rate limited
-                    System.Threading.Thread.Sleep(100);
+                    System.Threading.Thread.Sleep(150);
 
                     logger.LogToFile(line, 1);
-                    Console.WriteLine(line);
                     //search string for either "github.com" or "npmjs.com"
                     if (line.Contains("github.com"))
                     {
                         string packageName = line.Substring(line.LastIndexOf('/') + 1);
+
                         //call github script
                         logger.LogToFile("Calling Github Script...", 1);
-                        //Console.WriteLine("Calling Github Script...");
+
                         logger.LogToFile(packageName, 1);
                         logger.LogToFile($"command is python3 github_api/git_module.py github_api/data/" + packageName + " " + line + " " + GHTOKEN, 2);
 
@@ -160,17 +160,13 @@ namespace PackageManager
 
                         //Console.WriteLine("StdOut:" + stdOutBuffer.ToString());
                         //Console.WriteLine("StdErr:" + stdErrBuffer.ToString());
-
-
                     }
                     else if (line.Contains("npmjs.com"))
                     {
                         string packageName = line.Substring(line.LastIndexOf('/') + 1);
                         //call npm script
                         logger.LogToFile("Calling NPM Script...", 1);
-                        Console.WriteLine("Calling NPM Script...");
-                        Console.WriteLine(packageName);
-                        Console.WriteLine("./RestInt npmData " + packageName + " " + line + " " + ENVLOGLEVEL + " " + ENVLOGLOCATION);
+                        
                         logger.LogToFile($"command is ./RestInt npmData " + line + " " + packageName + " " + ENVLOGLEVEL + " " + ENVLOGLOCATION, 2);
                         var result = Cli.Wrap("./RestInt")
                             .WithArguments($"npmData " + line + " " + packageName + " " + ENVLOGLEVEL + " " + ENVLOGLOCATION)
@@ -181,8 +177,8 @@ namespace PackageManager
                             .GetAwaiter()
                             .GetResult();
                         
-                        Console.WriteLine("StdOut:" + stdOutBuffer.ToString());
-                        Console.WriteLine("StdErr:" + stdErrBuffer.ToString());
+                        //Console.WriteLine("StdOut:" + stdOutBuffer.ToString());
+                        //Console.WriteLine("StdErr:" + stdErrBuffer.ToString());
                         //startup.NpmScript(line);
                     }
                     else
@@ -193,6 +189,16 @@ namespace PackageManager
                     
                 
                 }
+                //At this point, we have the metadata for all the packages, we need to call the python script for grading
+                logger.LogToFile("Calling Python Script...", 1);
+                var result = Cli.Wrap("python3")
+                            .WithArguments($"startup.py")
+                            .WithValidation(CommandResultValidation.None)
+                            .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
+                            .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer))
+                            .ExecuteAsync()
+                            .GetAwaiter()
+                            .GetResult();
                 Environment.Exit(0);
             }
 
@@ -257,7 +263,7 @@ namespace PackageManager
 
             //string logFile = "log.txt";
             string logLine =
-                "[C# Command Parser] "
+                "[C# NPM Grabber] "
                 + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
                 + " Priority "
                 + priority.ToString()

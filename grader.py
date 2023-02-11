@@ -44,6 +44,8 @@ class Score:
     def CalculateLicenseScore(self):
         pass
     
+
+
   
   #structured holder of the npm response      
 class npmResponse:

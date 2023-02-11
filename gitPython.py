@@ -1,12 +1,12 @@
 from git import Repo
-
 class pythonGit:
     def pyClone(url, path):
         try:
             Repo.clone_from(url, path)
-            print("Clone success!")
+            #print("Clone success!")
         except:
-            print("An exception occurred")
+            #print(f"Clone failed for {url}! error: {sys.exc_info()[0]}")
+            pass
         
 
 if __name__ == "__main__":
