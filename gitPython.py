@@ -10,4 +10,4 @@ class pythonGit:
         
 
 if __name__ == "__main__":
-    pythonGit.pyClone("https://github.com/nullivex/nodist", "/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testing2")
+    pythonGit.pyClone("https://github.com/nullivex/nodist", "/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testRepo")
