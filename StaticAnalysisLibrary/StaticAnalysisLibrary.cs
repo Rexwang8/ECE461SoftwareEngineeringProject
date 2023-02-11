@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,23 +9,29 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace StaticAnalysisLibrary
-{
+{   
+
     public class FileInfo
     {
-        public int codeCount { get; set; }
-        public int commentCount { get; set; }
+        public int codeCount { get; set; } //lines if code
+        public int commentCount { get; set; } // lines of comments
+        public int characterCount { get; set; } //code character
         public FileInfo() 
         {
             codeCount = 0; 
             commentCount = 0;
+            characterCount = 0;
+            //filesize, extension, readme , license, character count
         }
     }
 
     static public class DirectoryTool
     {
-
+        static public string licensePath;
+        static public string readmePath; 
         static public List<string> fileEntries = new List<string>();
 
+        static public string[] jsFileExt = {".css", ".sass", ".scss", ".less", ".styl", ".html", ".htmls", ".htm", ".js", ".jsx", ".ts", ".tsx", ".cjs", ".mjs", ".iced", ".liticed", ".ls", ".es", ".es6", ".sjs", ".php", ".jsp", ".asp", ".aspx"};
         //This function gets all the files inside dirTargetName inside directoryPath
         static public void getFiles(string directoryPath, string dirTargetName)
         {
@@ -45,12 +51,27 @@ namespace StaticAnalysisLibrary
         //recursive call for getFiles
         static public void getAllFiles(string directoryPath)
         {
-            //Gets all files in directory path
-            string[] fileNames = Directory.GetFiles(directoryPath); 
-            foreach (string fileName in fileNames)
+            //Gets important files in directory path
+            string[] filePaths = Directory.GetFiles(directoryPath); 
+            foreach (string filePath in filePaths)
             {
+                String[] splitFilePath = filePath.Split("/");
+                string fileName = splitFilePath[splitFilePath.Length - 1];
+
+                if (jsFileExt.Any(fileName.EndsWith))
+                {
+                    fileEntries.Add(filePath); 
+                }
+                else if (fileName.ToLower().Contains("license"))
+                {
+                    
+                    licensePath = filePath;
+                }
+                else if (fileName.ToLower().Contains("readme"))
+                {
+                    readmePath = filePath;
+                }
                 
-                fileEntries.Add(fileName); 
             }
 
             string[] dirs = Directory.GetDirectories(directoryPath, "*", SearchOption.TopDirectoryOnly);
@@ -118,10 +139,16 @@ namespace StaticAnalysisLibrary
             {
                 fileInfo.commentCount++;
                 fileInfo.codeCount++;
+                
+                //finds length of code in lines with code and comments
+                String[] separator = { "//,", "/*" };
+                String[] textArr = text.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+                fileInfo.characterCount += textArr[0].Length;
             }
             else
             {
                 fileInfo.codeCount++;
+                fileInfo.characterCount += text.Length;
             }
 
 
@@ -133,8 +160,10 @@ namespace StaticAnalysisLibrary
         {
             Console.WriteLine("There are " + fileInfo.codeCount + " lines of code");
             Console.WriteLine("There are " + fileInfo.commentCount + " comments");
-
-            // need to create a list of data for each file inside the library 
+            Console.WriteLine("There are " + fileInfo.characterCount + " code characters"); 
+            Console.WriteLine("There is a license path: " + DirectoryTool.licensePath );
+            Console.WriteLine("There is a license path: " + DirectoryTool.readmePath );
+            
 
             string json = JsonSerializer.Serialize(fileInfo);
             File.WriteAllText(filename, json);
