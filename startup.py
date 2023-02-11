@@ -38,6 +38,8 @@ def main():
     
     #we loop through the list of packages and pull them down
     for package in packages:
+        #we sleep for 0.5 seconds to avoid rate limiting
+        time.sleep(0.5)
         pathToRepo = "repo/" + package[0]
         
         if(package[1] == "github"):
