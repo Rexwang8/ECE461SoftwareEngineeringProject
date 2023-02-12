@@ -1,0 +1,48 @@
+Academic Free license v3.0 
+Apache v2.0 
+Artistic v2.0 
+Boost Software License v1.0 
+BSD Zero Clause License 
+BSD 3-Clause "New" or "Revised" License 
+BSD 2-Clause "Simplified" License 
+BSD 3-Clause Clear License 
+CC0 1.0 Universal (CC0 1.0) Public Domain Dedication 
+CeCILL-2.1 
+CeCILL-B 
+Common Public License, version 1.0(CPL-1.0) 
+Creative Commons Attribution No Derivatives 4.0 International 
+Creative Commons Attribution 3.0 Unported (CC BY 3.0) 
+Creative Commons Attribution Non Commercial Share Alike 4.0 International 
+Creative Commons Attribution Share Alike 4.0 International 
+Creative Commons Attribution 4.0 International (CC-BY-4.0) 
+Deutsche Freie Software Lizenz 
+Eclipse Public License 1.0 
+Eclipse Public License 2.0 
+European Union Public Licence, Version 1.1 or later (EUPL) 
+European Union Public Licence, Version 1.2 or later (EUPL) 
+GNU General Public License v2.0 or later 
+GNU General Public License (GPL) 2.0 
+GNU General Public License v3.0 or later 
+GNU Affero General Public License v3.0 
+GNU General Public License v3.0 
+ISC License 
+LaTeX Project Public License v1.3c 
+Microsoft Reciprocal License 
+The MIT License  
+ODC Open Database License (ODbL) 
+ODC Public Domain Dedication & License 1.0 (PDDL) 
+Open Software License v. 3.0 (OSL-3.0) 
+Open Data Commons Attribution License (ODC-BY) 
+The PostgreSQL License 
+The Universal Permissive License v1.0 
+University of Illinois/NCSA Open Source License 
+The Unlicense 
+Do What The F*ck You Want To Public License - WTFPL 
+zlib/libpng License 
+
+
+
+
+
+
+
