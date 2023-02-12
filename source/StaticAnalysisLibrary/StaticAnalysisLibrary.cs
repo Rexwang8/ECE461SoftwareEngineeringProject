@@ -111,7 +111,7 @@ namespace StaticAnalysisLibrary
                 repoInfo.commentCharCount += File.ReadAllLines(file).Sum(s => s.Length);
             }
             
-            LicenseParser(repoInfo.licensePath, "LicenseList.txt", ref repoInfo);
+            LicenseParser(repoInfo.licensePath, System.IO.Directory.GetCurrentDirectory() + "/../../../../source/StaticAnalysisLibrary/LicenseList.txt", ref repoInfo);
             WriteFile(resultJsonFile);
 
             DirectoryTool.sourceCodeEntries.Clear();
