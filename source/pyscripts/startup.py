@@ -21,16 +21,17 @@ def main():
     inputfile = sys.argv[3]
 
     Debug = logger.Logger(logfile, 2, "Main")
+    print("dir: " + str(dir))
+    print("loglevel: " + str(loglevel))
+    print("logfile: " + str(logfile))
 
     
     Debug.log("Starting main script...", 1)
     #if repo folder exists, delete it
-    if os.path.exists("repo"):
-        os.rmdir("repo")
-    #make the folder repo
-    MakeFolderRepo(Debug)
-    #make the folder results
-    MakeFolderResults(Debug)
+    if os.path.exists("data/repo"):
+        #delete repo folder even if it has files
+        os.system("rm -rf data/repo")
+    os.mkdir("data/repo")
     
     #we get a list of all packages from arg 3
     packages = ParseInput(inputfile, Debug)
@@ -38,26 +39,24 @@ def main():
     
     #we loop through the list of packages and pull them down
     for package in packages:
-        #we sleep for 0.5 seconds to avoid rate limiting
-        time.sleep(0.5)
-        pathToRepo = "repo/" + package[0]
+        #we sleep for 0.25 seconds to avoid rate limiting
+        time.sleep(0.25)
+        pathToRepo = "data/repo/" + package[0]
         
         if(package[1] == "github"):
             Debug.log(f"Cloning {package[0]} from github...", 1)
-            #print(f"{package[2]} {pathToRepo}")
             gitPython.pythonGit.pyClone(url=package[2], path=pathToRepo)
         elif(package[1] == "npm"):
             #we can find the json at npmdata folder/(name of package).json
             name = package[0]
-            npmjson = grader.ImportJSON(f"npmdata/{name}.json")
+            npmjson = grader.ImportJSON(f"data/npm/{name}.json")
             githuburl = npmjson["repository"]["url"]
             #clean up url
             githuburl = githuburl.replace("git+", "").replace(".git", "").replace("ssh://", "https://").replace("git://", "https://").replace("git@", "")
-            #print(f"{githuburl} {pathToRepo}")
             gitPython.pythonGit.pyClone(url=githuburl, path=pathToRepo)
     
     #we now pass to the static analysis tool with c#
-    os.system("./StaticAnalysisTest")
+    os.system("./StaticAnalysisTester")
     
     Debug.log("Exiting main script...", 1)
 

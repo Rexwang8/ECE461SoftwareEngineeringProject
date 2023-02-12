@@ -54,12 +54,10 @@ response = requests.post("https://api.github.com/graphql", json={'query': query}
 
 # Check for API response status
 if response.status_code != 200:
-    #print("Failed to retrieve repository information.")
+    
     sys.exit(1)
 
 # Write JSON response to output file
 with open(sys.argv[1] + ".json", "w") as f:
     json.dump(response.json(), f)
-    #print(response.json())
-#print(response)
-#print("Repository information successfully written to " + sys.argv[1] + ".json")
+

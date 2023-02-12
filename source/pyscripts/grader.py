@@ -241,8 +241,6 @@ def main():
     print(str(npmscore))
     print(str(gitscore))
     
-
-    #json3 = ImportJSON("Build\jsonexample.json")
     Debug = logger.Logger("log.txt", 2)
     Debug.log("Testing json import", 2)
     
@@ -252,6 +250,6 @@ def main():
     
     
 if __name__ == "__main__":
-    main()
+    pass
     
     

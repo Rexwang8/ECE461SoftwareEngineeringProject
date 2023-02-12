@@ -21,14 +21,16 @@ function removeCaches() {
     rm -rf log.txt
     rm -rf $logfullpath
     rm -rf $logdirectorypath
-    rm -rf github_api/data
-    rm -rf npmdata
 
     rm -rf CLIParse
     rm -rf RestInt
     rm -rf StaticAnalysisTester
+}
 
-    rm -rf repo
+function removeAll() {
+    removeCaches
+    rm -rf results
+    rm -rf data
 }
 
 function makeCaches() {
@@ -48,13 +50,6 @@ function makeCaches() {
     touch cache/build.txt
     touch cache/log.txt
 
-    if [ ! -d "github_api/data" ]; then
-        mkdir -p github_api/data
-    fi
-
-    if [ ! -d "npmdata" ]; then
-        mkdir -p npmdata
-    fi
 
     if [ ! -d "results" ]; then
         mkdir -p results
@@ -63,6 +58,28 @@ function makeCaches() {
     if [ ! -d "repo" ]; then
         mkdir -p repo
     fi
+
+    if [ ! -d "data" ]; then
+        mkdir -p data
+    fi
+
+    if [ ! -d "data/npm" ]; then
+        mkdir -p data/npm
+    fi
+
+    if [ ! -d "data/git" ]; then
+        mkdir -p data/git
+    fi
+
+    if [ ! -d "data/static" ]; then
+        mkdir -p data/static
+    fi
+
+    if [ ! -d "data/repo" ]; then
+        mkdir -p data/repo
+    fi
+
+
 }
 
 function logInfo() {
@@ -112,18 +129,18 @@ case "$1" in
         # build function code here
         #check if loglevel is greater than 0
         logDebug "Building C# CLI Parser"
-        dotnet publish CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
-        cp CLIParseProj/bin/Debug/net6.0/linux-x64/publish/CLIParse .
+        dotnet publish source/CLIParseProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
+        cp source/CLIParseProj/bin/Debug/net6.0/linux-x64/publish/CLIParse .
         logDebug "C# CLI Parser built"
 
         logDebug "Building NPM API Caller"
-        dotnet publish RestIntProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
-        cp RestIntProj/bin/Debug/net6.0/linux-x64/publish/RestInt .
+        dotnet publish source/RestIntProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
+        cp source/RestIntProj/bin/Debug/net6.0/linux-x64/publish/RestInt .
         logDebug "NPM API Caller built"
 
         logDebug "Building Static Analysis C#"
-        dotnet publish StaticAnalysisTesterProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
-        cp StaticAnalysisTesterProj/bin/Debug/net6.0/linux-x64/publish/StaticAnalysisTester .
+        dotnet publish source/StaticAnalysisTesterProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
+        cp source/StaticAnalysisTesterProj/bin/Debug/net6.0/linux-x64/publish/StaticAnalysisTester .
         logDebug "Static Analysis C# built"
 
 
@@ -145,6 +162,7 @@ case "$1" in
         logDebug "Removing old build"
 
         removeCaches
+        removeAll
 
 
         logInfo "Old build removed"
@@ -158,14 +176,18 @@ case "$1" in
 
         logInfo "Installing Python Dependencies with pip"
         
-        pip install -r requirements.txt > cache/pip.txt
+        pip install -r source/requirements.txt > cache/pip.txt
 
         logDebug "Python Dependencies installed"
 
         logInfo "Installing c# Dependencies with dotnet"
-        cd CLIParseProj
-        dotnet add package CliWrap --version 3.6.0 | tee -a $logfullpath ../cache/build.txt >/dev/null
-        cd ..
+        cd source/CLIParseProj
+        dotnet add package CliWrap --version 3.6.0 | tee -a $logfullpath ../../cache/build.txt >/dev/null
+        cd ../..
+
+        cd source/StaticAnalysisTesterProj
+        dotnet add package CliWrap --version 3.6.0 | tee -a $logfullpath ../../cache/build.txt >/dev/null
+        cd ../..
         logDebug "c# Dependencies installed"
 
         logInfo "2 Dependencies installed"

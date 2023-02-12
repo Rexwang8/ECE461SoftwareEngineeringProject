@@ -2,6 +2,9 @@
 <ItemGroup>
     <ProjectReference Include="..\StaticAnalysisLibrary\StaticAnalysisLibrary.csproj" />
   </ItemGroup>
+<ItemGroup>
+  <PackageReference Include="CliWrap" Version="3.6.0" />
+</ItemGroup>
   
   <PropertyGroup>
     <OutputType>Exe</OutputType>

@@ -7,17 +7,12 @@ namespace ConsoleProgram
         {
             HttpClient client = new HttpClient();
             // List data response.
-            //string outputFile = args[0];
             string npmreg = args[1];
             string packageName = args[2];
             int ENVLOGLEVEL = 2;
             bool success = int.TryParse(args[3], out ENVLOGLEVEL);
             if (!success)
             {
-                if (ENVLOGLEVEL != 0)
-                {
-                    Console.WriteLine("Invalid log level, exiting...");
-                }
                 Environment.Exit(1);
             }
 
@@ -30,19 +25,10 @@ namespace ConsoleProgram
 
             if (System.IO.Path.IsPathRooted(ENVLOGLOCATION) == true)
             {
-                if(ENVLOGLEVEL > 1)
-                {
-                    Console.WriteLine("Log File Location is absolute path, using as is...");
-                }
                 fullPathLogger = ENVLOGLOCATION;
             }
             else
             {
-                if(ENVLOGLEVEL > 1)
-                {
-                    Console.WriteLine(
-                        "Log File Location is relative path, appending to current directory...");
-                }
                 fullPathLogger = currentDirectory + "\\" + ENVLOGLOCATION;
             }
 
@@ -67,7 +53,7 @@ namespace ConsoleProgram
             }
 
             string responseBody = await response.Content.ReadAsStringAsync();
-            var npmpath = Path.Combine(currentDirectory, "npmdata/" + packageName + ".json");
+            var npmpath = Path.Combine(currentDirectory, "data/npm/" + packageName + ".json");
             Console.WriteLine("Writing to file: " + npmpath);
 
             //make file if it doesn't exist
@@ -124,9 +110,8 @@ namespace ConsoleProgram
                     return;
                 }
 
-                //string logFile = "log.txt";
                 string logLine =
-                    "[C# Command Parser] "
+                    "[C# NPM Grbber] "
                     + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
                     + " Priority "
                     + priority.ToString()
@@ -142,7 +127,6 @@ namespace ConsoleProgram
                     return;
                 }
 
-                //Console.WriteLine(text);
                 LogToFile(text, priority);
             }
         }
