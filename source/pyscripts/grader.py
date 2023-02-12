@@ -708,7 +708,7 @@ def ParseAllNPMJSON(pathToNPMJsonFolder, logger):
         else:
             continue
     return AllNPMScores
-
+'''
 def GetAllFolders(pathToFolder):
     #return a list of strings of all folders in dir
     folders = os.listdir(pathToFolder)
@@ -717,12 +717,11 @@ def GetAllFolders(pathToFolder):
     for folder in folders:
         cleanedFolders.append(folder.replace(".json", ""))
     return cleanedFolders
-        
-def main():
+'''
+
+def main(loglevel, logfile):
     #get arguments
-    loglevel = sys.argv[1]
-    logfile = sys.argv[2]
-    Debug = logger.Logger(f"{logfile}/log.txt", 2, "Grader")
+    Debug = logger.Logger(f"{logfile}", 2, "Grader")
     Debug.log("Log level: " + loglevel, 2)
     Debug.log("Log file: " + logfile, 2)
     
@@ -794,7 +793,9 @@ def main():
     
     
 if __name__ == "__main__":
-    main()
+    loglevel = sys.argv[1]
+    logfile = sys.argv[2]
+    main(loglevel, logfile)
     
     
     
