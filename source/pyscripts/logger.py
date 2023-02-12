@@ -31,7 +31,7 @@ class Logger:
         if(self.internalpriority == 1 and priority == 2):
             return
         
-        #check if log file exists
+	#check if log file exists
         if(not pathlib.Path(self.path).exists()):
             with open(self.path, "w") as f:
                 f.write(f"[Python {self.scriptname} Script] Log file created\n")
