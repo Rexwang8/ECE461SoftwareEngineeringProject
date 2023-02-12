@@ -1,8 +1,9 @@
 import coverage
 import os
 import sys
-cov = coverage.Coverage()
+cov = coverage.Coverage(source=['gitPython','github_api', 'logger'])
 cov.start()
+
 LOG_PATH = "/Users/Josephma/461_project/source/pyscripts/test.txt"
 LOG_FILE = "/Users/Josephma/461project2/testcache2"
 
@@ -63,12 +64,14 @@ module.run_git_module(the_name, the_url, sys.argv[1])
 
 ###########################
 #Testing gitPython.py
-#untestable due to additional irrelevant packages showing line coverage
 ##########################
+import gitPython
+gitPython.pythonGit.pyClone("invalidURL","invalidPath")
 
 ###########################
 #Testing grader.py - testing still in progress
 ##########################
+
 '''
 import grader as grade
 grade.main(2, LOG_FILE)
@@ -77,6 +80,8 @@ grade.main(2, LOG_FILE)
 #save the coverage tests
 cov.stop()
 cov.save()
+cov.load()
+
 percent = cov.report()
 print(str(percent) + "%")
 
