@@ -197,7 +197,7 @@ namespace StaticAnalysisLibrary
                     Repo.license = LicenseVar;
                 }
             }
-            if (LicenseVar == null) {
+            if (Repo.license == "") {
                 Repo.license = "Not Available";
             }
         }
