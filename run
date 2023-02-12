@@ -144,16 +144,19 @@ case "$1" in
         cd source/pyscripts
         python3 gitPython.py
         cd ../..
+        
+        cd UnitTest/
+        dotnet test --collect:"XPlat Code Coverage"
 
         # test function code here
-        echo "Total: 20"
-        echo "Passed: 20"
-        echo "Coverage: 100%"
-        echo "20/20 tests passed. 100% line coverage achieved."
-        logDebug "Running tests"
+        #echo "Total: 20"
+        #echo "Passed: 20"
+        #echo "Coverage: 100%"
+        #echo "20/20 tests passed. 100% line coverage achieved."
+        #logDebug "Running tests"
 
         #remove test repo
-        cd UnitTest/
+        
         rm -rf testrepo/
         cd ../
         exit 0
@@ -191,9 +194,15 @@ case "$1" in
         cd ../..
         logDebug "c# Dependencies installed"
 
-        logInfo "3 Dependencies installed"
-        echo "3 dependencies installed..."
+        logInfo "Installing c# line coverage package"
+        cd UnitTest/
+        dotnet add package coverlet.msbuild
+        cd ../
+
+        logInfo "4 Dependencies installed"
+        echo "4 dependencies installed..."
         exit 0
+
         ;;
     *)
         # code for running parse with URL argument
