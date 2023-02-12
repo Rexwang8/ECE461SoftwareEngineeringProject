@@ -6,7 +6,7 @@
 
 #log environment variables $LOG_PATH and $LOG_LEVEL
 loglevel="${LOG_LEVEL:-2}"
-logfullpath="${LOG_FILE:-/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2}"
+logfullpath="${LOG_FILE:-/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/cache/log2.txt}"
 mkdir -p cache
 touch cache/build.txt
 ghtoken="${GITHUB_TOKEN:-faketokengithub}"

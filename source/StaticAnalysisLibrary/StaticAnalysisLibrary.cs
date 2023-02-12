@@ -50,8 +50,7 @@ namespace StaticAnalysisLibrary
             }
             catch (Exception e)
             {
-                throw;
-                Console.WriteLine("The process failed: {0}", e.ToString());
+                throw e;
             }
         }
 
@@ -140,7 +139,7 @@ namespace StaticAnalysisLibrary
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception: " + e.Message);
+                throw e;
             }
         }
 
@@ -174,14 +173,6 @@ namespace StaticAnalysisLibrary
 
         public void WriteFile(string filename)
         {
-            Console.WriteLine("There are " + repoInfo.codeLineCount + " lines of code");
-            Console.WriteLine("There are " + repoInfo.commentLineCount + " comments");
-            Console.WriteLine("There are " + repoInfo.codeCharCount + " code characters"); 
-            Console.WriteLine("There are " + repoInfo.commentCharCount + " comment characters"); 
-            Console.WriteLine("There is a license path: " + repoInfo.licensePath );
-            Console.WriteLine("There is a readme path: " + repoInfo.readmePath );
-            
-
             string json = JsonSerializer.Serialize(repoInfo);
             File.WriteAllText(filename, json);
         }
