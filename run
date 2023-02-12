@@ -55,9 +55,6 @@ function makeCaches() {
         mkdir -p results
     fi
 
-    if [ ! -d "repo" ]; then
-        mkdir -p repo
-    fi
 
     if [ ! -d "data" ]; then
         mkdir -p data
