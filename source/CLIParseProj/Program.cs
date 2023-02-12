@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using StaticAnalysisLibrary;
 using CliWrap;
+using System.Text;
 
 // Hello World! program
 namespace PackageManager
@@ -11,9 +12,6 @@ namespace PackageManager
     {
         static void Main(string[] args)
         {
-            StaticAnalysis.Test();
-            Console.WriteLine("Hello World!");
-
             //get environment variables
             int ENVLOGLEVEL = 2;
             string ENVLOGLOCATION = "log.txt";
@@ -29,7 +27,8 @@ namespace PackageManager
                 Environment.Exit(1);
             }
             ENVLOGLOCATION = args[1];
-
+            string GHTOKEN = args[3];
+            
             //get current directory
             string currentDirectory = Directory.GetCurrentDirectory();
 
@@ -38,51 +37,26 @@ namespace PackageManager
 
             if (System.IO.Path.IsPathRooted(ENVLOGLOCATION))
             {
-                if(ENVLOGLEVEL > 1)
-                {
-                    Console.WriteLine("Log File Location is absolute path, using as is...");
-                }
+
                 fullPathLogger = ENVLOGLOCATION;
             }
             else
             {
-                if(ENVLOGLEVEL > 1)
-                {
-                    Console.WriteLine(
-                        "Log File Location is relative path, appending to current directory...");
-                }
                 fullPathLogger = currentDirectory + "\\" + ENVLOGLOCATION;
             }
 
             fullPathLogger = ENVLOGLOCATION;
             string command = args[0];
 
-            if(ENVLOGLEVEL >= 1)
-            {
-                Console.WriteLine("Log File Location: " + fullPathLogger);
-                Console.WriteLine("Log Level: " + ENVLOGLEVEL);
-                Console.WriteLine("Command: " + command);
-            }
-
             //instantiate logger
             CSharpLogger logger = new CSharpLogger(fullPathLogger, ENVLOGLEVEL);
 
-            //Instantiate Startup Agent
-            Startup startup = new Startup();
+            logger.LogToFile("Log File Location: " + fullPathLogger, 1);
+            logger.LogToFile("Log Level: " + ENVLOGLEVEL, 1);
+            logger.LogToFile("Command: " + command, 1);
 
-            //check if arg 0 is "install", "build", "test"
-           /* if (args[0] == "install")
-            {
-                //We have already run the installation script, but we need to logg it out
-                logger.LogToFile("Installing...", 1);
-                Environment.Exit(0);
-            }
-            else if (args[0] == "build")
-            {
-                logger.LogToFile("Building...", 1);
-                Environment.Exit(0);
-            }
-            else */
+            
+
             if (args[0] == "test")
             {
                 logger.LogToFile("Testing...", 1);
@@ -91,10 +65,7 @@ namespace PackageManager
             }
             else
             {
-
-
                 logger.LogToFile("Command: " + command, 1);
-
 
                 //Test if the arg is a url
                 if (!Path.IsPathRooted(command))
@@ -127,29 +98,57 @@ namespace PackageManager
                 }
 
                 //Read the file at the path
+                var stdOutBuffer = new StringBuilder();
+                var stdErrBuffer = new StringBuilder();
                 string[] lines = File.ReadAllLines(command);
                 foreach (string line in lines)
                 {
+                    //wait 100ms for github api to not get rate limited
+                    System.Threading.Thread.Sleep(150);
+
                     logger.LogToFile(line, 1);
-                    Console.WriteLine(line);
                     //search string for either "github.com" or "npmjs.com"
-                    if (line.contains("github.com"))
+                    if (line.Contains("github.com"))
                     {
-                        packageName = line.Substring(line.LastIndexOf('/') + 1);
+                        string packageName = line.Substring(line.LastIndexOf('/') + 1);
+
                         //call github script
                         logger.LogToFile("Calling Github Script...", 1);
-                        console.WriteLine("Calling Github Script...");
-                        console.WriteLine(packageName);
-                        //startup.GithubScript(line);
+                        logger.LogToFile(packageName, 1);
+                        logger.LogToFile($"command is python3 source/pyscripts/github_api/git_module.py data/git/" + packageName + " " + line + " " + GHTOKEN, 2);
+
+                        var cliresultGit = Cli.Wrap("python3")
+                            .WithArguments($"source/pyscripts/github_api/git_module.py data/git/" + packageName + " " + line + " " + GHTOKEN)
+                            .WithValidation(CommandResultValidation.None)
+                            .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
+                            .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer))
+                            .ExecuteAsync()
+                            .GetAwaiter()
+                            .GetResult();
+
+                        logger.LogToFile(stdOutBuffer.ToString(), 2);
+                        logger.LogToFile(stdErrBuffer.ToString(), 2);
+
                     }
-                    else if (line.contains("npmjs.com"))
+                    else if (line.Contains("npmjs.com"))
                     {
-                        packageName = line.Substring(line.LastIndexOf('/') + 1);
+                        string packageName = line.Substring(line.LastIndexOf('/') + 1);
                         //call npm script
                         logger.LogToFile("Calling NPM Script...", 1);
-                        console.WriteLine("Calling NPM Script...");
-                        console.WriteLine(packageName);
-                        //startup.NpmScript(line);
+                        
+                        logger.LogToFile($"command is ./RestInt data/npm " + line + " " + packageName + " " + ENVLOGLEVEL + " " + ENVLOGLOCATION, 2);
+                        var cliresultNPM = Cli.Wrap("./RestInt")
+                            .WithArguments($"data/npm " + line + " " + packageName + " " + ENVLOGLEVEL + " " + ENVLOGLOCATION)
+                            .WithValidation(CommandResultValidation.None)
+                            .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
+                            .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer))
+                            .ExecuteAsync()
+                            .GetAwaiter()
+                            .GetResult();
+
+                            logger.LogToFile(stdOutBuffer.ToString(), 2);
+                            logger.LogToFile(stdErrBuffer.ToString(), 2);
+
                     }
                     else
                     {
@@ -159,22 +158,24 @@ namespace PackageManager
                     
                 
                 }
+                //At this point, we have the metadata for all the packages, we need to call the python script for grading
+                logger.LogToFile("Calling Python Script... for startup", 1);
+                var cliresultStatic = Cli.Wrap("python3")
+                            .WithArguments($"source/pyscripts/startup.py " + ENVLOGLEVEL + " " + ENVLOGLOCATION + " " + command)
+                            .WithValidation(CommandResultValidation.None)
+                            .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
+                            .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer))
+                            .ExecuteAsync()
+                            .GetAwaiter()
+                            .GetResult();
+
+                logger.LogToFile(stdOutBuffer.ToString(), 2);
+                logger.LogToFile(stdErrBuffer.ToString(), 2);
+
                 Environment.Exit(0);
             }
-
-            logger.LogToFile("Finished Executing C# starter script! SHOULDN't GET TO THIS POINT", 1);
-            Environment.Exit(0);
         }
 
-        //https://learn.microsoft.com/en-us/dotnet/api/system.io.path.ispathfullyqualified?view=net-7.0
-        private static void ShowPathInfo(string path)
-        {
-            Console.WriteLine($"Path: {path}");
-            Console.WriteLine($"   Rooted: {Path.IsPathRooted(path)}");
-            Console.WriteLine($"   Fully qualified: {Path.IsPathFullyQualified(path)}");
-            Console.WriteLine($"   Full path: {Path.GetFullPath(path)}");
-            Console.WriteLine();
-        }
     }
 
     public class CSharpLogger
@@ -223,7 +224,7 @@ namespace PackageManager
 
             //string logFile = "log.txt";
             string logLine =
-                "[C# Command Parser] "
+                "[C# Package Grabber] "
                 + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
                 + " Priority "
                 + priority.ToString()

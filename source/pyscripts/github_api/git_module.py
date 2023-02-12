@@ -3,7 +3,7 @@ import requests
 import sys
 
 if len(sys.argv) != 4: #1st arg name of json file 2nd arg github url 3rd arg is token
-    print("Error: URL argument missing")
+    #print("Error: URL argument missing")
     sys.exit(1)
 
 def parse_github_url(url):
@@ -54,12 +54,10 @@ response = requests.post("https://api.github.com/graphql", json={'query': query}
 
 # Check for API response status
 if response.status_code != 200:
-    print("Failed to retrieve repository information.")
+    
     sys.exit(1)
 
 # Write JSON response to output file
 with open(sys.argv[1] + ".json", "w") as f:
     json.dump(response.json(), f)
-    print(response.json())
-print(response)
-print("Repository information successfully written to " + sys.argv[1] + ".json")
+
