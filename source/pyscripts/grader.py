@@ -125,7 +125,19 @@ def ParseNPMJSON(data):
         return None
     
     name = data['name']
-    date = datetime.datetime.strptime(data['time']['modified'], "%Y-%m-%dT%H:%M:%S.%fZ")
+    alltimes = data['time']
+    
+    #set to 1970
+    latesttime = datetime.datetime(1970, 1, 1)
+    #convert alltimes to a list of datetimes and get the latest that isn't ['modified']
+    for time in alltimes:
+        if time != 'modified':
+            date = datetime.datetime.strptime(alltimes[time], "%Y-%m-%dT%H:%M:%S.%fZ")
+            if date > latesttime:
+                latesttime = date
+                
+                
+    date = latesttime
     links = data['repository']['url'].replace('git+', '').replace('.git', '').replace('git://', 'https://').replace('ssh://', 'https://').replace('git@', '')
     authors = data['author']['name']
     maintainers = data['maintainers']
@@ -170,7 +182,9 @@ def GetScore(pkg, gitList, npmList, staticList, logger):
     finalscore = Score()
     finalscore.name = pkg
     
-    logger.log("Getting score for " + pkg)
+    
+    logger.log("Getting score for " + finalscore.name)
+    #print("Getting score for " + finalscore.name)
     
 
     git = None
@@ -203,8 +217,17 @@ def GetScore(pkg, gitList, npmList, staticList, logger):
     if static is not None:
         finalscore.license = static.license
         finalscore.licenseCompatibility = static.licenseCompatibility
+    elif git is not None:
+        finalscore.license = git.license
+        if finalscore.license.toLower() == "mit" or finalscore.license.toLower() == "apache-2.0":
+            finalscore.licenseCompatibility = 1
+            
+    elif npm is not None:
+        finalscore.license = npm.license
+        if finalscore.license.toLower() == "mit" or finalscore.license.toLower() == "apache-2.0":
+            finalscore.licenseCompatibility = 1
     else:
-        finalscore.license = "None"
+        finalscore.license = "N/A"
         finalscore.licenseCompatibility = 0
     
     #fill in last updated date
@@ -238,36 +261,36 @@ def GetScore(pkg, gitList, npmList, staticList, logger):
         #if the repo has no issues, it's a 10
         if git.issues == 0:
             finalscore.busFactor += 10 #no issues, +10
-        #if the repo has 1-10 issues, it's a 20
-        elif git.issues <= 10:
+        #if the repo has 1-15 issues, it's a 20
+        elif git.issues <= 15:
             finalscore.busFactor += 20
-        #if the repo has 11-20 issues, it's a 30
-        elif git.issues <= 20:
+        #if the repo has 16-30 issues, it's a 30
+        elif git.issues <= 30:
             finalscore.busFactor += 30
-        #if the repo has 21-50 issues, it's a 40
-        elif git.issues <= 50:
+        #if the repo has 31-60 issues, it's a 40
+        elif git.issues <= 60:
             finalscore.busFactor += 40
-        #if the repo has 51+ issues, it's a 50
-        elif git.issues >= 51:
+        #if the repo has 61+ issues, it's a 50
+        elif git.issues >= 61:
             finalscore.busFactor += 50
             
         #if the repo has 0 forks, it's a 5
         if git.forkcount == 0:
             finalscore.busFactor += 5
-        #if the repo has 1-5 forks, it's a 10
-        elif git.forkcount <= 5:
+        #if the repo has 1-10 forks, it's a 10
+        elif git.forkcount <= 10:
             finalscore.busFactor += 10
-        #if the repo has 6-15 forks, it's a 15
-        elif git.forkcount <= 15:
+        #if the repo has 11-25 forks, it's a 15
+        elif git.forkcount <= 25:
             finalscore.busFactor += 15
-        #if the repo has 16-30 forks, it's a 20
-        elif git.forkcount <= 30:
+        #if the repo has 26-50 forks, it's a 20
+        elif git.forkcount <= 50:
             finalscore.busFactor += 20
-        #if the repo has 31-60 forks, it's a 25
-        elif git.forkcount <= 60:
+        #if the repo has 51-100 forks, it's a 25
+        elif git.forkcount <= 100:
             finalscore.busFactor += 25
-        #if the repo has 61+ forks, it's a 30
-        elif git.forkcount >= 61:
+        #if the repo has 100+ forks, it's a 30
+        elif git.forkcount >= 101:
             finalscore.busFactor += 30
     
     if npm is not None:
@@ -275,27 +298,29 @@ def GetScore(pkg, gitList, npmList, staticList, logger):
         if npm.maintainers == 0:
             finalscore.busFactor += 0
         elif npm.maintainers == 1:
-            finalscore.busFactor += 10
+            finalscore.busFactor += 5
         elif npm.maintainers == 2:
-            finalscore.busFactor += 15
+            finalscore.busFactor += 10
         elif npm.maintainers <= 5:
             finalscore.busFactor += 20
-        elif npm.maintainers <= 10:
+        elif npm.maintainers <= 15:
             finalscore.busFactor += 30
-        elif npm.maintainers >= 11:
+        elif npm.maintainers <= 30:
             finalscore.busFactor += 40
-        elif npm.maintainers >= 21:
+        elif npm.maintainers <= 50:
             finalscore.busFactor += 50
-        
+        elif npm.maintainers >= 51:
+            finalscore.busFactor += 60
+            
         if npm.versionCount == 0:
             finalscore.busFactor += 0
-        elif npm.versionCount <= 10:
+        elif npm.versionCount <= 15:
             finalscore.busFactor += 10
-        elif npm.versionCount <= 35:
+        elif npm.versionCount <= 40:
             finalscore.busFactor += 20
-        elif npm.versionCount <= 60:
+        elif npm.versionCount <= 70:
             finalscore.busFactor += 30
-        elif npm.versionCount >= 81:
+        elif npm.versionCount >= 91:
             finalscore.busFactor += 40
             
     if static is not None:
@@ -508,20 +533,22 @@ def GetScore(pkg, gitList, npmList, staticList, logger):
         # the more versions, the better (more people are using it)
         if npm.maintainers == 0:
             finalscore.correctness += 0
-        elif npm.maintainers <= 10:
+        elif npm.maintainers <= 12:
             finalscore.correctness += 30
-        elif npm.maintainers <= 20:
+        elif npm.maintainers <= 25:
             finalscore.correctness += 40
-        elif npm.maintainers >= 21:
+        elif npm.maintainers >= 26:
             finalscore.correctness += 60
             
         if npm.versionCount == 0:
             finalscore.correctness += 0
         elif npm.versionCount <= 10:
+            finalscore.correctness += 10
+        elif npm.versionCount <= 25:
             finalscore.correctness += 20
-        elif npm.versionCount <= 35:
+        elif npm.versionCount <= 50:
             finalscore.correctness += 30
-        elif npm.versionCount >= 60:
+        elif npm.versionCount >= 80:
             finalscore.correctness += 40
             
     if static is not None:
@@ -630,13 +657,13 @@ def GetScore(pkg, gitList, npmList, staticList, logger):
         # including a readme is a good sign
         # including a license is a good sign
         # if the license is compatible with the project, then its open source, which is a good sign
-        if finalscore.lastupdated >= datetime.datetime.now() - datetime.timedelta(days=90):
+        if finalscore.lastupdated >= datetime.datetime.now() - datetime.timedelta(days=60):
             finalscore.responsiveMaintainer += 50
-        elif finalscore.lastupdated >= datetime.datetime.now() - datetime.timedelta(days=180):
+        elif finalscore.lastupdated >= datetime.datetime.now() - datetime.timedelta(days=120):
             finalscore.responsiveMaintainer += 35
-        elif finalscore.lastupdated >= datetime.datetime.now() - datetime.timedelta(days=365):
+        elif finalscore.lastupdated >= datetime.datetime.now() - datetime.timedelta(days=200):
             finalscore.responsiveMaintainer += 20
-        elif finalscore.lastupdated >= datetime.datetime.now() - datetime.timedelta(days=730):
+        elif finalscore.lastupdated >= datetime.datetime.now() - datetime.timedelta(days=365):
             finalscore.responsiveMaintainer += 10
         else:
             finalscore.responsiveMaintainer += 0
@@ -655,7 +682,6 @@ def GetScore(pkg, gitList, npmList, staticList, logger):
     finalscore.CalculateNetScore()
     return finalscore
 
-
 #pretty prints a table to the console for the user based on final score broken down by category
 def prettyPrintTable(allfinalscores, pkg):
     #dont use prettytable, it's not a dependency
@@ -664,12 +690,7 @@ def prettyPrintTable(allfinalscores, pkg):
     for pkgnames in allfinalscores.keys():
         print(f"{pkgnames:<20}{allfinalscores[pkgnames].netScore:<10}{allfinalscores[pkgnames].license:<15}{allfinalscores[pkgnames].licenseCompatibility:<15}{allfinalscores[pkgnames].busFactor:<15}{allfinalscores[pkgnames].rampUp:<10}{allfinalscores[pkgnames].correctness:<15}{allfinalscores[pkgnames].responsiveMaintainer:<15}{allfinalscores[pkgnames].denominator:<10}")
 
-def printjson(data):
-    print(json.dumps(data, indent=4, sort_keys=True))
-    
-def logjson(data, DebugLogger):
-    DebugLogger.log(json.dumps(data, indent=4, sort_keys=True), 2)
-    
+
 def ParseAllGitJSON(pathToGitJsonFolder, logger):
     AllGitScores = dict()
     for json in os.listdir(pathToGitJsonFolder):
@@ -708,16 +729,7 @@ def ParseAllNPMJSON(pathToNPMJsonFolder, logger):
         else:
             continue
     return AllNPMScores
-'''
-def GetAllFolders(pathToFolder):
-    #return a list of strings of all folders in dir
-    folders = os.listdir(pathToFolder)
-    #remove the .json from the end of the folder name
-    cleanedFolders = []
-    for folder in folders:
-        cleanedFolders.append(folder.replace(".json", ""))
-    return cleanedFolders
-'''
+
 
 def main(loglevel, logfile):
     #get arguments
@@ -740,7 +752,7 @@ def main(loglevel, logfile):
         
         durls[pkgname] = url
 
-    
+    Debug.log("URLs: " + str(durls), 2)
     
     
     #import the all files
@@ -759,7 +771,10 @@ def main(loglevel, logfile):
 
     grades = dict()
     for pkg in packages:
+        Debug.log("Getting score for " + pkg, 1)
         grades[pkg] = GetScore(pkg, allgitscores, allnpmscores, allStaticScores, Debug)
+        Debug.log("Final score for " + pkg + ": " + str(grades[pkg].netScore), 2)
+        Debug.log("Last updated: " + str(grades[pkg].lastupdated), 2)
 
 
     prettyPrintTable(grades, "all")
@@ -776,10 +791,9 @@ def main(loglevel, logfile):
         responsiveMaintainer = round(gradeobj.responsiveMaintainer / gradeobj.denominator, 1)
         licenseCompatibility = gradeobj.licenseCompatibility
         jsonGrades[grade] = f"{{\"URL\":\"{durls[pkgname]}\", \"NET_SCORE\":{netscore}, \"RAMP_UP_SCORE\":{rampup}, \"CORRECTNESS_SCORE\":{correctness}, \"BUS_FACTOR_SCORE\":{busfactor}, \"RESPONSIVE_MAINTAINER_SCORE\":{responsiveMaintainer}, \"LICENSE_SCORE\":{licenseCompatibility}}}"
-        #print(jsonGrades[grade])
         
     #write the json to a file results/results.json
-    with open ("results/results.json", "w") as f:
+    with open ("results/results.ndjson", "w") as f:
         for grade in jsonGrades:
             f.writelines(jsonGrades[grade] + "\n")
         f.close()

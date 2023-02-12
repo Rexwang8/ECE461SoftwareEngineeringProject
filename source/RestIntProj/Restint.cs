@@ -54,7 +54,6 @@ namespace ConsoleProgram
 
             string responseBody = await response.Content.ReadAsStringAsync();
             var npmpath = Path.Combine(currentDirectory, "data/npm/" + packageName + ".json");
-            Console.WriteLine("Writing to file: " + npmpath);
 
             //make file if it doesn't exist
             if (!File.Exists(npmpath))
@@ -111,23 +110,13 @@ namespace ConsoleProgram
                 }
 
                 string logLine =
-                    "[C# NPM API Caller] "
+                    "[C# NPM API Caller(source/RestIntProj/RestInt.cs)] "
                     + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
                     + " Priority "
                     + priority.ToString()
                     + " | "
                     + text;
                 File.AppendAllText(logFile, logLine + Environment.NewLine);
-            }
-
-            public void Log(string text, int priority)
-            {
-                if (!ShouldLog(this.logLevel, priority))
-                {
-                    return;
-                }
-
-                LogToFile(text, priority);
             }
         }
     }

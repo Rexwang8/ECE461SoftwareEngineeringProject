@@ -3,3 +3,5 @@ https://www.npmjs.com/package/express
 https://github.com/nullivex/nodist
 https://github.com/lodash/lodash
 https://www.npmjs.com/package/browserify
+https://www.npmjs.com/package/treeify
+https://www.npmjs.com/package/esc-pos-encoder-latest

@@ -1,5 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-using StaticAnalysisLibrary;
+﻿using StaticAnalysisLibrary;
 using CliWrap;
 using System.Text;
 
@@ -43,6 +42,8 @@ for (int i = 0; i < Directory.GetDirectories(pathToRepoFolder).Length; i++)
 
 logger.LogToFile("Done with static analysis", 1);
 logger.LogToFile("Calling grader.py", 1);
+logger.LogToFile("Log File Location: " + logpath, 1);
+logger.LogToFile("Log Level: " + loglevel, 1);
 
 //We are now done with static analysis, we call grader to parse the results
 var stdOutBuffer = new StringBuilder();
@@ -111,7 +112,7 @@ logger.LogToFile(stdErrBuffer.ToString(), 2);
             }
 
             string logLine =
-                "[C# Static Analysis Call] "
+                "[C# Static Analysis Caller (source/StaticAnalysisTesterProj/Program2.cs)] "
                 + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
                 + " Priority "
                 + priority.ToString()
@@ -120,16 +121,6 @@ logger.LogToFile(stdErrBuffer.ToString(), 2);
             File.AppendAllText(logFile, logLine + Environment.NewLine);
         }
 
-        public void Log(string text, int priority)
-        {
-            if (!ShouldLog(this.logLevel, priority))
-            {
-                return;
-            }
-
-            Console.WriteLine(text);
-            LogToFile(text, priority);
-        }
     }
 }
 

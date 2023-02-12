@@ -6,12 +6,10 @@
 
 #log environment variables $LOG_PATH and $LOG_LEVEL
 loglevel="${LOG_LEVEL:-2}"
-logdirectorypath="${LOG_FILE:-/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2}"
-mkdir -p $logdirectorypath
+logfullpath="${LOG_FILE:-/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2}"
 mkdir -p cache
 touch cache/build.txt
 ghtoken="${GITHUB_TOKEN:-faketokengithub}"
-logfullpath="$logdirectorypath/log.txt"
 
 
 
@@ -20,7 +18,6 @@ function removeCaches() {
     rm -rf cache
     rm -rf log.txt
     rm -rf $logfullpath
-    rm -rf $logdirectorypath
 
     rm -rf CLIParse
     rm -rf RestInt
@@ -38,23 +35,18 @@ function makeCaches() {
     if [ ! -d "cache" ]; then
         mkdir -p cache
     fi
-    #make log directory if it doesnt exist
-    if [ ! -d "$logdirectorypath" ]; then
-        mkdir -p $logdirectorypath
-    fi
+
     #make log file if it doesnt exist
     if [ ! -f "$logfullpath" ]; then
-        touch $logfullpath
+        mkdir -p "$(dirname "$logfullpath")" && touch "$logfullpath"
     fi
     touch cache/pip.txt
     touch cache/build.txt
     touch cache/log.txt
 
-
     if [ ! -d "results" ]; then
         mkdir -p results
     fi
-
 
     if [ ! -d "data" ]; then
         mkdir -p data
@@ -100,7 +92,6 @@ function logDebug() {
 }
 
 
-logInfo "LOG_FILE: $logdirectorypath"
 logInfo "LOG FULL PATH: $logfullpath"
 logInfo "LOG_LEVEL: $loglevel"
 logInfo "Github Token: $ghtoken"
@@ -141,11 +132,10 @@ case "$1" in
         logDebug "Static Analysis C# built"
         
         logInfo "Build complete"
-
+        exit 0
         ;;
     "test")
         #download test repo
-        echo "Downloading Test Repo in UnitTest/testrepo"
         cd source/pyscripts
         python3 gitPython.py
         cd ../..
@@ -155,12 +145,13 @@ case "$1" in
         echo "Passed: 20"
         echo "Coverage: 100%"
         echo "20/20 tests passed. 100% line coverage achieved."
-        #python3 github_api/git_module.py github_api/data/lodash http://github.com/lodash/lodash $ghtoken
         logDebug "Running tests"
 
+        #remove test repo
         cd UnitTest/
         rm -rf testrepo/
         cd ../
+        exit 0
         ;;
     "clean")
         #getting rid of old build, we dont redirect to log file because we are deleting it
@@ -171,7 +162,7 @@ case "$1" in
 
 
         logInfo "Old build removed"
-
+        exit 0
         ;;
     "install")
         #make cache folders
@@ -181,7 +172,7 @@ case "$1" in
 
         logInfo "Installing Python Dependencies with pip"
         
-        pip install -r source/requirements.txt > cache/pip.txt
+        pip install --no-warn-script-location -r source/requirements.txt > cache/pip.txt
 
         logDebug "Python Dependencies installed"
 
@@ -197,6 +188,7 @@ case "$1" in
 
         logInfo "3 Dependencies installed"
         echo "3 dependencies installed..."
+        exit 0
         ;;
     *)
         # code for running parse with URL argument
@@ -207,6 +199,7 @@ case "$1" in
         cp $1 cache/input.txt
 
         ./CLIParse $1 $logfullpath $loglevel $ghtoken
+        exit 0
         ;;
 
 

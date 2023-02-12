@@ -14,16 +14,12 @@ namespace PackageManager
         {
             //get environment variables
             int ENVLOGLEVEL = 2;
-            string ENVLOGLOCATION = "log.txt";
+            string ENVLOGLOCATION = "cache/defaultlog.log";
 
             //get command line arguments
             bool success = int.TryParse(args[2], out ENVLOGLEVEL);
             if (!success)
             {
-                if (ENVLOGLEVEL != 0)
-                {
-                    Console.WriteLine("Invalid log level, exiting...");
-                }
                 Environment.Exit(1);
             }
             ENVLOGLOCATION = args[1];
@@ -53,18 +49,7 @@ namespace PackageManager
 
             logger.LogToFile("Log File Location: " + fullPathLogger, 1);
             logger.LogToFile("Log Level: " + ENVLOGLEVEL, 1);
-            logger.LogToFile("Command: " + command, 1);
 
-            
-
-            if (args[0] == "test")
-            {
-                logger.LogToFile("Testing...", 1);
-                //This will call the line coverage and stuff maybe? do later
-                Environment.Exit(0);
-            }
-            else
-            {
                 logger.LogToFile("Command: " + command, 1);
 
                 //Test if the arg is a url
@@ -156,7 +141,6 @@ namespace PackageManager
                         Environment.Exit(1);
                     }
                     
-                
                 }
                 //At this point, we have the metadata for all the packages, we need to call the python script for grading
                 logger.LogToFile("Calling Python Script... for startup", 1);
@@ -173,7 +157,7 @@ namespace PackageManager
                 logger.LogToFile(stdErrBuffer.ToString(), 2);
 
                 Environment.Exit(0);
-            }
+            
         }
 
     }
@@ -224,24 +208,13 @@ namespace PackageManager
 
             //string logFile = "log.txt";
             string logLine =
-                "[C# Package Grabber] "
+                "[C# Package Sorter (source/CLIParseProj/CLIParse)] "
                 + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
                 + " Priority "
                 + priority.ToString()
                 + " | "
                 + text;
             File.AppendAllText(logFile, logLine + Environment.NewLine);
-        }
-
-        public void Log(string text, int priority)
-        {
-            if (!ShouldLog(this.logLevel, priority))
-            {
-                return;
-            }
-
-            Console.WriteLine(text);
-            LogToFile(text, priority);
         }
     }
 }
