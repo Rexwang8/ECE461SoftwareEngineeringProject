@@ -721,7 +721,7 @@ def GetAllFolders(pathToFolder):
 
 def main(loglevel, logfile):
     #get arguments
-    Debug = logger.Logger(f"{logfile}/log.txt", 2, "Grader")
+    Debug = logger.Logger(f"{logfile}", 2, "Grader")
     Debug.log("Log level: " + loglevel, 2)
     Debug.log("Log file: " + logfile, 2)
     

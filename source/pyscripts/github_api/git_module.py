@@ -35,6 +35,9 @@ def run_git_module(name, url, token):
         issues(first:100) {{
           totalCount
         }}
+        openIssues: issues(states:OPEN) {{
+          totalCount
+          }}
         
         homepageUrl
         pushedAt
