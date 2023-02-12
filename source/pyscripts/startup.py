@@ -57,6 +57,7 @@ def main():
     
     #we now pass to the static analysis tool with c#, exe log level and log file
     os.system(f"./StaticAnalysisTester {loglevel} {logfile}")
+    Debug.log(f"./StaticAnalysisTester {loglevel} {logfile}", 1)
     
     Debug.log("Exiting main script...", 1)
 
@@ -109,13 +110,5 @@ def ParseInput(inputfile, Logger):
         ParsedPackages.append((pkgname.replace("\n", ""), pkgtype.replace("\n", ""), package.replace("\n", "")))
     return ParsedPackages
         
-
-
-
-def SendToGrader(config, npmjsonpath, gitjsonpath, staticjsonpath, logpath, loglevel):
-    
-    #this is where we send the json files to the grader
-    success = grader.GradeJSON(config, npmjsonpath, gitjsonpath, staticjsonpath, logpath, loglevel)
-
-
-main()
+if __name__ == "__main__":
+    main()

@@ -35,6 +35,7 @@ for (int i = 0; i < Directory.GetDirectories(pathToRepoFolder).Length; i++)
     string pathToJson = Path.Combine(pathToResultsFolder, folderName + ".json");
 
     logger.LogToFile("Analyzing folder " + folderName, 1);
+    //Console.WriteLine("Analyzing folder " + folderName);
     logger.LogToFile("Saving results to " + pathToJson, 1);
     //analyze the folder
     StaticAnalysis.Analyze(pathToRepoFolder, folderName, pathToJson);

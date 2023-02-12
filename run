@@ -196,7 +196,7 @@ case "$1" in
 
         logInfo "Installing c# line coverage package"
         cd UnitTest/
-        dotnet add package coverlet.msbuild
+        dotnet add package coverlet.msbuild | tee -a $logfullpath ../cache/build.txt >/dev/null
         cd ../
 
         logInfo "4 Dependencies installed"

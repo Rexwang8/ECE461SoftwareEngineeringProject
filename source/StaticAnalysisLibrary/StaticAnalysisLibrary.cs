@@ -50,7 +50,8 @@ namespace StaticAnalysisLibrary
             }
             catch (Exception e)
             {
-                throw e;
+                Console.WriteLine("The process failed: {0}", e.ToString());
+                throw;
             }
         }
 
@@ -109,8 +110,7 @@ namespace StaticAnalysisLibrary
             {
                 repoInfo.commentCharCount += File.ReadAllLines(file).Sum(s => s.Length);
             }
-            
-            LicenseParser(repoInfo.licensePath, System.IO.Directory.GetCurrentDirectory() + "/../../../../source/StaticAnalysisLibrary/LicenseList.txt", ref repoInfo);
+            LicenseParser(repoInfo.licensePath, System.IO.Directory.GetCurrentDirectory() + "/source/StaticAnalysisLibrary/LicenseList.txt", ref repoInfo);
             WriteFile(resultJsonFile);
 
             DirectoryTool.sourceCodeEntries.Clear();
@@ -139,11 +139,11 @@ namespace StaticAnalysisLibrary
             }
             catch (Exception e)
             {
-                throw e;
+                Console.WriteLine("The process failed: {0}", e.ToString());
+                throw;
             }
         }
 
-        //
         public void AnalyzeLine(string text)
         {
             if (text.StartsWith("//") || text.StartsWith("/*"))
@@ -180,17 +180,24 @@ namespace StaticAnalysisLibrary
         
         static public void LicenseParser(string LicensePath, string LicenseListPath, ref RepoInfo Repo)
         {
+            if (Repo.license == "") {
+                Repo.license = "Not Available";
+
+                return;
+            }
             string License = File.ReadLines(LicensePath).First(); // gets the first line from file.
-            foreach (string LicenseVar in System.IO.File.ReadLines(@LicenseListPath))
+            foreach (string LicenseVar in System.IO.File.ReadLines(LicenseListPath))
             {   
                 if(License.Contains(LicenseVar))
                 {
                     Repo.license = LicenseVar;
+                    return;
                 }
             }
-            if (Repo.license == "") {
-                Repo.license = "Not Available";
-            }
+
+            Repo.license = "Not Available";
+            return;
+            
         }
     }
 }
