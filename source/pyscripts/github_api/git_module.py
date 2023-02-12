@@ -61,14 +61,16 @@ def run_git_module(name, url, token):
         json.dump(response.json(), f)
 
 if __name__ == "__main__":
-    if len(sys.argv) != 4: #1st arg name of json file 2nd arg github url 3rd arg is token
-    	print("Incorrect number of arguments")
-    	sys.exit(1)
-    else:
-        the_url = sys.argv[2]
-        the_token = sys.argv[3]
-        the_name = sys.argv[1]
-        run_git_module(the_name, the_url, the_token)
+  if len(sys.argv) != 4: #1st arg name of json file 2nd arg github url 3rd arg is token
+    print("Incorrect number of arguments")
+    sys.exit(1)
+  else:
+    the_url = sys.argv[2]
+    the_token = sys.argv[3]
+    the_name = sys.argv[1]
+    run_git_module(the_name, the_url, the_token)
+  
+
 
 
 
