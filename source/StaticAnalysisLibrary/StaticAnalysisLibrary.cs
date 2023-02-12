@@ -111,7 +111,7 @@ namespace StaticAnalysisLibrary
                 repoInfo.commentCharCount += File.ReadAllLines(file).Sum(s => s.Length);
             }
             
-            LicenseParser(LicensePath, "LicenseList.txt", ref repoInfo);
+            LicenseParser(repoInfo.licensePath, System.IO.Directory.GetCurrentDirectory() + "/../../../../source/StaticAnalysisLibrary/LicenseList.txt", ref repoInfo);
             WriteFile(resultJsonFile);
 
             DirectoryTool.sourceCodeEntries.Clear();
@@ -197,7 +197,7 @@ namespace StaticAnalysisLibrary
                     Repo.license = LicenseVar;
                 }
             }
-            if (LicenseVar == null) {
+            if (Repo.license == "") {
                 Repo.license = "Not Available";
             }
         }
