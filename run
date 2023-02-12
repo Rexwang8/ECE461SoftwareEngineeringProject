@@ -190,13 +190,16 @@ case "$1" in
         cd ../..
         logDebug "c# Dependencies installed"
 
-        logInfo "2 Dependencies installed"
-        echo "2 dependencies installed..."
+        logInfo "3 Dependencies installed"
+        echo "3 dependencies installed..."
         ;;
     *)
         # code for running parse with URL argument
 
         logInfo "Running parse with FILE URI: $1"
+
+        #copy input file to cache
+        cp $1 cache/input.txt
 
         ./CLIParse $1 $logfullpath $loglevel $ghtoken
         ;;

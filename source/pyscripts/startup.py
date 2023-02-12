@@ -15,7 +15,7 @@ def main():
     #get first arg LOG LEVEL
     loglevel = sys.argv[1]
     #get second arg as log file
-    logfile = sys.argv[2] + "log.txt"
+    logfile = sys.argv[2]
     
     #get third arg as all input packages
     inputfile = sys.argv[3]
@@ -55,8 +55,8 @@ def main():
             githuburl = githuburl.replace("git+", "").replace(".git", "").replace("ssh://", "https://").replace("git://", "https://").replace("git@", "")
             gitPython.pythonGit.pyClone(url=githuburl, path=pathToRepo)
     
-    #we now pass to the static analysis tool with c#
-    os.system("./StaticAnalysisTester")
+    #we now pass to the static analysis tool with c#, exe log level and log file
+    os.system(f"./StaticAnalysisTester {loglevel} {logfile}")
     
     Debug.log("Exiting main script...", 1)
 

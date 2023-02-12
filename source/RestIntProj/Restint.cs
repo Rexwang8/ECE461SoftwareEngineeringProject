@@ -111,7 +111,7 @@ namespace ConsoleProgram
                 }
 
                 string logLine =
-                    "[C# NPM Grbber] "
+                    "[C# NPM API Caller] "
                     + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
                     + " Priority "
                     + priority.ToString()

@@ -110,7 +110,6 @@ logger.LogToFile(stdErrBuffer.ToString(), 2);
                 return;
             }
 
-            //string logFile = "log.txt";
             string logLine =
                 "[C# Static Analysis Call] "
                 + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")

@@ -39,6 +39,9 @@ query {{
     issues(first:100) {{
       totalCount
     }}
+    openIssues: issues(states: OPEN) {{
+      totalCount
+    }}
     
     homepageUrl
     pushedAt
