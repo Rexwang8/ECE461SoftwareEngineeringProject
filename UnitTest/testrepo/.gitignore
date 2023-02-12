@@ -1,0 +1,7 @@
+/v
+/v-x64
+/.node-version
+node_modules
+/.idea
+/build/out
+/npmv
