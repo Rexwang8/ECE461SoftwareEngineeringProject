@@ -19,6 +19,7 @@ namespace StaticAnalysisLibrary
         public int commentCharCount { get; set; }
         public string licensePath { get; set; }
         public string readmePath { get; set; }
+        public string license {get; set; }
         public RepoInfo() 
         {
             codeLineCount = 0; 
@@ -27,6 +28,7 @@ namespace StaticAnalysisLibrary
             commentCharCount = 0;
             licensePath = "";
             readmePath = "";
+            license = "";
         }
     }
 
@@ -109,6 +111,7 @@ namespace StaticAnalysisLibrary
                 repoInfo.commentCharCount += File.ReadAllLines(file).Sum(s => s.Length);
             }
             
+            LicenseParser(LicensePath, "LicenseList.txt", ref repoInfo);
             WriteFile(resultJsonFile);
 
             DirectoryTool.sourceCodeEntries.Clear();
@@ -181,6 +184,22 @@ namespace StaticAnalysisLibrary
 
             string json = JsonSerializer.Serialize(repoInfo);
             File.WriteAllText(filename, json);
+        }
+
+        
+        static public void LicenseParser(string LicensePath, string LicenseListPath, ref RepoInfo Repo)
+        {
+            string License = File.ReadLines(LicensePath).First(); // gets the first line from file.
+            foreach (string LicenseVar in System.IO.File.ReadLines(@LicenseListPath))
+            {   
+                if(License.Contains(LicenseVar))
+                {
+                    Repo.license = LicenseVar;
+                }
+            }
+            if (LicenseVar == null) {
+                Repo.license = "Not Available";
+            }
         }
     }
 }
