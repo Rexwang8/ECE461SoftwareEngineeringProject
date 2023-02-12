@@ -22,6 +22,11 @@ function removeCaches() {
     rm -rf CLIParse
     rm -rf RestInt
     rm -rf StaticAnalysisTester
+
+    rm -rf source/pyscripts/thepath2
+    rm -rf source/pyscripts/thepath3
+    rm -rf source/pyscripts/path1
+    rm -rf source/pyscripts/myfile.json
 }
 
 function removeAll() {
