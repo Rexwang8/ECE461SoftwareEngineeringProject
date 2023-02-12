@@ -121,6 +121,7 @@ public class StaticAnalysisTesting
         staticAnalysis.Analyze(System.IO.Directory.GetCurrentDirectory() + "/../../..", test,  "");
     }
 
+    //Tests the results of Analyze Lines
     [TestMethod]
     public void TestAnalyzeLine()
     {
@@ -151,3 +152,17 @@ public class StaticAnalysisTesting
     }
 }
 
+/* [TestClass]
+public class TestCLIParse 
+{
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentNullException), "ArgumentNullException")]
+    public void TestNull()
+    {
+        StaticAnalysis staticAnalysis = new StaticAnalysis();  
+        
+        String test = null;
+
+        staticAnalysis.Analyze(test, "testrepo",  "");
+    }
+} */
