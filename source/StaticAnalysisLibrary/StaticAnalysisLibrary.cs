@@ -48,6 +48,7 @@ namespace StaticAnalysisLibrary
             }
             catch (Exception e)
             {
+                throw;
                 Console.WriteLine("The process failed: {0}", e.ToString());
             }
         }
@@ -92,7 +93,7 @@ namespace StaticAnalysisLibrary
 
     public class StaticAnalysis
     {
-        RepoInfo repoInfo = new RepoInfo();
+        public RepoInfo repoInfo = new RepoInfo();
         DirectoryTool DirectoryTool = new DirectoryTool();
 
         public void Analyze(string repoBin, string targetName, string resultJsonFile)

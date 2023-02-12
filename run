@@ -6,7 +6,7 @@
 
 #log environment variables $LOG_PATH and $LOG_LEVEL
 loglevel="${LOG_LEVEL:-2}"
-logdirectorypath="${LOG_FILE:-/home/shay/a/wang5009/461/ECE461SoftwareEngineeringProject/testcache2}"
+logdirectorypath="${LOG_FILE:-/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2}"
 mkdir -p $logdirectorypath
 mkdir -p cache
 touch cache/build.txt
