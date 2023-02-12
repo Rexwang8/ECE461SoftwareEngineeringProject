@@ -30,3 +30,36 @@ Copyright (C) Microsoft Corporation. All rights reserved.
   StaticAnalysisTester -> /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/source/StaticAnalysisTesterProj/bin/Debug/net6.0/linux-x64/publish/
 [BUILD|Priority: 2(debug)] Static Analysis C# built
 [BUILD|Priority: 1(info)] Build complete
+[BUILD|Priority: 1(info)] LOG_FILE: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2
+[BUILD|Priority: 1(info)] LOG FULL PATH: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2/log.txt
+[BUILD|Priority: 1(info)] LOG_LEVEL: 2
+[BUILD|Priority: 1(info)] Github Token: faketokengithub
+[BUILD|Priority: 2(debug)] Running tests
+[BUILD|Priority: 1(info)] LOG_FILE: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2
+[BUILD|Priority: 1(info)] LOG FULL PATH: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2/log.txt
+[BUILD|Priority: 1(info)] LOG_LEVEL: 2
+[BUILD|Priority: 1(info)] Github Token: faketokengithub
+[BUILD|Priority: 1(info)] LOG_FILE: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2
+[BUILD|Priority: 1(info)] LOG FULL PATH: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2/log.txt
+[BUILD|Priority: 1(info)] LOG_LEVEL: 2
+[BUILD|Priority: 1(info)] Github Token: faketokengithub
+[BUILD|Priority: 1(info)] LOG_FILE: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2
+[BUILD|Priority: 1(info)] LOG FULL PATH: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2/log.txt
+[BUILD|Priority: 1(info)] LOG_LEVEL: 2
+[BUILD|Priority: 1(info)] Github Token: faketokengithub
+[BUILD|Priority: 2(debug)] Running tests
+[BUILD|Priority: 1(info)] LOG_FILE: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2
+[BUILD|Priority: 1(info)] LOG FULL PATH: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2/log.txt
+[BUILD|Priority: 1(info)] LOG_LEVEL: 2
+[BUILD|Priority: 1(info)] Github Token: faketokengithub
+[BUILD|Priority: 2(debug)] Running tests
+[BUILD|Priority: 1(info)] LOG_FILE: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2
+[BUILD|Priority: 1(info)] LOG FULL PATH: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2/log.txt
+[BUILD|Priority: 1(info)] LOG_LEVEL: 2
+[BUILD|Priority: 1(info)] Github Token: faketokengithub
+[BUILD|Priority: 2(debug)] Running tests
+[BUILD|Priority: 1(info)] LOG_FILE: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2
+[BUILD|Priority: 1(info)] LOG FULL PATH: /home/shay/a/lin1285/ECE461SoftwareEngineeringProject/testcache2/log.txt
+[BUILD|Priority: 1(info)] LOG_LEVEL: 2
+[BUILD|Priority: 1(info)] Github Token: faketokengithub
+[BUILD|Priority: 2(debug)] Running tests

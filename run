@@ -139,13 +139,17 @@ case "$1" in
         dotnet publish source/StaticAnalysisTesterProj -r linux-x64 -p:PublishSingleFile=true --self-contained true | tee -a $logfullpath cache/build.txt >/dev/null
         cp source/StaticAnalysisTesterProj/bin/Debug/net6.0/linux-x64/publish/StaticAnalysisTester .
         logDebug "Static Analysis C# built"
-
-
         
         logInfo "Build complete"
 
         ;;
     "test")
+        #download test repo
+        echo "Downloading Test Repo in UnitTest/testrepo"
+        cd source/pyscripts
+        python3 gitPython.py
+        cd ../..
+
         # test function code here
         echo "Total: 20"
         echo "Passed: 20"
@@ -153,6 +157,10 @@ case "$1" in
         echo "20/20 tests passed. 100% line coverage achieved."
         #python3 github_api/git_module.py github_api/data/lodash http://github.com/lodash/lodash $ghtoken
         logDebug "Running tests"
+
+        cd UnitTest/
+        rm -rf testrepo/
+        cd ../
         ;;
     "clean")
         #getting rid of old build, we dont redirect to log file because we are deleting it
