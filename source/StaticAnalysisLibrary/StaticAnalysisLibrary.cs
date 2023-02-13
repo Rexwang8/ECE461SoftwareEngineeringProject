@@ -178,12 +178,11 @@ namespace StaticAnalysisLibrary
         }
 
         
-        static public void LicenseParser(string LicensePath, string LicenseListPath, ref RepoInfo Repo)
+        public void LicenseParser(string LicensePath, string LicenseListPath, ref RepoInfo Repo)
         {
-            if (Repo.license == "") {
+            if (Repo.license == "" || Repo.license == null) {
                 Repo.license = "Not Available";
-
-                return;
+                throw new ArgumentException("Parameter cannot be null");
             }
             string License = File.ReadLines(LicensePath).First(); // gets the first line from file.
             foreach (string LicenseVar in System.IO.File.ReadLines(LicenseListPath))
