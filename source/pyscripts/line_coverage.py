@@ -112,5 +112,10 @@ cov.stop()
 cov.save()
 cov.load()
 
+data = cov.get_data()
+total_lines_run = sum(len(data.lines(filename)) for filename in data.measured_files())
+
+print("total lines executed is " + str(total_lines_run)
+
 percent = cov.report()
-print(str(percent) + "%")
+print("percent coverage: " + str(percent) + "%")
