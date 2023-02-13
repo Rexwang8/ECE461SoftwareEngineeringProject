@@ -190,8 +190,15 @@ namespace StaticAnalysisLibrary
         
         public void LicenseParser(string LicensePath, string LicenseListPath, ref RepoInfo Repo)
         {
+            if (LicensePath == "" || LicensePath == null)
+            {
+                Repo.license = "Not Available";
+                Repo.licenseCompatibility = 0;
+                return;
+            }
             if (Repo.license == "" || Repo.license == null) {
                 Repo.license = "Not Available";
+                Repo.licenseCompatibility = 0;
                 return;
             }
             string License = File.ReadLines(LicensePath).First(); // gets the first line from file.

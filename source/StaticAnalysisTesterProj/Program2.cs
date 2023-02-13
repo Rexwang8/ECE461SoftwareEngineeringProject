@@ -58,6 +58,11 @@ var results = Cli.Wrap("python3")
     .GetAwaiter()
     .GetResult();
 
+string buffer = stdOutBuffer.ToString();
+//Console.WriteLine("Standard Output:");
+Console.WriteLine(buffer);
+
+
 
 
 //log the results

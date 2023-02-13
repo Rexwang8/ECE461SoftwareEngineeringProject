@@ -48,6 +48,7 @@ function makeCaches() {
     touch cache/pip.txt
     touch cache/build.txt
     touch cache/log.txt
+    cp examples/input.txt cache/input.txt
 
     if [ ! -d "results" ]; then
         mkdir -p results

@@ -158,10 +158,10 @@ def ParseStaticJSON(data):
     commentCharCount = data['commentCharCount']
     licensePath = data['licensePath']
     readmePath = data['readmePath']
-    #license = data['license']
-    #compatibility = data['licenseCompatibility']
+    license = str(data['license']).replace(' ', '').lower().strip()
+    compatibility = data['licenseCompatibility']
     
-    return staticResponse(codeLineCount, commentLineCount, codeCharCount, commentCharCount, licensePath, readmePath)
+    return staticResponse(codeLineCount, commentLineCount, codeCharCount, commentCharCount, licensePath, readmePath, license, compatibility)
 
 
 #filepath to json
