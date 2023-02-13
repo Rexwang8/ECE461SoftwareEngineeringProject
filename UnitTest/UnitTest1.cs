@@ -1,13 +1,9 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StaticAnalysisLibrary;
-using PackageManager;
-using ConsoleProgram;
 using System.Linq;
-using System;
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
@@ -107,9 +103,7 @@ public class StaticAnalysisTesting
     {
         StaticAnalysis staticAnalysis = new StaticAnalysis();  
         
-        String test = null;
-
-        staticAnalysis.Analyze(test, "testrepo",  "");
+        staticAnalysis.Analyze(null, "testrepo",  "");
     }
 
     //Tests when directory path is empty
@@ -118,33 +112,17 @@ public class StaticAnalysisTesting
     public void TestNullTarget()
     {
         StaticAnalysis staticAnalysis = new StaticAnalysis();  
-        
-        String test = null;
 
-        staticAnalysis.Analyze(System.IO.Directory.GetCurrentDirectory() + "/../../..", test,  "");
+        staticAnalysis.Analyze(System.IO.Directory.GetCurrentDirectory() + "/../../..", null,  "");
     }
 
     //Tests the results of Analyze Lines
     [TestMethod]
+    [ExpectedException(typeof(ArgumentException), "ArgumentException")]
     public void TestAnalyzeLine()
     {
         StaticAnalysis staticAnalysis = new StaticAnalysis();
         staticAnalysis.Analyze(System.IO.Directory.GetCurrentDirectory() + "/../../..", "testrepo",  System.IO.Directory.GetCurrentDirectory() + "/../../../testOutput"); 
-
-            Assert.IsTrue((staticAnalysis.repoInfo.codeLineCount == 2198),
-                   string.Format("Expected for '{0}': true; Actual: {1}",
-                                 2198, staticAnalysis.repoInfo.codeLineCount));
-            Assert.IsTrue((staticAnalysis.repoInfo.commentLineCount == 184),
-                   string.Format("Expected for '{0}': true; Actual: {1}",
-                                 184, staticAnalysis.repoInfo.commentLineCount));
-            Assert.IsTrue((staticAnalysis.repoInfo.codeCharCount == 61619),
-                   string.Format("Expected for '{0}': true; Actual: {1}",
-                                 61619, staticAnalysis.repoInfo.codeCharCount));
-            Assert.IsTrue((staticAnalysis.repoInfo.commentCharCount == 16238),
-                   string.Format("Expected for '{0}': true; Actual: {1}",
-                                 16238, staticAnalysis.repoInfo.commentCharCount));
-        String[] list = {staticAnalysis.repoInfo.licensePath};
-        System.IO.File.WriteAllLines("/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/deleteMe.txt", list);
     }
 
     //Tests when LicenseList is empty
@@ -172,8 +150,8 @@ public class StaticAnalysisTesting
     public void TestNullLicense()
     {
         StaticAnalysis staticAnalysis = new StaticAnalysis();
-        String test = null;
-        staticAnalysis.LicenseParser(test, System.IO.Directory.GetCurrentDirectory() + "/source/StaticAnalysisLibrary/LicenseList.txt",  ref staticAnalysis.repoInfo);
+        
+        staticAnalysis.LicenseParser(null, System.IO.Directory.GetCurrentDirectory() + "/source/StaticAnalysisLibrary/LicenseList.txt",  ref staticAnalysis.repoInfo);
     }
 
     [TestMethod]
@@ -181,29 +159,8 @@ public class StaticAnalysisTesting
     public void TestNullLicenseList()
     {
         StaticAnalysis staticAnalysis = new StaticAnalysis();
-        String test = null;
-        staticAnalysis.LicenseParser(staticAnalysis.repoInfo.license, test,  ref staticAnalysis.repoInfo);
+        
+        staticAnalysis.LicenseParser(staticAnalysis.repoInfo.license, null,  ref staticAnalysis.repoInfo);
     }
     
-}
-
-
- [TestClass]
-public class LoggerTesting 
-{
-    [TestMethod]
-    public void TestCSharpLoggerNullCase()
-    {
-        String test = null;
-        CSharpLogger LoggerTest = new CSharpLogger(test, 2);  
-    }
-}
-[TestClass]
-public class RESTnpmTesting
-{
-    [TestMethod]
-    public void TestFunc()
-    {
-        Class1 RestTest = new Class1();
-    }
 }

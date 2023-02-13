@@ -20,8 +20,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\source\StaticAnalysisLibrary\StaticAnalysisLibrary.csproj" />
-    <ProjectReference Include="..\source\CLIParseProj\CLIParse.csproj" />
-    <ProjectReference Include="..\source\RestIntProj\RestInt.csproj" />
   </ItemGroup>
 
 </Project>
