@@ -20,6 +20,7 @@ namespace StaticAnalysisLibrary
         public string licensePath { get; set; }
         public string readmePath { get; set; }
         public string license {get; set; }
+        public int licenseCompatibility {get; set; }
         public RepoInfo() 
         {
             codeLineCount = 0; 
@@ -29,6 +30,7 @@ namespace StaticAnalysisLibrary
             licensePath = "";
             readmePath = "";
             license = "";
+            licenseCompatibility = 0;
         }
     }
 
@@ -182,7 +184,7 @@ namespace StaticAnalysisLibrary
         {
             if (Repo.license == "" || Repo.license == null) {
                 Repo.license = "Not Available";
-                throw new ArgumentException("Parameter cannot be null");
+                return;
             }
             string License = File.ReadLines(LicensePath).First(); // gets the first line from file.
             foreach (string LicenseVar in System.IO.File.ReadLines(LicenseListPath))
@@ -190,6 +192,7 @@ namespace StaticAnalysisLibrary
                 if(License.Contains(LicenseVar))
                 {
                     Repo.license = LicenseVar;
+                    Repo.licenseCompatibility = 1;
                     return;
                 }
             }
