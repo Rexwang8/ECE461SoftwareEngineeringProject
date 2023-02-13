@@ -6,6 +6,15 @@ Names: Rex Wang, Joseph Ma, Alan Zhang, Kevin Lin
 A local CLI package manager project for ECE 461 - Software engineering (At purdue). Built mainly using C# and Python.
 
 
+![alt text](diagram.svg)
+Rex - Shell Scipt. CLI parser, DiagramWF, grader.py, startup.py, logger.py, project board, 
+Kevin - Static Analysis Library, Static Analysis Tester, gitPython.py Unit tests c#, loneCoverage_score.py, Line coverage c#
+Alan - RestAPI c#, License Parser
+Joseph - Github API, line coverage python, unit tests python
+
+![alt text](repovis.png)
+
+
 ---
 
 ## General execution pattern
