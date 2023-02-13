@@ -146,19 +146,21 @@ case "$1" in
         cd ../..
         
         cd UnitTest/
+        rm -rf TestResults
         dotnet test --collect:"XPlat Code Coverage"
-
+        cp TestResults/**/*.xml .
+        cd ..
         # test function code here
         #echo "Total: 20"
         #echo "Passed: 20"
         #echo "Coverage: 100%"
         #echo "20/20 tests passed. 100% line coverage achieved."
         #logDebug "Running tests"
+        python3 source/pyscripts/lineCoverage_score.py
 
-        #remove test repo
         
-        rm -rf testrepo/
-        cd ../
+        #remove test repo
+        rm -rf UnitTest/testrepo/
         exit 0
         ;;
     "clean")
