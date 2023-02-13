@@ -1,7 +1,8 @@
 import os 
+import logger
 
 def getCSharpResult():
-    f = open(os.getcwd() + "/../../UnitTest/coverage.cobertura.xml") 
+    f = open("UnitTest/coverage.cobertura.xml") 
     x = f.readline()
     lineInfo = f.readline()
     for item in lineInfo.split(" "):
@@ -14,6 +15,16 @@ def getCSharpResult():
     return linesCovered, totalLines
 
 if __name__ == "__main__":
-    [linesCovered, totalLines] = getCSharpResult()
-    print(linesCovered)
-    print(totalLines)
+    [linesCovered_cSharp, totalLines_cSharp] = getCSharpResult()
+    
+    linesCovered = linesCovered_cSharp
+    totalLines = totalLines_cSharp
+
+    
+    logObject = logger.Logger(path="results", name="lineCoverage.txt")
+    logObject.log(msg="Total: " + str(totalLines))
+    print("Total: " + str(totalLines))
+    logObject.log(msg="Covered: " + str(linesCovered))
+    print("Covered: " + str(linesCovered))
+    logObject.log(msg="Coverage Percentage: " + str(linesCovered/totalLines))
+    print("Coverage Percentage: " + str(linesCovered/totalLines * 100))
