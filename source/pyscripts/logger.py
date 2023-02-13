@@ -6,7 +6,7 @@ import time
 
 
 class Logger:
-    def __init__(self, path="log.txt", internalpriority=0, name="Logger Default Name"):
+    def __init__(self, path="cache/log.txt", internalpriority=0, name="Logger Default Name"):
         self.path = path
         self.scriptname = name
         self.internalpriority = internalpriority

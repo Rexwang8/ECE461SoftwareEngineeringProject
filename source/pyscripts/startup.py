@@ -20,9 +20,9 @@ def main(loglevel, logfile, inputfile):
     inputfile = sys.argv[3]
     '''
     Debug = logger.Logger(logfile, 2, "Main")
-    print("dir: " + str(dir))
-    print("loglevel: " + str(loglevel))
-    print("logfile: " + str(logfile))
+    #print("dir: " + str(dir))
+    #print("loglevel: " + str(loglevel))
+    #print("logfile: " + str(logfile))
 
     
     Debug.log("Starting main script...", 1)
@@ -34,7 +34,7 @@ def main(loglevel, logfile, inputfile):
     
     #we get a list of all packages from arg 3
     packages = ParseInput(inputfile, Debug)
-    print(packages)
+    #print(packages)
     
     #we loop through the list of packages and pull them down
     for package in packages:
