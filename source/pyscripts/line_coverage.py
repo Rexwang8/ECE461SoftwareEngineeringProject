@@ -1,6 +1,10 @@
 import coverage
 import os
 import sys
+import unittest
+import io
+import contextlib
+
 cov = coverage.Coverage(source=['grader', 'gitPython','github_api', 'logger', 'startup'])
 cov.start()
 
@@ -98,13 +102,15 @@ gitPython.pythonGit.pyClone("invalidURL","invalidPath")
 ##########################
 
 import grader as grade
-grade.main(LOG_LEVEL, LOG_FILE)
+grade.main(LOG_LEVEL, LOG_FILE, False)
 
 ###########################
 #Testing startup.py 
 ##########################
 
 import startup as start
+import lineCoverage_score as scoreTool
+
 start.main(LOG_LEVEL, LOG_FILE, INPUT)
 
 #save the coverage tests
@@ -114,8 +120,34 @@ cov.load()
 
 data = cov.get_data()
 total_lines_run = sum(len(data.lines(filename)) for filename in data.measured_files())
+fake_stdout = io.StringIO()
+percent = 0
+with contextlib.redirect_stdout(fake_stdout):
+        percent = cov.report()
 
-print("total lines executed is " + str(total_lines_run)
+[linesCovered_cSharp, totalLines_cSharp] = scoreTool.getCSharpResult()
 
-percent = cov.report()
-print("percent coverage: " + str(percent) + "%")
+linesCovered = linesCovered_cSharp + (percent/100) * total_lines_run
+totalLines = totalLines_cSharp + total_lines_run
+
+logObject = l.Logger(path="results", name="lineCoverage.txt")
+logObject.log(msg="Total: " + str(totalLines))
+logObject.log(msg="Covered: " + str(linesCovered))
+logObject.log(msg="Coverage Percentage: " + str(linesCovered/totalLines))
+
+
+#make dir 
+os.system("touch results/lineCoverage.txt")
+
+f = open("results/lineCoverage.txt", "w")
+f.write("Total: " + str(totalLines) + "\nCovered: " + str(linesCovered) + "\nCoverage Percentage: " + str(linesCovered/totalLines * 100))
+f.close()
+
+
+###test python
+totalfrompython = unittest.testAll()
+
+
+scoreTool.formatOutput(totalfrompython)
+
+

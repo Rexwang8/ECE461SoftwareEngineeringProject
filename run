@@ -141,23 +141,32 @@ case "$1" in
         exit 0
         ;;
     "test")
+        ./run clean
+        ./run build
+        
+        sleep 12
+
+        ./run `pwd`/examples/input.txt 
+        
+        sleep 12
+
+
         #download test repo
         cd source/pyscripts
         python3 gitPython.py
         cd ../..
         
+        #csharp testing
         cd UnitTest/
         rm -rf TestResults
-        dotnet test --collect:"XPlat Code Coverage"
+        touch ../results/csharptests.txt
+        dotnet test --collect:"XPlat Code Coverage" | tee -a $logfullpath ../results/csharptests.txt >/dev/null
         cp TestResults/**/*.xml .
         cd ..
-        # test function code here
-        #echo "Total: 20"
-        #echo "Passed: 20"
-        #echo "Coverage: 100%"
-        #echo "20/20 tests passed. 100% line coverage achieved."
-        #logDebug "Running tests"
-        python3 source/pyscripts/lineCoverage_score.py
+        
+        python3 source/pyscripts/line_coverage.py $LOG_FILE $LOG_LEVEL $GITHUB_TOKEN
+
+        
 
         
         #remove test repo

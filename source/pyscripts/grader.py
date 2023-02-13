@@ -510,7 +510,7 @@ def GetScore(pkg, gitList, npmList, staticList, logger):
         elif git.stargazers <= 100:
             finalscore.correctness += 20
         else:
-            finalscore.correctness += 30
+            finalscore.correctness += 20
             
         openToAllIssuesRatio = git.openIssues / git.issues
         
@@ -731,7 +731,7 @@ def ParseAllNPMJSON(pathToNPMJsonFolder, logger):
     return AllNPMScores
 
 
-def main(loglevel, logfile):
+def main(loglevel, logfile, DoLog=True):
     #get arguments
     Debug = logger.Logger(f"{logfile}", 2, "Grader")
     Debug.log("Log level: " + loglevel, 2)
@@ -795,9 +795,10 @@ def main(loglevel, logfile):
     #print the json but sorted by net score
     sortedGrades = sorted(jsonGrades, key=lambda x: grades[x].netScore, reverse=True)
     for grade in sortedGrades:
-        print(jsonGrades[grade])
+        if DoLog:
+            print(jsonGrades[grade])
     
-    print(jsonGrades[grade])
+
     #write the json to a file results/results.json
     with open ("results/results.ndjson", "w") as f:
         for grade in jsonGrades:
@@ -815,7 +816,10 @@ def main(loglevel, logfile):
 if __name__ == "__main__":
     loglevel = sys.argv[1]
     logfile = sys.argv[2]
-    main(loglevel, logfile)
+    DoLog = True
+    if sys.argv[3] != '':
+        DoLog = sys.argv[3]
+    main(loglevel, logfile, DoLog)
     
     
     
