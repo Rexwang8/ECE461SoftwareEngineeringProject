@@ -8,22 +8,21 @@ import grader #grader.py
 import gitPython #gitPython.py
 
 #get args
-def main():
+def main(loglevel, logfile, inputfile):
     #current working dir
     dir = pathlib.Path().absolute()
-
+    '''
     #get first arg LOG LEVEL
     loglevel = sys.argv[1]
     #get second arg as log file
     logfile = sys.argv[2]
-    
     #get third arg as all input packages
     inputfile = sys.argv[3]
-
+    '''
     Debug = logger.Logger(logfile, 2, "Main")
-    print("dir: " + str(dir))
-    print("loglevel: " + str(loglevel))
-    print("logfile: " + str(logfile))
+    #print("dir: " + str(dir))
+    #print("loglevel: " + str(loglevel))
+    #print("logfile: " + str(logfile))
 
     
     Debug.log("Starting main script...", 1)
@@ -35,7 +34,7 @@ def main():
     
     #we get a list of all packages from arg 3
     packages = ParseInput(inputfile, Debug)
-    print(packages)
+    #print(packages)
     
     #we loop through the list of packages and pull them down
     for package in packages:
@@ -111,4 +110,4 @@ def ParseInput(inputfile, Logger):
     return ParsedPackages
         
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1], sys.argv[2], sys.argv[3])

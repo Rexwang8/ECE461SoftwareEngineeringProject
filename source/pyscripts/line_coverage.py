@@ -1,19 +1,21 @@
 import coverage
 import os
 import sys
-cov = coverage.Coverage(source=['grader', 'gitPython','github_api', 'logger'])
+cov = coverage.Coverage(source=['grader', 'gitPython','github_api', 'logger', 'startup'])
 cov.start()
 
-LOG_PATH = "/Users/Josephma/461_project/source/pyscripts/test.txt"
-LOG_FILE = "/Users/Josephma/461project2/testcache2"
+current_dir = os.getcwd()
+
+INPUT = current_dir + "/examples/input.txt"
 
 #sys.argv[1] is LOG_FILE
 #sys.argv[2] is LOG_LEVEL
 #sys.argv[3] is GITHUB_TOKEN
 
 LOG_FILE = sys.argv[1]
-LOG_PATH = sys.argv[2]
+LOG_LEVEL = sys.argv[2]
 GHTOKEN = sys.argv[3]
+
 
 ###########################
 #Testing logger.py
@@ -58,6 +60,24 @@ log_test2.setpath("cache/pathZ")
 log_test2.setscriptname("scriptname")
 log_test2.log("msg", 1)
 
+
+
+log_test2 = l.Logger()
+log_test2.setpriority(2)
+log_test2.setscriptname("log_test")
+log_test2.setpath("cache/pathZ")
+log_test2.setscriptname("scriptname")
+log_test2.log("msg", 1)
+
+os.system("rm cache/pathZ")
+
+log_test2 = l.Logger()
+log_test2.setpriority(2)
+log_test2.setscriptname("log_test")
+log_test2.setpath("cache/pathZ")
+log_test2.setscriptname("scriptname")
+log_test2.log("msg", 1)
+
 ###########################
 #Testing git_module.py
 ##########################
@@ -78,7 +98,14 @@ gitPython.pythonGit.pyClone("invalidURL","invalidPath")
 ##########################
 
 import grader as grade
-grade.main(LOG_PATH, LOG_FILE)
+grade.main(LOG_LEVEL, LOG_FILE)
+
+###########################
+#Testing startup.py 
+##########################
+
+import startup as start
+start.main(LOG_LEVEL, LOG_FILE, INPUT)
 
 #save the coverage tests
 cov.stop()

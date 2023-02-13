@@ -777,7 +777,7 @@ def main(loglevel, logfile):
         Debug.log("Last updated: " + str(grades[pkg].lastupdated), 2)
 
 
-    prettyPrintTable(grades, "all")
+    #prettyPrintTable(grades, "all")
     #we write it to a json format
     jsonGrades = dict()
     #{"URL":"https://github.com/nullivex/nodist", "NET_SCORE":0.9, "RAMP_UP_SCORE":0.5, "CORRECTNESS_SCORE":0.7, "BUS_FACTOR_SCORE":0.3, "RESPONSIVE_MAINTAINER_SCORE":0.4, "LICENSE_SCORE":1}
@@ -791,7 +791,7 @@ def main(loglevel, logfile):
         responsiveMaintainer = round(gradeobj.responsiveMaintainer / gradeobj.denominator, 1)
         licenseCompatibility = gradeobj.licenseCompatibility
         jsonGrades[grade] = f"{{\"URL\":\"{durls[pkgname]}\", \"NET_SCORE\":{netscore}, \"RAMP_UP_SCORE\":{rampup}, \"CORRECTNESS_SCORE\":{correctness}, \"BUS_FACTOR_SCORE\":{busfactor}, \"RESPONSIVE_MAINTAINER_SCORE\":{responsiveMaintainer}, \"LICENSE_SCORE\":{licenseCompatibility}}}"
-        
+        print(jsonGrades[grade])
     #write the json to a file results/results.json
     with open ("results/results.ndjson", "w") as f:
         for grade in jsonGrades:
