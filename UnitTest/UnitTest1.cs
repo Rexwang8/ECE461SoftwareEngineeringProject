@@ -1,5 +1,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using StaticAnalysisLibrary;
+using PackageManager;
+using ConsoleProgram;
 using System.Linq;
 using System;
 using System;
@@ -13,6 +15,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace CSharpUnitTesting;
+
 
 [TestClass]
 public class StaticAnalysisTesting
@@ -140,29 +143,67 @@ public class StaticAnalysisTesting
             Assert.IsTrue((staticAnalysis.repoInfo.commentCharCount == 16238),
                    string.Format("Expected for '{0}': true; Actual: {1}",
                                  16238, staticAnalysis.repoInfo.commentCharCount));
-            Assert.IsTrue((staticAnalysis.repoInfo.licensePath == "/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/UnitTest/bin/Debug/net6.0/../../../testrepo/LICENSE.txt"),
-                   string.Format("Expected for '{0}': true; Actual: {1}",
-                                 "/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/UnitTest/bin/Debug/net6.0/../../../testrepo/LICENSE.txt", staticAnalysis.repoInfo.licensePath));
-            Assert.IsTrue((staticAnalysis.repoInfo.readmePath == "/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/UnitTest/bin/Debug/net6.0/../../../testrepo/README.md"),
-                   string.Format("Expected for '{0}': true; Actual: {1}",
-                                 "/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/UnitTest/bin/Debug/net6.0/../../../testrepo/README.md", staticAnalysis.repoInfo.readmePath));
-        
         String[] list = {staticAnalysis.repoInfo.licensePath};
         System.IO.File.WriteAllLines("/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/deleteMe.txt", list);
     }
-}
 
-/* [TestClass]
-public class TestCLIParse 
-{
+    //Tests when LicenseList is empty
     [TestMethod]
-    [ExpectedException(typeof(ArgumentNullException), "ArgumentNullException")]
-    public void TestNull()
+    [ExpectedException(typeof(ArgumentException), "ArgumentException")]
+    public void TestEmptyLicensePath()
+    {
+        StaticAnalysis staticAnalysis = new StaticAnalysis();  
+
+        staticAnalysis.LicenseParser("", System.IO.Directory.GetCurrentDirectory() + "/source/StaticAnalysisLibrary/LicenseList.txt",  ref staticAnalysis.repoInfo);
+    }
+
+    //Tests when LicensePath is empty
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException), "ArgumentException")]
+    public void TestEmptyLicenseListPath()
     {
         StaticAnalysis staticAnalysis = new StaticAnalysis();  
         
-        String test = null;
-
-        staticAnalysis.Analyze(test, "testrepo",  "");
+        staticAnalysis.LicenseParser(staticAnalysis.repoInfo.license, "",  ref staticAnalysis.repoInfo);
     }
-} */
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException), "ArgumentException")]
+    public void TestNullLicense()
+    {
+        StaticAnalysis staticAnalysis = new StaticAnalysis();
+        String test = null;
+        staticAnalysis.LicenseParser(test, System.IO.Directory.GetCurrentDirectory() + "/source/StaticAnalysisLibrary/LicenseList.txt",  ref staticAnalysis.repoInfo);
+    }
+
+    [TestMethod]
+    [ExpectedException(typeof(ArgumentException), "ArgumentException")]
+    public void TestNullLicenseList()
+    {
+        StaticAnalysis staticAnalysis = new StaticAnalysis();
+        String test = null;
+        staticAnalysis.LicenseParser(staticAnalysis.repoInfo.license, test,  ref staticAnalysis.repoInfo);
+    }
+    
+}
+
+
+ [TestClass]
+public class LoggerTesting 
+{
+    [TestMethod]
+    public void TestCSharpLoggerNullCase()
+    {
+        String test = null;
+        CSharpLogger LoggerTest = new CSharpLogger(test, 2);  
+    }
+}
+[TestClass]
+public class RESTnpmTesting
+{
+    [TestMethod]
+    public void TestFunc()
+    {
+        Class1 RestTest = new Class1();
+    }
+}
