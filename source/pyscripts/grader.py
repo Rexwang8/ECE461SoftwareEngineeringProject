@@ -34,7 +34,7 @@ class Score:
     
     def CalculateNetScore(self):
         #weighting of each score
-        self.netScore = ((self.busFactor * 0.2) + (self.rampUp * 0.2) + (self.correctness * 0.2) + (self.responsiveMaintainer * 0.2) + (self.licenseScore * 0.2)) / self.denominator
+        self.netScore = ((self.busFactor * 0.15) + (self.rampUp * 0.15) + (self.correctness * 0.15) + (self.responsiveMaintainer * 0.35) + (self.licenseScore * 0.2)) / self.denominator
         pass
     
 
@@ -443,7 +443,7 @@ def GetScore(pkg, gitList, npmList, staticList, logger):
             finalscore.rampUp += 45
 
     if static is not None:
-        #20 pts for last updated date, 30 pts ratio of code to comments, 10 pts for including a readme, 20 pts for a small codebase
+        #30 pts for last updated date, 30 pts ratio of code to comments, 10 pts for including a readme, 20 pts for a small codebase
         #Justification: the more recent the last update, the better (code is being maintained)
         # the more comments, the better (easier to understand)
         #including a readme is a good sign
@@ -461,9 +461,9 @@ def GetScore(pkg, gitList, npmList, staticList, logger):
         codeToCommentRatio = static.codeLineCount / static.commentLineCount
         
         if codeToCommentRatio >= 10:
-            finalscore.rampUp += 30
+            finalscore.rampUp += 40
         elif codeToCommentRatio >= 15:
-            finalscore.rampUp += 25
+            finalscore.rampUp += 30
         elif codeToCommentRatio >= 25:
             finalscore.rampUp += 20
         elif codeToCommentRatio >= 50:
@@ -791,7 +791,13 @@ def main(loglevel, logfile):
         responsiveMaintainer = round(gradeobj.responsiveMaintainer / gradeobj.denominator, 1)
         licenseCompatibility = gradeobj.licenseCompatibility
         jsonGrades[grade] = f"{{\"URL\":\"{durls[pkgname]}\", \"NET_SCORE\":{netscore}, \"RAMP_UP_SCORE\":{rampup}, \"CORRECTNESS_SCORE\":{correctness}, \"BUS_FACTOR_SCORE\":{busfactor}, \"RESPONSIVE_MAINTAINER_SCORE\":{responsiveMaintainer}, \"LICENSE_SCORE\":{licenseCompatibility}}}"
+    
+    #print the json but sorted by net score
+    sortedGrades = sorted(jsonGrades, key=lambda x: grades[x].netScore, reverse=True)
+    for grade in sortedGrades:
         print(jsonGrades[grade])
+    
+    print(jsonGrades[grade])
     #write the json to a file results/results.json
     with open ("results/results.ndjson", "w") as f:
         for grade in jsonGrades:

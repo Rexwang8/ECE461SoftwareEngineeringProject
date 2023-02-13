@@ -29,7 +29,7 @@ GNU Affero
 ISC License 
 LaTeX Project
 Microsoft Reciprocal 
-MIT  
+MIT
 ODC Open Database 
 (ODbL) 
 ODC Public Domain Dedication
@@ -47,9 +47,3 @@ Do What The F*ck You Want To Public License
 WTFPL 
 zlib
 libpng
-
-
-
-
-
-

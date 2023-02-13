@@ -113,6 +113,7 @@ namespace StaticAnalysisLibrary
                 repoInfo.commentCharCount += File.ReadAllLines(file).Sum(s => s.Length);
             }
             LicenseParser(repoInfo.licensePath, System.IO.Directory.GetCurrentDirectory() + "/source/StaticAnalysisLibrary/LicenseList.txt", ref repoInfo);
+            
             WriteFile(resultJsonFile);
 
             DirectoryTool.sourceCodeEntries.Clear();
@@ -175,6 +176,13 @@ namespace StaticAnalysisLibrary
 
         public void WriteFile(string filename)
         {
+            //remove file if it exists
+            if (File.Exists(filename))
+            {
+                File.Delete(filename);
+            }
+
+
             string json = JsonSerializer.Serialize(repoInfo);
             File.WriteAllText(filename, json);
         }
@@ -187,17 +195,35 @@ namespace StaticAnalysisLibrary
                 return;
             }
             string License = File.ReadLines(LicensePath).First(); // gets the first line from file.
-            foreach (string LicenseVar in System.IO.File.ReadLines(LicenseListPath))
-            {   
-                if(License.Contains(LicenseVar))
+            
+            var allLicenses = File.ReadAllLines(LicenseListPath);
+            var allLicensesArr = new List<string>(allLicenses);
+            List<string> allLicensesArrCleaned = new List<string>();
+            foreach (string li in allLicensesArr)
+            {
+               string newli = li.Trim().ToLower();
+                allLicensesArrCleaned.Add(newli);
+            }
+
+
+
+            foreach (var LicenseVar in allLicensesArrCleaned)
+            {
+                string cleanedlicense = License.Trim().ToLower();
+                //Console.WriteLine("LicenseVar: " + LicenseVar + "|");
+                string CleanedLicenseVar = LicenseVar.Trim().ToLower();
+                //Console.WriteLine("Checking: " + CleanedLicenseVar + " in " + cleanedlicense + "  " + cleanedlicense.Contains(CleanedLicenseVar));
+                if(cleanedlicense.Contains(CleanedLicenseVar))
                 {
-                    Repo.license = LicenseVar;
+                    //Console.WriteLine("Found: " + CleanedLicenseVar); 
+                    Repo.license = CleanedLicenseVar;
                     Repo.licenseCompatibility = 1;
                     return;
                 }
             }
 
             Repo.license = "Not Available";
+            Repo.licenseCompatibility = 0;
             return;
             
         }
