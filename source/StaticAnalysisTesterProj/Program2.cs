@@ -50,7 +50,7 @@ logger.LogToFile("Log Level: " + loglevel, 1);
 var stdOutBuffer = new StringBuilder();
 var stdErrBuffer = new StringBuilder();
 var results = Cli.Wrap("python3")
-    .WithArguments("source/pyscripts/grader.py " + loglevel + " " + logpath)
+    .WithArguments("source/pyscripts/grader.py " + loglevel + " " + logpath + " true")
     .WithValidation(CommandResultValidation.None)
     .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
     .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer))
