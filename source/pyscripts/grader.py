@@ -511,8 +511,11 @@ def GetScore(pkg, gitList, npmList, staticList, logger):
             finalscore.correctness += 20
         else:
             finalscore.correctness += 20
-            
-        openToAllIssuesRatio = git.openIssues / git.issues
+        
+        if (git.issues != 0):
+            openToAllIssuesRatio = git.openIssues / git.issues
+        else:
+            openToAllIssuesRatio = 0
         
         if openToAllIssuesRatio <= 0.1:
             finalscore.correctness += 50
@@ -804,8 +807,6 @@ def main(loglevel, logfile, DoLog=True):
         for grade in jsonGrades:
             f.writelines(jsonGrades[grade] + "\n")
         f.close()
-    
-
     
     Debug.log("Testing Grader", 2)
     

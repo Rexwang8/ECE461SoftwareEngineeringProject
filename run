@@ -5,11 +5,11 @@
 
 
 #log environment variables $LOG_PATH and $LOG_LEVEL
-loglevel="${LOG_LEVEL:-2}"
-logfullpath="${LOG_FILE:-/home/shay/a/lin1285/ECE461SoftwareEngineeringProject/cache/log2.txt}"
+loglevel="${LOG_LEVEL}"
+logfullpath="${LOG_FILE}"
 mkdir -p cache
 touch cache/build.txt
-ghtoken="${GITHUB_TOKEN:-faketokengithub}"
+ghtoken="${GITHUB_TOKEN}"
 
 
 
@@ -138,18 +138,12 @@ case "$1" in
         logDebug "Static Analysis C# built"
         
         logInfo "Build complete"
+
+        echo "build complete..."
         exit 0
         ;;
     "test")
-        ./run clean
-        ./run build
-        
-        sleep 12
-
-        ./run `pwd`/examples/input.txt 
-        
-        sleep 12
-
+        ./CLIParse `pwd`/examples/input.txt $logfullpath $loglevel $ghtoken test
 
         #download test repo
         cd source/pyscripts
@@ -167,8 +161,6 @@ case "$1" in
         python3 source/pyscripts/line_coverage.py $LOG_FILE $LOG_LEVEL $GITHUB_TOKEN
 
         
-
-        
         #remove test repo
         rm -rf UnitTest/testrepo/
         exit 0
@@ -182,6 +174,7 @@ case "$1" in
 
 
         logInfo "Old build removed"
+
         exit 0
         ;;
     "install")
@@ -224,7 +217,9 @@ case "$1" in
         #copy input file to cache
         cp $1 cache/input.txt
 
-        ./CLIParse $1 $logfullpath $loglevel $ghtoken
+        ./CLIParse $1 $logfullpath $loglevel $ghtoken "prod"
+
+        python3 source/pyscripts/readJson.py
         exit 0
         ;;
 

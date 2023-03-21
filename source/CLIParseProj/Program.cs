@@ -24,7 +24,7 @@ namespace PackageManager
             }
             ENVLOGLOCATION = args[1];
             string GHTOKEN = args[3];
-            
+        
             //get current directory
             string currentDirectory = Directory.GetCurrentDirectory();
 
@@ -43,7 +43,7 @@ namespace PackageManager
 
             fullPathLogger = ENVLOGLOCATION;
             string command = args[0];
-
+            
             //instantiate logger
             CSharpLogger logger = new CSharpLogger(fullPathLogger, ENVLOGLEVEL);
 
@@ -142,10 +142,11 @@ namespace PackageManager
                     }
                     
                 }
+                string mode = args[4];
                 //At this point, we have the metadata for all the packages, we need to call the python script for grading
                 logger.LogToFile("Calling Python Script... for startup", 1);
                 var cliresultStatic = Cli.Wrap("python3")
-                            .WithArguments($"source/pyscripts/startup.py " + ENVLOGLEVEL + " " + ENVLOGLOCATION + " " + command)
+                            .WithArguments($"source/pyscripts/startup.py " + ENVLOGLEVEL + " " + ENVLOGLOCATION + " " + command + " " + mode)
                             .WithValidation(CommandResultValidation.None)
                             .WithStandardOutputPipe(PipeTarget.ToStringBuilder(stdOutBuffer))
                             .WithStandardErrorPipe(PipeTarget.ToStringBuilder(stdErrBuffer))

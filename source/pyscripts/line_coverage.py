@@ -111,7 +111,7 @@ grade.main(LOG_LEVEL, LOG_FILE, False)
 import startup as start
 import lineCoverage_score as scoreTool
 
-start.main(LOG_LEVEL, LOG_FILE, INPUT)
+start.main(LOG_LEVEL, LOG_FILE, INPUT, "test")
 
 #save the coverage tests
 cov.stop()

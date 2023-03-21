@@ -8,7 +8,7 @@ import grader #grader.py
 import gitPython #gitPython.py
 
 #get args
-def main(loglevel, logfile, inputfile):
+def main(loglevel, logfile, inputfile, mode):
     #current working dir
     dir = pathlib.Path().absolute()
     '''
@@ -24,8 +24,8 @@ def main(loglevel, logfile, inputfile):
     #print("loglevel: " + str(loglevel))
     #print("logfile: " + str(logfile))
 
-    
-    Debug.log("Starting main script...", 1)
+    Debug.log("HELLO" + mode)
+    Debug.log("starting main script...", 1)
     #if repo folder exists, delete it
     if os.path.exists("data/repo"):
         #delete repo folder even if it has files
@@ -40,19 +40,24 @@ def main(loglevel, logfile, inputfile):
     for package in packages:
         #we sleep for 0.25 seconds to avoid rate limiting
         time.sleep(0.25)
-        pathToRepo = "data/repo/" + package[0]
-        
-        if(package[1] == "github"):
-            Debug.log(f"Cloning {package[0]} from github...", 1)
+
+        if (mode == "test"):
+            pathToRepo = "UnitTest/testrepo/" + package[0]
             gitPython.pythonGit.pyClone(url=package[2], path=pathToRepo)
-        elif(package[1] == "npm"):
-            #we can find the json at npmdata folder/(name of package).json
-            name = package[0]
-            npmjson = grader.ImportJSON(f"data/npm/{name}.json")
-            githuburl = npmjson["repository"]["url"]
-            #clean up url
-            githuburl = githuburl.replace("git+", "").replace(".git", "").replace("ssh://", "https://").replace("git://", "https://").replace("git@", "")
-            gitPython.pythonGit.pyClone(url=githuburl, path=pathToRepo)
+        else:
+            pathToRepo = "data/repo/" + package[0]
+
+            if(package[1] == "github"):
+                Debug.log(f"Cloning {package[0]} from github...", 1)
+                gitPython.pythonGit.pyClone(url=package[2], path=pathToRepo)
+            elif(package[1] == "npm"):
+                #we can find the json at npmdata folder/(name of package).json
+                name = package[0]
+                npmjson = grader.ImportJSON(f"data/npm/{name}.json")
+                githuburl = npmjson["repository"]["url"]
+                #clean up url
+                githuburl = githuburl.replace("git+", "").replace(".git", "").replace("ssh://", "https://").replace("git://", "https://").replace("git@", "")
+                gitPython.pythonGit.pyClone(url=githuburl, path=pathToRepo)
     
     #we now pass to the static analysis tool with c#, exe log level and log file
     os.system(f"./StaticAnalysisTester {loglevel} {logfile}")
@@ -110,4 +115,4 @@ def ParseInput(inputfile, Logger):
     return ParsedPackages
         
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2], sys.argv[3])
+    main(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4])
