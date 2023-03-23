@@ -219,7 +219,7 @@ case "$1" in
 
         ./CLIParse $1 $logfullpath $loglevel $ghtoken "prod"
 
-        python3 source/pyscripts/readJson.py
+        #python3 source/pyscripts/readJson.py
         exit 0
         ;;
 

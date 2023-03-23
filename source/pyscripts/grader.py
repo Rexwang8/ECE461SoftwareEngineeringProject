@@ -599,7 +599,10 @@ def GetScore(pkg, gitList, npmList, staticList, logger):
         else:
             finalscore.responsiveMaintainer += 30
             
-        openToAllIssuesRatio = git.openIssues / git.issues
+        if (git.issues != 0):
+            openToAllIssuesRatio = git.openIssues / git.issues
+        else:
+            openToAllIssuesRatio = 0
         
         if openToAllIssuesRatio <= 0.1:
             finalscore.responsiveMaintainer += 50
@@ -794,10 +797,12 @@ def main(loglevel, logfile, DoLog=True):
         responsiveMaintainer = round(gradeobj.responsiveMaintainer / gradeobj.denominator, 1)
         licenseCompatibility = gradeobj.licenseCompatibility
         jsonGrades[grade] = f"{{\"URL\":\"{durls[pkgname]}\", \"NET_SCORE\":{netscore}, \"RAMP_UP_SCORE\":{rampup}, \"CORRECTNESS_SCORE\":{correctness}, \"BUS_FACTOR_SCORE\":{busfactor}, \"RESPONSIVE_MAINTAINER_SCORE\":{responsiveMaintainer}, \"LICENSE_SCORE\":{licenseCompatibility}}}"
+
     
     #print the json but sorted by net score
     sortedGrades = sorted(jsonGrades, key=lambda x: grades[x].netScore, reverse=True)
     for grade in sortedGrades:
+        Debug.log(jsonGrades[grade], 2)
         if DoLog:
             print(jsonGrades[grade])
     

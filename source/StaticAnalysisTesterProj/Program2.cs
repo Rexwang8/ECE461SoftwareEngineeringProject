@@ -59,9 +59,7 @@ var results = Cli.Wrap("python3")
     .GetResult();
 
 string buffer = stdOutBuffer.ToString();
-//Console.WriteLine("Standard Output:");
 Console.WriteLine(buffer);
-
 
 
 

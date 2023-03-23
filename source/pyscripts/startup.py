@@ -2,6 +2,7 @@ import sys
 import time
 import pathlib
 import os
+import subprocess
 
 import logger #logger.py
 import grader #grader.py
@@ -60,9 +61,10 @@ def main(loglevel, logfile, inputfile, mode):
                 gitPython.pythonGit.pyClone(url=githuburl, path=pathToRepo)
     
     #we now pass to the static analysis tool with c#, exe log level and log file
-    os.system(f"./StaticAnalysisTester {loglevel} {logfile}")
+    #os.system(f"./StaticAnalysisTester {loglevel} {logfile}")
+    restdout=subprocess.check_output(f"./StaticAnalysisTester {loglevel} {logfile}", shell=True).decode("utf-8")
+    print(f"{restdout}")
     Debug.log(f"./StaticAnalysisTester {loglevel} {logfile}", 1)
-    
     Debug.log("Exiting main script...", 1)
 
     return 0

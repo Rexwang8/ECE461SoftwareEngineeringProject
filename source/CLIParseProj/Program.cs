@@ -154,6 +154,7 @@ namespace PackageManager
                             .GetAwaiter()
                             .GetResult();
 
+                Console.WriteLine(stdOutBuffer.ToString());
                 logger.LogToFile(stdOutBuffer.ToString(), 2);
                 logger.LogToFile(stdErrBuffer.ToString(), 2);
 
